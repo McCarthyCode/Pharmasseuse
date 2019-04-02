@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>The Pharmasseuse</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <script  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'home/img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+</head>
+<body>
+    <nav id="navbar" class="navbar fixed-top navbar-expand-sm navbar-dark">
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home:index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Booking</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="cover">
+        <div class="title">
+            <h3>Robin McCarthy</h3>
+            <h1>The Pharmasseuse</h1>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-6 d-none d-md-block">
+                    <img src="{% static 'home/img/foot.jpg' %}" alt="spa-foot-flower">
+                </div>
+                <div class="paragraph col col-md-6 col-sm-12">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id ex sit amet enim tincidunt aliquet vehicula eu neque. Morbi condimentum, odio a interdum interdum, urna velit hendrerit nunc, vitae ornare massa metus nec leo. Sed aliquet feugiat sagittis.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="paragraph col col-md-6 col-sm-12">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id ex sit amet enim tincidunt aliquet vehicula eu neque. Morbi condimentum, odio a interdum interdum, urna velit hendrerit nunc, vitae ornare massa metus nec leo. Sed aliquet feugiat sagittis.</p>
+                </div>
+                <div class="col col-md-6 d-none d-md-block">
+                    <img src="{% static 'home/img/massage.jpg' %}" alt="massage">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lotus">
+    </div>
+    <div class="footer">
+        <div class="container">
+            <p>&copy; {{ year }} The Pharmasseuse</p>
+        </div>
+    </div>
+</body>
+</html>

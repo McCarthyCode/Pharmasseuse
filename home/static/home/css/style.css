@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css?family=Charm|Open+Sans|Varela+Round');
+
+html,
+body {
+  height: 100%;
+  display: grid;
+  background-color: #414141;
+}
+
+h1 {
+  font-size: 1.875rem;
+}
+
+h3 {
+  font-size: 1.3125rem;
+}
+
+nav#navbar {
+  background: #17a2b8;
+  font-family: 'Varela Round', sans-serif;
+}
+
+#navbar .navbar-toggler {
+  border: none;
+}
+
+#navbar .nav-item {
+  margin: 0 1rem;
+  text-align: center;
+}
+
+#navbar .navbar-toggler,
+#navbar .nav-link,
+#navbar .nav-link:hover {
+  color: white;
+}
+
+#navbar .nav-link:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.cover {
+  opacity: 1;
+  background: unset;
+  position: relative;
+  background-color: #414141;
+  margin-top: 45px;
+  height: 101px;
+}
+
+.title {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  background-color: #414141;
+  color: white;
+  text-align: center;
+  font-family: 'Charm', cursive;
+}
+
+.title h1 {
+  margin: 0;
+}
+
+.content {
+  background-color: #ffcc8d;
+}
+
+.content .row {
+  margin: 5rem 0;
+}
+
+.content img {
+  display: block;
+  height: 300px;
+  margin: auto;
+  box-shadow: 8px 8px 8px #414141;
+}
+
+.content .paragraph {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 300px;
+}
+
+.content p {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  height: 150px;
+  border-top: solid 1px black;
+}
+
+.lotus {
+  display: none;
+  height: 100vh;
+  opacity: 0.8;
+  background: url("/static/home/img/lotus.jpg") no-repeat center center fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+.footer {
+  background-color: #414141;
+  color: white;
+  text-align: center;
+}
+
+.footer p {
+  margin: 1rem 0;
+}
+
+@media (min-width: 1200px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+  }
+
+  .cover {
+    height: 100vh;
+    opacity: 0.8;
+    background: url("/static/home/img/waterfall.jpg") no-repeat center center fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+  }
+
+  .title {
+    position: absolute;
+  }
+
+  .content .paragraph {
+    height: 300px;
+  }
+
+  .lotus {
+    display: block;
+  }
+}
+
+@media (min-width: 576px) {
+  .cover {
+    margin-top: 56px;
+  }
+}
+
+/* python manage.py runserver 192.168.0.100:8000 */
