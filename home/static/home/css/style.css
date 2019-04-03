@@ -128,6 +128,7 @@ nav#navbar {
 
   .cover {
     height: 100vh;
+    margin: 0;
     opacity: 0.8;
     background: url("/static/home/img/waterfall.jpg") no-repeat center center fixed;
     background-size: cover;
@@ -149,10 +150,8 @@ nav#navbar {
   }
 }
 
-@media (min-width: 576px) {
+@media (min-width: 576px) and (max-width: 1199px) {
   .cover {
     margin-top: 56px;
   }
 }
-
-/* python manage.py runserver 192.168.0.100:8000 */
