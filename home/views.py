@@ -2,9 +2,24 @@ from datetime import datetime
 
 from django.shortcuts import render
 
-def index(request):
-    context = {
-        'year': datetime.today().year,
-    }
 
-    return render(request, 'home/index.html', context)
+def index(request):
+    return render(request, 'home/index.html', {
+        'year': datetime.today().year,
+    })
+
+
+def tos(request):
+    return render(request, 'home/tos.html', {
+        'name': 'The Pharmasseuse',
+        'domain': 'pharmasseuse.com',
+        'year': datetime.today().year,
+    })
+
+
+def privacy(request):
+    return render(request, 'home/privacy.html', {
+        'name': 'The Pharmasseuse',
+        'domain': 'pharmasseuse.com',
+        'year': datetime.today().year,
+    })
