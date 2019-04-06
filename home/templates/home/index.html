@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<div class="nav-placeholder d-xl-none"></div>
 <div class="cover">
     <div class="title">
         <h3>Robin McCarthy</h3>
@@ -9,10 +10,10 @@
     </div>
 </div>
 <div class="content">
-    <div class="container">
+    <div class="container m-tb-2rem">
         <div class="row">
-            <div class="col col-md-6 d-none d-md-block">
-                <img src="{% static 'home/img/foot.jpg' %}" alt="spa-foot-flower">
+            <div class="col col-md-6 d-none d-md-block img">
+                <img src="{% static 'home/img/pills.jpg' %}" alt="pills">
             </div>
             <div class="paragraph col col-md-6 col-sm-12">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id ex sit amet enim tincidunt aliquet vehicula eu neque. Morbi condimentum, odio a interdum interdum, urna velit hendrerit nunc, vitae ornare massa metus nec leo. Sed aliquet feugiat sagittis.</p>
@@ -20,9 +21,9 @@
         </div>
         <div class="row">
             <div class="paragraph col col-md-6 col-sm-12">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id ex sit amet enim tincidunt aliquet vehicula eu neque. Morbi condimentum, odio a interdum interdum, urna velit hendrerit nunc, vitae ornare massa metus nec leo. Sed aliquet feugiat sagittis.</p>
+                <p class="text-md-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id ex sit amet enim tincidunt aliquet vehicula eu neque. Morbi condimentum, odio a interdum interdum, urna velit hendrerit nunc, vitae ornare massa metus nec leo. Sed aliquet feugiat sagittis.</p>
             </div>
-            <div class="col col-md-6 d-none d-md-block">
+            <div class="col col-md-6 d-none d-md-block img">
                 <img src="{% static 'home/img/massage.jpg' %}" alt="massage">
             </div>
         </div>
