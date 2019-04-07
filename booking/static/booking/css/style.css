@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round');
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.h1, .h3 {
+  font-family: 'Varela Round', Helvetica, Arial, sans-serif;
+}
+
+.page {
+  background-color: #ffcc8d;
+  background:
+    linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+    linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+  background:
+    -webkit-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+    -webkit-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-webkit-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+  background:
+    -moz-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+    -moz-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-moz-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+  background:
+    -ms-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+    -ms-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-ms-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+  background:
+    -o-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+    -o-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-o-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+  padding: 1rem 0;
+}
+
+#calendar {
+  width: 100%;
+  height: 60vh;
+  background-color: #efefef;
+  border: 1px solid #b7b5b5;
+  border-radius: 0.5rem;
+}

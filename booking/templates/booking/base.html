@@ -30,14 +30,12 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'home/css/reset.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'home/css/navbar.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'home/css/footer.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'home/css/style.css' %}">
-    <script src="{% static 'home/js/script.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'booking/css/style.css' %}">
+    <script src="{% static 'booking/js/script.js' %}"></script>
 </head>
 <body>
     {% include 'home/navbar.html' %}
     {% block content %}
     {% endblock %}
-    {% include 'home/footer.html' %}
 </body>
 </html>

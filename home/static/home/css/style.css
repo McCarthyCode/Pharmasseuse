@@ -37,91 +37,6 @@ p {
   list-style: disc;
 }
 
-#navbar {
-  background: #17a2b8;
-  font-family: 'Varela Round', sans-serif;
-}
-
-.navbar-toggler {
-  border: none;
-}
-
-.navbar-dark .navbar-nav .nav-link {
-    color: white;
-}
-
-.nav-item {
-  margin: 0 1rem;
-  text-align: center;
-}
-
-.navbar-toggler,
-.nav-link,
-.nav-link:hover {
-  color: white;
-}
-
-.nav-link:hover {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.nav-placeholder {
-  /* height: 45px; */
-  height: 48px;
-}
-
-.nav-placeholder.d-xl-none {
-  background-color: #414141;
-}
-
-footer {
-  padding: 1rem 0;
-  background-color: #202020;
-  color: white;
-}
-
-footer p {
-  margin: 0;
-  text-align: center;
-}
-
-footer p,
-footer a {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.75rem;
-}
-
-footer a,
-footer a:hover {
-  color: #00ffff;
-}
-
-.footer-list {
-  max-width: 26rem;
-  position: relative;
-  margin: auto;
-  overflow: hidden;
-}
-
-.footer-list ul {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 0 0 0.5em -1px;
-  list-style: none;
-  padding-left: 0;
-}
-
-.footer-list li {
-  line-height: 0.75em;
-  flex: 1 0 auto;
-  margin: 0.25em 0;
-  padding: 0 0.5rem;
-  text-align: center;
-  border-left: 1px solid white;
-}
-
 .cover {
   background: unset;
   position: relative;
@@ -309,9 +224,3 @@ footer a:hover {
     max-height: 400px;
   }
 }
-
-/* @media (min-width: 576px) {
-  .nav-placeholder {
-    height: 48px;
-  }
-} */
