@@ -142,18 +142,22 @@ footer a:hover {
 .title h3 {
   margin: 0 auto;
   text-indent: -9999px;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  background-size: contain;
 }
 
 .title h1 {
   width: 199px;
   height: 45px;
-  background: url("/static/home/img/title_h1_mobile.png") no-repeat;
+  background: url("/static/home/img/title_h1_mobile.png") no-repeat center/contain;
 }
 
 .title h3 {
-  width: 128px;
+  width: 129px;
   height: 31px;
-  background: url("/static/home/img/title_h3_mobile.png") no-repeat;
+  background: url("/static/home/img/title_h3_mobile.png") no-repeat center/contain;
 }
 
 .content {
@@ -282,9 +286,13 @@ footer a:hover {
     height: 300px;
   }
 
+  .gradient-border {
+    height: 3px;
+    background: linear-gradient(to right, #5b3a94, #17a2b8, #5b3a94);
+  }
+
   .content p {
     padding-top: 0.5em;
-    border-top: solid 3px #b82d17;
   }
 }
 
