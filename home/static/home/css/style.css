@@ -149,14 +149,10 @@ footer a:hover {
 }
 
 .title h1 {
-  width: 199px;
-  height: 45px;
   background: url("/static/home/img/title_h1_mobile.png") no-repeat center/contain;
 }
 
 .title h3 {
-  width: 129px;
-  height: 31px;
   background: url("/static/home/img/title_h3_mobile.png") no-repeat center/contain;
 }
 
