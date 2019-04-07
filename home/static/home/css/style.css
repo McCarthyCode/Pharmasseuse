@@ -158,12 +158,13 @@ footer a:hover {
 
 .chevron {
   position: absolute;
-  left: 50%;
   bottom: 1rem;
+  left: 50%;
   transform: translateX(-50%);
   text-align: center;
   color: #b82d17;
   cursor: pointer;
+  z-index: 1;
 }
 
 .content {
