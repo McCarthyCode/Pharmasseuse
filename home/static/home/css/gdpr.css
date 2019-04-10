@@ -1,0 +1,30 @@
+.banner {
+    display: none;
+    position: fixed;
+    padding: 1rem 0;
+    background-color: #23bef7;
+    background: linear-gradient(to bottom right, #a92ff5, #23bef7);
+    color: white;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    line-height: 1.5;
+    z-index: 1;
+}
+
+.banner a {
+  color: white;
+  text-decoration: underline;
+}
+
+#close {
+  position: absolute;
+  font-size: 2rem;
+  top: 0;
+  right: 0.5rem;
+  cursor: pointer;
+}
+
+.banner p {
+  margin: 0;
+}
