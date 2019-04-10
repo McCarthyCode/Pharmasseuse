@@ -32,8 +32,8 @@ $(document).ready(function () {
             - $('h3').outerHeight()
             - $('#navbar').outerHeight()
             - 40;
-        console.log(size);
         $('#calendar').css('height', size);
+        $('#calendar-content').css('height', size - 42);
     }
 
     updateCalendarHeight();
@@ -41,4 +41,25 @@ $(document).ready(function () {
         updateCalendarHeight();
     });
 
+    function alignAppointmentTimes() {
+        $('#calendar-content').find('ul li').each(function () {
+            let $li = $(this);
+            let offset = $li.data('hour') * 4 * 16;
+            
+            $li.css('top', `${offset}px`);
+        });
+    }
+
+    function scrollTop() {
+        let $li = $('#calendar-content').find('ul li:first');
+        let offset = $li.data('hour') * 4 * 16;
+
+        $('#calendar-content').scrollTop(offset);
+    }
+
+    $.get('/booking/day', function (response) {
+        $('#calendar-content').append(response);
+        alignAppointmentTimes();
+        scrollTop();
+    });
 });

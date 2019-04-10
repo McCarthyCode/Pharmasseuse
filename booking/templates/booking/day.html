@@ -1,0 +1,10 @@
+<ol>
+    {% for time in times %}
+    <li class="text-right">{{ time.hour }}:{{ time.minute }} {{ time.ampm }}</li>
+    {% endfor %}
+</ol>
+<ul>
+    <li data-hour="8">8:00 am&ndash;8:50 am</li>
+    <li data-hour="12">12:00 pm&ndash;12:50 pm</li>
+    <li data-hour="13">1:00 pm&ndash;1:50 pm</li>
+</ul>

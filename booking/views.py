@@ -1,10 +1,16 @@
+import pytz
+
 from datetime import datetime
 
 from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'booking/index.html')
+    return render(request, 'booking/index.html', {
+        'date': datetime.now(pytz.utc),
+        'weeks': range(0, 6),
+        'days': range(0, 7),
+    })
 
 
 def day(request):
