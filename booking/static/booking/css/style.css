@@ -92,8 +92,7 @@ html, body {
 }
 
 #calendar-content::-webkit-scrollbar-thumb {
-  background-color: #5b3a94;
-  background: linear-gradient(to bottom, #5b3a94, #17a2b8, #5b3a94);
+  background-color: #b817a2;
   border-radius: 0.5rem;
 }
 

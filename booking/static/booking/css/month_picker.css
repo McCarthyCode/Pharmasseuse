@@ -1,0 +1,27 @@
+#month-picker {
+  display: none;
+  position: absolute;
+  background-color: #efefef;
+  border: 0.5rem solid #a2b817;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  z-index: 9999;
+}
+
+#month-picker .days li {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.25rem;
+  background-color: gray;
+  cursor: pointer;
+}
+
+#month-picker .days li.active {
+  background-color: blue;
+}

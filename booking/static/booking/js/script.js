@@ -1,34 +1,7 @@
 $(document).ready(function () {
-    // https://andylangton.co.uk/blog/development/get-viewportwindow-size-width-and-height-javascript
-    var viewportWidth;
-    var viewportHeight;
-
-    function updateViewportDims() {
-        // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
-        
-        if (typeof window.innerWidth != 'undefined') {
-            viewportWidth = window.innerWidth,
-            viewportHeight = window.innerHeight;
-        }
-        
-        // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
-        else if (typeof document.documentElement != 'undefined'
-        && typeof document.documentElement.clientWidth !=
-        'undefined' && document.documentElement.clientWidth != 0) {
-            viewportWidth = document.documentElement.clientWidth,
-            viewportHeight = document.documentElement.clientHeight;
-        }
-        
-        // older versions of IE
-        else {
-            viewportWidth = document.getElementsByTagName('body')[0].clientWidth,
-            viewportHeight = document.getElementsByTagName('body')[0].clientHeight;
-        }
-    }
-
+    // update dimensions and set height attributes
     function updateCalendarHeight() {
-        updateViewportDims();
-        let size = viewportHeight
+        let size = $(window).height()
             - $('h3').outerHeight()
             - $('#navbar').outerHeight()
             - 40;
@@ -36,11 +9,16 @@ $(document).ready(function () {
         $('#calendar-content').css('height', size - 42);
     }
 
+    // event listeners
     updateCalendarHeight();
     $(window).resize(function () {
         updateCalendarHeight();
     });
+    $(window).on('orientationchange', function () {
+        $(window).trigger('resize');
+    });
 
+    // format calendar objects
     function alignAppointmentTimes() {
         $('#calendar-content').find('ul li').each(function () {
             let $li = $(this);
@@ -50,6 +28,7 @@ $(document).ready(function () {
         });
     }
 
+    // scroll to first object in list
     function scrollTop() {
         let $li = $('#calendar-content').find('ul li:first');
         let offset = $li.data('hour') * 4 * 16;
@@ -57,6 +36,7 @@ $(document).ready(function () {
         $('#calendar-content').scrollTop(offset);
     }
 
+    // populate calendar
     $.get('/booking/day', function (response) {
         $('#calendar-content').append(response);
         alignAppointmentTimes();
