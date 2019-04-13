@@ -1,27 +1,15 @@
-<div id="date-picker">
-    <div class="close">
-        <span>&times;</span>
-    </div>
-    <div id="date-picker-controls">
-        <div class="button inactive">
-            <i class="fas fa-arrow-left"></i>
-        </div>
-        <div class="text-center">
-            <span>{{ date|date:"M. Y" }}</span>
-        </div>
-        <div class="button">
-            <i class="fas fa-arrow-right"></i>
-        </div>
-    </div>
-    <ol class="weeks">
-        {% for week in weeks %}
-        <li>
-            <ol class="days">
-                {% for day in days %}
-                <li></li>
-                {% endfor %}
-            </ol>
-        </li>
-        {% endfor %}
-    </ol>
+<div class="close">
+    <span>&times;</span>
+</div>
+<div class="month text-center">
+    <span>{{ date|date:"M. Y" }}</span>
+</div>
+<div class="grid">
+    {% for day in days %}
+    {% if day.month == today.month %}
+    <div class="active" data-day="{{ day.day }}" data-month="{{ day.month }}" data-year="{{ day.year }}">{{ day.day }}</div>
+    {% else %}
+    <div data-day="{{ day.day }}" data-month="{{ day.month }}" data-year="{{ day.year }}">{{ day.day }}</div>
+    {% endif %}
+    {% endfor %}
 </div>

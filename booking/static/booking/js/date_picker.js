@@ -3,12 +3,12 @@ $(document).ready(function () {
 
     function positionDatePicker() {
         let position = $('.date i').position();
-        var x = position.left - 90 < $(window).width() - 228 ?
+        var x = position.left - 90 < $(window).width() - 272 - 12 ?
             position.left - 90 :
-            $(window).width() - 228;
-        var y = position.top + 32 < $(window).height() - 211 ?
+            $(window).width() - 272 - 12;
+        var y = position.top + 32 < $(window).height() - 217 ?
             position.top + 32 :
-            $(window).height() - 211;
+            $(window).height() - 217;
 
         $mp.css('top', y);
         $mp.css('left', x);
@@ -27,12 +27,31 @@ $(document).ready(function () {
         positionDatePicker();
     });
 
-    $('#date-picker .days li').on('click touchend', function (event) {
+    $('#date-picker').on('click touchend', '.grid div', function (event) {
         event.preventDefault();
         $(this).toggleClass('active');
     });
 
-    $('#date-picker .close').on('click touchend', function (event) {
+    $('#date-picker').on('click touchend', '.close', function (event) {
         $mp.hide();
     });
+
+    function populateGrid(context = {}) {
+        console.log('populateGrid();');
+        $.get('/booking/date_picker', context, function (response) {
+            // console.log(response);
+            $('#date-picker').append(response);
+
+            let $prev = $('<div>')
+                .addClass("prev")
+                .html('<i class="fas fa-arrow-left"></i>');
+            $('#date-picker .grid').prepend($prev);
+
+            let $next = $('<div>')
+                .addClass("next")
+                .html('<i class="fas fa-arrow-right"></i>');
+            $next.insertAfter('.grid div:nth-of-type(8)');
+        });
+    }
+    populateGrid();
 });
