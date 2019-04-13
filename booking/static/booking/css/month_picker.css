@@ -1,10 +1,10 @@
-#month-picker {
+#date-picker {
   display: none;
   position: absolute;
   background-color: #efefef;
   border: 0.5rem solid #a2b817;
   border-radius: 0.5rem;
-  padding: 0.25rem;
+  padding: 0.25rem 0.25rem 1px 0.25rem;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -13,7 +13,66 @@
   z-index: 9999;
 }
 
-#month-picker .days li {
+#date-picker .close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 2rem;
+  height: 2rem;
+  background-color: #efefef;
+  border: 2px solid black;
+  border-radius: 50%;
+  padding: 0.25rem;
+  cursor: pointer;
+  opacity: 1;
+  text-shadow: none;
+}
+
+#date-picker .close span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+#date-picker-controls {
+  display: grid;
+  grid-template-columns: 1.5rem calc(100% - 3rem) 1.5rem;
+  height: 1.5rem;
+  margin-bottom: 0.25rem;
+  font-family: 'Varela Round', Helvetica, Arial, sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#date-picker-controls > div {
+  position: relative;
+}
+
+#date-picker-controls > div > i,
+#date-picker-controls > div > span {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#date-picker-controls .button {
+  cursor: pointer;
+}
+
+#date-picker-controls .button.inactive {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#date-picker .days li {
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
@@ -22,6 +81,6 @@
   cursor: pointer;
 }
 
-#month-picker .days li.active {
+#date-picker .days li.active {
   background-color: blue;
 }

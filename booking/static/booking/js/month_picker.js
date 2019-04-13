@@ -1,29 +1,38 @@
 $(document).ready(function () {
-    var $mp = $('#month-picker');
+    var $mp = $('#date-picker');
 
-    function positionMonthPicker() {
+    function positionDatePicker() {
         let position = $('.date i').position();
+        var x = position.left - 90 < $(window).width() - 228 ?
+            position.left - 90 :
+            $(window).width() - 228;
+        var y = position.top + 32 < $(window).height() - 211 ?
+            position.top + 32 :
+            $(window).height() - 211;
 
-        $mp.css('left', position.left - 90);
-        $mp.css('top', position.top + 32);
+        $mp.css('top', y);
+        $mp.css('left', x);
     }
 
     $('.date i').on('click touchend', function (event) {
         event.preventDefault();
         $mp.toggle();
         
-        if (event.type === 'click') {
-            positionMonthPicker();
-        } else if (event.type === 'touchend') {
-        }
+        $(window).trigger('resize'); // workaround for positioning bug
+        
+        positionDatePicker();
     });
 
-    $(window).resize(function () {
-        positionMonthPicker();
+    $(window).on('resize orientationchange', function () {
+        positionDatePicker();
     });
 
-    $('#month-picker .days li').on('click touchend', function (event) {
+    $('#date-picker .days li').on('click touchend', function (event) {
         event.preventDefault();
         $(this).toggleClass('active');
+    });
+
+    $('#date-picker .close').on('click touchend', function (event) {
+        $mp.hide();
     });
 });
