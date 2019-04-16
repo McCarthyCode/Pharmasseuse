@@ -4,6 +4,7 @@
 {% block content %}
 <div class="page">
     <div class="nav-placeholder"></div>
+    <div id="date-picker"></div>
     <div class="container">
         <h3 class="h3 text-center">Schedule an Appointment</h3>
         <div id="calendar">
@@ -13,7 +14,7 @@
                 </div>
                 <div class="date text-center">
                     <span>Today, {{ date|date:"n/j" }}</span>
-                    <i class="far fa-calendar-alt"></i>
+                    <i id="date-picker-icon" class="far fa-calendar-alt"></i>
                 </div>
                 <div class="button">
                     <i class="fas fa-arrow-right"></i>

@@ -30,14 +30,13 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'home/css/reset.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'home/css/navbar.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'booking/css/month_picker.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'booking/css/date_picker.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'booking/css/style.css' %}">
-    <script src="{% static 'booking/js/month_picker.js' %}"></script>
+    <script src="{% static 'booking/js/date_picker.js' %}"></script>
     <script src="{% static 'booking/js/script.js' %}"></script>
 </head>
 <body>
     {% include 'home/navbar.html' %}
-    {% include 'booking/month_picker.html' %}
     {% block content %}
     {% endblock %}
 </body>
