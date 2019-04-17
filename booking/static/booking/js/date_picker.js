@@ -46,23 +46,16 @@ $(document).ready(function () {
     });
 
     $dp.on('click touchend', '.prev', function (event) {
-        $firstDay = $('#date-picker .grid div:first-child');
-        month = $firstDay.data('month');
-        year = $firstDay.data('year');
-        populateGrid({
-            'month': month,
-            'year': year,
+        getDatePicker({
+            'year': $(this).data('year'),
+            'month': $(this).data('month'),
         });
     });
 
     $dp.on('click touchend', '.next', function (event) {
-        $lastDay = $('#date-picker .grid div:nth-last-child(3)');
-        $lastDay.css('background-color', 'red');
-        month = $lastDay.data('month');
-        year = $lastDay.data('year');
-        populateGrid({
-            'month': month,
-            'year': year,
+        getDatePicker({
+            'year': $(this).data('year'),
+            'month': $(this).data('month'),
         });
     });
 });

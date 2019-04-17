@@ -2,30 +2,34 @@
     <span>&times;</span>
 </div>
 <div class="month text-center">
-    <span>{{ date|date:"M. Y" }}</span>
+    <span>{{ date|date:"M Y" }}</span>
 </div>
 <div class="grid">
-    {% for day in days %}
+    {% for day in calendar %}
     {% if day.active %}
     <div class="active"
-        data-year="{{ day.year }}"
-        data-month="{{ day.month }}"
-        data-day="{{ day.day }}">
-        <span>{{ day.day }}</span>
+        data-year="{{ day.date.year }}"
+        data-month="{{ day.date.month }}"
+        data-day="{{ day.date.day }}">
+        <span>{{ day.date.day }}</span>
     </div>
     {% else %}
     <div
-        data-year="{{ day.year }}"
-        data-month="{{ day.month }}"
-        data-day="{{ day.day }}">
-        <span>{{ day.day }}</span>
+        data-year="{{ day.date.year }}"
+        data-month="{{ day.date.month }}"
+        data-day="{{ day.date.day }}">
+        <span>{{ day.date.day }}</span>
     </div>
     {% endif %}
     {% endfor %}
-    <div class="prev inactive">
+    <div class="prev"
+        data-year="{{ prev.year }}"
+        data-month="{{ prev.month }}">
         <i class="fas fa-arrow-left"></i>
     </div>
-    <div class="next">
+    <div class="next"
+        data-year="{{ next.year }}"
+        data-month="{{ next.month }}">
         <i class="fas fa-arrow-right"></i>
     </div>
 </div>
