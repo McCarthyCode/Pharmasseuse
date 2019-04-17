@@ -6,7 +6,7 @@
 </div>
 <div class="grid">
     {% for day in days %}
-    {% if day.month == today.month %}
+    {% if day.active and day.month == today.month %}
     <div class="active" data-day="{{ day.day }}" data-month="{{ day.month }}" data-year="{{ day.year }}">{{ day.day }}</div>
     {% else %}
     <div data-day="{{ day.day }}" data-month="{{ day.month }}" data-year="{{ day.year }}">{{ day.day }}</div>

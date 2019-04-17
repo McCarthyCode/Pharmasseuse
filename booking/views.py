@@ -8,8 +8,6 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'booking/index.html', {
         'date': datetime.now(pytz.utc),
-        'weeks': range(0, 6),
-        'days': range(0, 7),
     })
 
 
@@ -33,20 +31,23 @@ def date_picker(request):
     year = request.GET.get('year', today.year)
 
     days = []
-    day = today - timedelta(days=1)
+    first_of_month = datetime(int(year), int(month), 1, tzinfo=pytz.utc)
+    day = first_of_month - timedelta(days=1)
     while day.month == today.month or day.weekday() != 5:
         days.insert(0, {
             'day': day.day,
             'month': day.month,
             'year': day.year,
+            'active': day >= today - timedelta(days=1),
         })
         day = day - timedelta(days=1)
-    day = today
+    day = first_of_month
     while len(days) < 42:
         days.append({
             'day': day.day,
             'month': day.month,
             'year': day.year,
+            'active': day >= today - timedelta(days=1),
         })
         day = day + timedelta(days=1)
 
