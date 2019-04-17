@@ -1,13 +1,31 @@
-<div id="month-picker">
-    <ol class="weeks">
-        {% for week in weeks %}
-        <li>
-            <ol class="days">
-                {% for day in days %}
-                <li></li>
-                {% endfor %}
-            </ol>
-        </li>
-        {% endfor %}
-    </ol>
+<div class="close">
+    <span>&times;</span>
+</div>
+<div class="month">
+    <span>{{ date|date:"M. Y" }}</span>
+</div>
+<div class="grid">
+    {% for day in days %}
+    {% if day.active == 'true' %}
+    <div class="active"
+        data-year="{{ day.year }}"
+        data-month="{{ day.month }}"
+        data-day="{{ day.day }}">
+        <span>{{ day.day }}</span>
+    </div>
+    {% else %}
+    <div
+        data-year="{{ day.year }}"
+        data-month="{{ day.month }}"
+        data-day="{{ day.day }}">
+        <span>{{ day.day }}</span>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="prev inactive">
+        <i class="fas fa-arrow-left"></i>
+    </div>
+    <div class="next">
+        <i class="fas fa-arrow-right"></i>
+    </div>
 </div>
