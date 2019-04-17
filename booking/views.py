@@ -1,6 +1,7 @@
 import pytz
 
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 from django.shortcuts import render
 
@@ -13,27 +14,27 @@ def index(request):
 
 def date_picker(request):
     today = datetime.now(pytz.UTC)
-    year = request.GET.get('year', today.year)
-    month = request.GET.get('month', today.month)
+    year = int(request.GET.get('year', today.year))
+    month = int(request.GET.get('month', today.month))
 
-    day = datetime(int(year), int(month), 1, tzinfo=pytz.UTC)
-    days = []
-    while day.weekday() != 6:
-        day = day - timedelta(days=1)
+    date = first_of_month = datetime(year, month, 1, tzinfo=pytz.UTC)
+    calendar = []
+    while date.weekday() != 6:
+        date = date - timedelta(days=1)
 
     for _ in range(0, 42):
-        days.append({
-            'year': day.year,
-            'month': day.month,
-            'day': day.day,
-            'active': day > today and day.month == today.month,
+        calendar.append({
+            'date': date,
+            'active': date > today and date.month == first_of_month.month,
         })
 
-        day = day + timedelta(days=1)
+        date = date + timedelta(days=1)
 
     return render(request, 'booking/date_picker.html', {
-        'date': today,
-        'days': days,
+        'date': first_of_month,
+        'calendar': calendar,
+        'prev': first_of_month + relativedelta(months=-1),
+        'next': first_of_month + relativedelta(months=+1),
     })
 
 
