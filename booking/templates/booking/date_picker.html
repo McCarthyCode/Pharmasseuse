@@ -6,10 +6,26 @@
 </div>
 <div class="grid">
     {% for day in days %}
-    {% if day.active and day.month == today.month %}
-    <div class="active" data-day="{{ day.day }}" data-month="{{ day.month }}" data-year="{{ day.year }}">{{ day.day }}</div>
+    {% if day.active %}
+    <div class="active"
+        data-year="{{ day.year }}"
+        data-month="{{ day.month }}"
+        data-day="{{ day.day }}">
+        <span>{{ day.day }}</span>
+    </div>
     {% else %}
-    <div data-day="{{ day.day }}" data-month="{{ day.month }}" data-year="{{ day.year }}">{{ day.day }}</div>
+    <div
+        data-year="{{ day.year }}"
+        data-month="{{ day.month }}"
+        data-day="{{ day.day }}">
+        <span>{{ day.day }}</span>
+    </div>
     {% endif %}
     {% endfor %}
+    <div class="prev inactive">
+        <i class="fas fa-arrow-left"></i>
+    </div>
+    <div class="next">
+        <i class="fas fa-arrow-right"></i>
+    </div>
 </div>

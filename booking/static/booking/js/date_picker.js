@@ -14,47 +14,36 @@ $(document).ready(function () {
         $dp.css('left', x);
     }
 
-    $('.date i').on('click touchend', function (event) {
+    function getDatePicker(context = {}) {
+        $.get('/booking/date_picker', context, function (response) {
+            $dp.empty();
+            $dp.append(response);
+            $dp.show();
+        });
+    }
+
+    $('#date-picker-icon').on('click touchend', function (event) {
         event.preventDefault();
-        $dp.toggle();
-        
-        $(window).trigger('resize'); // workaround for positioning bug
-        
-        positionDatePicker();
+
+        if ($dp.css('display') !== 'none') {
+            $dp.hide();
+        } else {
+            $(window).trigger('resize'); // workaround for positioning bug
+            positionDatePicker();
+            getDatePicker();
+        }
     });
 
-    $(window).on('resize orientationchange', function () {
+    $(window).on('orientationchange', function () {
+        $(this).trigger('resize');
+    });
+    $(window).resize(function () {
         positionDatePicker();
     });
-
-    // $dp.on('click touchend', '.grid div', function (event) {
-    //     event.preventDefault();
-    //     $(this).toggleClass('active');
-    // });
 
     $dp.on('click touchend', '.close', function (event) {
         $dp.hide();
     });
-
-    function populateGrid(context = {}) {
-        // console.log('populateGrid();');
-        $.get('/booking/date_picker', context, function (response) {
-            $dp.empty();
-            
-            $dp.append(response);
-
-            let $prev = $('<div>')
-                .addClass("prev")
-                .html('<i class="fas fa-arrow-left"></i>');
-            $('#date-picker .grid').append($prev);
-
-            let $next = $('<div>')
-                .addClass("next")
-                .html('<i class="fas fa-arrow-right"></i>');
-            $('#date-picker .grid').append($next);
-        });
-    }
-    populateGrid();
 
     $dp.on('click touchend', '.prev', function (event) {
         $firstDay = $('#date-picker .grid div:first-child');
