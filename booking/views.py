@@ -8,16 +8,17 @@ from django.shortcuts import render
 
 def index(request):
     return render(request, 'booking/index.html', {
-        'date': datetime.now(pytz.UTC),
+        'date': datetime.now(pytz.timezone('US/Central')),
     })
 
 
 def date_picker(request):
-    today = datetime.now(pytz.UTC)
+    today = datetime.now(pytz.timezone('US/Central'))
     year = int(request.GET.get('year', today.year))
     month = int(request.GET.get('month', today.month))
 
-    date = first_of_month = datetime(year, month, 1, tzinfo=pytz.UTC)
+    date = first_of_month = \
+        datetime(year, month, 1, tzinfo=pytz.timezone('US/Central'))
     calendar = []
     while date.weekday() != 6:
         date = date - timedelta(days=1)
