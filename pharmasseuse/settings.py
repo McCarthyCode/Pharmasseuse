@@ -37,6 +37,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'home',
+    'users',
     'booking',
     'django.contrib.admin',
     'django.contrib.auth',

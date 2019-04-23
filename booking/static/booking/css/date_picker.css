@@ -34,6 +34,8 @@
   width: 1.5rem;
   height: 1.5rem;
   background: url('/static/booking/img/close.png');
+  background-size: 1.5rem 1.5rem;
+  background-position: center, center;
   text-indent: -9999px;
   opacity: 1;
 }
