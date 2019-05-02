@@ -1,3 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
+from . import managers
 
-# Create your models here.
+class Person(User):
+    objects = managers.PersonManager()
+
+    class Meta:
+        proxy = True
+auto_created = True

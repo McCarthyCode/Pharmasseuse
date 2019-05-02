@@ -44,4 +44,4 @@ Apply migrations.
 
 To run in development mode, activate the virtual environment and execute the following:
 
-    (env) python manage.py runserver localhost:8000
+    (env) $ python manage.py runserver localhost:8000

@@ -1,0 +1,26 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page">
+    <div class="nav-placeholder"></div>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'error' %}
+        <div class="alert alert-danger" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+            <p>{{ message }}</p>
+        </div>
+        {% elif message.tags == 'success' %}
+        <div class="alert alert-success" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+            <p>{{ message }}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        <h1 class="h1">Profile</h1>
+    </div>
+</div>
+{% endblock %}
