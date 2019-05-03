@@ -2,8 +2,8 @@ $(document).ready(function () {
     $('.chevron').on('click touchend', function (event) {
         event.preventDefault();
 
-        $("html, body").animate({
-            scrollTop: $(".chevron").offset().top + 10
+        $('html, body').animate({
+            scrollTop: $('.content').offset().top - 48,
         }, 1000);
     });
 });

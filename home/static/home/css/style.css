@@ -38,12 +38,26 @@ p {
 }
 
 .cover {
-  background: unset;
   position: relative;
-  background-color: #414141;
+  height: 100vh;
+  margin: 0;
+  opacity: 0.8;
+  background: url("/static/home/img/waterfall.jpg") no-repeat center bottom fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .title {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
   line-height: 1.5;
   width: 100%;
   padding: 1rem;
@@ -59,6 +73,7 @@ p {
   text-indent: -9999px;
   -webkit-background-size: contain;
   -moz-background-size: contain;
+  -ms-background-size: contain;
   -o-background-size: contain;
   background-size: contain;
 }
@@ -87,19 +102,24 @@ p {
   background-color: #ffcc8d;
   background:
     linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
-    linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+    linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
   background:
     -webkit-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
-    -webkit-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-webkit-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    -webkit-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+    -webkit-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
   background:
     -moz-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
-    -moz-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-moz-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    -moz-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+    -moz-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
   background:
     -ms-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
-    -ms-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-ms-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    -ms-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+    -ms-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
   background:
     -o-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
-    -o-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),-o-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    -o-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+    -o-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
 }
 
 .content .row {
@@ -108,6 +128,8 @@ p {
 
 .content .img {
   position: relative;
+  height: 364px;
+  padding: 2rem 0;
 }
 
 .content img {
@@ -132,10 +154,11 @@ p {
   height: 100vh;
   opacity: 0.8;
   background: url("/static/home/img/lotus.jpg") no-repeat center center fixed;
-  background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
+  -ms-background-size: cover;
   -o-background-size: cover;
+  background-size: cover;
 }
 
 .container.m-tb-2rem {
@@ -151,40 +174,15 @@ p {
     font-size: 1.75rem;
   }
 
-  .cover {
-    position: relative;
-    height: 100vh;
-    margin: 0;
-    opacity: 0.8;
-    background: url("/static/home/img/waterfall.jpg") no-repeat center center fixed;
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-  }
-
-  .title {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-  }
-
   .title h1 {
-    margin: 0 auto;
     width: 265px;
     height: 60px;
-    text-indent: -9999px;
     background: url("/static/home/img/title_h1.png") no-repeat;
   }
 
   .title h3 {
-    margin: 0 auto;
     width: 172px;
     height: 42px;
-    text-indent: -9999px;
     background: url("/static/home/img/title_h3.png") no-repeat;
   }
 
@@ -194,6 +192,7 @@ p {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
   .lotus {
     display: block;
   }
@@ -215,6 +214,12 @@ p {
 
   .content p {
     padding-top: 0.5em;
+  }
+
+  .content .img {
+    position: relative;
+    height: 300px;
+    padding: 0;
   }
 }
 
