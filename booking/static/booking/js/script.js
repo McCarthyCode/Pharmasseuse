@@ -2,7 +2,7 @@ $(document).ready(function () {
     // update dimensions and set height attributes
     function updateCalendarHeight() {
         let size = $(window).height()
-            - $('h3').outerHeight()
+            - $('h3.title').outerHeight()
             - $('#navbar').outerHeight()
             - 40;
         $('#calendar').css('height', size);
