@@ -32,12 +32,13 @@ Generate a secret key and export it as an environment variable.
 
 Alternatively, pipe the output to a file and edit `settings.py` to read the string from a file outside of source control.
 
-    $ python generate_secret_key.py > secret.txt
+    $ python generate_secret_key.py > /path/to/secret.txt
 
 No method is more secure than the other as an attacker can access the key both ways if they gain access to the system running the project.
 
-Apply migrations.
+Make and apply migrations.
 
+    (env) $ python manage.py makemigrations
     (env) $ python manage.py migrate
 
 ### Development Mode
