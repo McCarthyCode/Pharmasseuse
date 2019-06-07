@@ -4,9 +4,9 @@ A scheduling app for a pharmacist who doubles as a masseuse.
 
 ## Installation
 
-Make sure `python3` and `pip3` are installed on your system and install `dateutil` and `virtualenv`.
+Make sure `python3` and `pip3` are installed on your system and install `virtualenv`.
 
-    $ sudo apt install -y python3 python3-pip && pip3 install python-dateutil virtualenv
+    $ sudo apt install -y python3 python3-pip && pip3 install virtualenv
 
 In the project's root directory, run the following to create a new virtual environment.
 

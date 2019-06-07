@@ -4,11 +4,16 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 from django.shortcuts import render
+from users.models import Profile
 
 
 def index(request):
+    profile = Profile.objects.get(user__pk=request.session['id']) \
+        if 'id' in request.session else None
+
     return render(request, 'booking/index.html', {
         'date': datetime.now(pytz.timezone('US/Central')),
+        'profile': profile,
     })
 
 

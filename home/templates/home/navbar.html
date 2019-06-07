@@ -1,66 +1,27 @@
 <nav id="navbar" class="navbar fixed-top navbar-expand-md navbar-dark">
-    <div class="container">
-        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home:index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'booking:index' %}">Booking</a>
-                </li>
-                {% if person == None %}
-                <li class="nav-item">
-                    <a class="nav-link modal-trigger" data-toggle="modal" data-target="#sign-in" title="Sign In">Sign In</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:logout' %}" title="Sign Out">Sign Out</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:index' %}" title="Profile">Profile</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
+    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home:index' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'booking:index' %}">Booking</a>
+            </li>
+            {% if profile == None %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:index' %}" title="Sign In">Sign In</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:logout' %}" title="Sign Out">Sign Out</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:index' %}" title="Profile">Profile</a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>
-<div class="modal fade" id="sign-in" tabindex="-1" role="dialog" aria-labelledby="sign-in" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Sign In</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{% url 'users:login' %}" method="POST">
-                <div class="modal-body">
-                    {% csrf_token %}
-                    <input type="text" name="email" placeholder="Email" class="form-control">
-                    <input type="password" name="password" placeholder="Password" class="form-control">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <input type="submit" class="btn btn-primary" value="Login">
-                </div>
-            </form>
-            <form action="{% url 'users:register' %}" method="POST">
-                <div class="modal-body">
-                    {% csrf_token %}
-                    <input type="text" name="first_name" placeholder="First Name" class="form-control">
-                    <input type="text" name="last_name" placeholder="Last Name" class="form-control">
-                    <input type="text" name="email" placeholder="Email" class="form-control">
-                    <input type="password" name="password" placeholder="Password" class="form-control">
-                    <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <input type="submit" class="btn btn-primary" value="Register">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>

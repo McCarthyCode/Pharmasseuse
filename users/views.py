@@ -2,35 +2,37 @@ from __future__ import unicode_literals
 
 from datetime import datetime
 
-from django.shortcuts import render
-from django.contrib import messages
 from django.shortcuts import render, redirect
-from . import models
+from django.contrib import messages
+from django.contrib.auth.models import User
+from users.models import Profile
+
 
 def index(request):
-    person = models.Person.objects.get(pk=request.session['id']) if 'id' in request.session else None
+    profile = Profile.objects.get(user__pk=request.session['id']) \
+        if 'id' in request.session else None
 
     return render(request, 'users/index.html', {
-        'person': person,
+        'profile': profile,
     })
 
 
 def login(request):
-    valid, response = models.Person.objects.login_register(request, 'login')
+    valid, response = Profile.objects.login_register(request, 'login')
 
     if not valid:
         for error in response:
             messages.error(request, error)
-        return redirect('gallery:index')
+        return redirect('users:index')
 
-    person = models.Person.objects.get(pk=response)
-    messages.success(request, 'Welcome back, %s!' % person.first_name)
+    profile = Profile.objects.get(pk=response)
+    messages.success(request, 'Welcome back, %s!' % profile.user.first_name)
     request.session['id'] = response
     return redirect('users:index')
 
 
 def register(request):
-    valid, response = models.Person.objects.login_register(request, 'register')
+    valid, response = Profile.objects.login_register(request, 'register')
 
     if not valid:
         for error in response:
@@ -47,3 +49,17 @@ def logout(request):
 
     messages.success(request, 'You have successfully logged out.')
     return redirect('users:index')
+
+######################
+# FOR DEBUG USE ONLY #
+######################
+
+from django.http import HttpResponse
+from django.contrib.sessions.models import Session
+
+def clear_all_sessions(request):
+    try:
+        Session.objects.all().delete()
+    except Exception as e:
+        return HttpResponse(e)
+    return HttpResponse('All sessions cleared.')

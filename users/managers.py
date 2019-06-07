@@ -2,15 +2,15 @@ from __future__ import unicode_literals
 
 import re
 
-from django.db import models
-from django.contrib.auth.models import UserManager
+from django.db.models import Manager
+from django.contrib.auth.models import User, UserManager
 from django.core.exceptions import ObjectDoesNotExist
-from . import models
+from users import models
 
 EMAIL_REGEX = re.compile(
     r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$')
 
-class PersonManager(UserManager):
+class ProfileManager(Manager):
     def login_register(self, request, action):
         errors = []
 
@@ -19,18 +19,19 @@ class PersonManager(UserManager):
         """
         # checks if user is registering
         if action == 'register':
-            if len(request.POST['first_name']) == 0:
-                errors.append('Please enter your first name.')
-            if len(request.POST['last_name']) == 0:
-                errors.append('Please enter your last name.')
+            if len(request.POST['firstName']) == 0 or \
+                len(request.POST['lastName']) == 0:
+                errors.append('Please enter your first and last name.')
             if len(request.POST['email']) == 0:
                 errors.append('Please enter your email.')
             elif not EMAIL_REGEX.match(request.POST['email']):
                 errors.append('Please enter a valid email.')
+            if len(request.POST['phone']) == 0:
+                errors.append('Please enter your phone number.')
             if len(request.POST['password']) < 8:
                 errors.append(
                     'Please enter a password that contains at least 8 characters.')
-            if request.POST['confirm_password'] != request.POST['password']:
+            if request.POST['confirmPassword'] != request.POST['password']:
                 errors.append('Passwords must match.')
         # checks if user is logging in
         elif action == 'login':
@@ -42,12 +43,12 @@ class PersonManager(UserManager):
         """
         if not errors:
             # checks if email exists in database and
-            # stores any Person associated with it
+            # stores any User associated with it
             try:
-                person_email = models.Person.objects.get(email=request.POST['email'])
+                user_by_email = User.objects.get(email=request.POST['email'])
             except ObjectDoesNotExist:
-                person_email = None
-            email_exists = person_email != None
+                user_by_email = None
+            email_exists = user_by_email != None
 
             # checks if user is registering
             if action == 'register':
@@ -57,29 +58,33 @@ class PersonManager(UserManager):
                         'A user account with this email already exists.')
                     return (False, errors)
                 # otherwise bcrypt password and create user
-                person = models.Person.objects.create_user(
+                user = User.objects.create_user(
                     username=request.POST['email'],
                     email=request.POST['email'],
                     password=request.POST['password'],
-                    first_name=request.POST['first_name'],
-                    last_name=request.POST['last_name'],
+                    first_name=request.POST['firstName'],
+                    last_name=request.POST['lastName'],
                 )
-                return (True, person.id)
+                models.Profile.objects.create(
+                    user=user,
+                    phone=request.POST['phone'],
+                )
+                return (True, user.id)
             elif action == 'login':
                 # compares user password with posted password
                 if email_exists:
-                    correct_pw = person_email.check_password(
+                    correct_pw = user_by_email.check_password(
                         request.POST['password'])
                 else:
                     correct_pw = False
                 if not correct_pw or not email_exists:
                     errors.append(
-                        'The email and password combination you entered does not exist in our database. Please try again.')
+                        'The email and password combination you entered does not exist in ' + \
+                        'our database. Please register or try again.')
                     return (False, errors)
                 # grabs user id to store in session in views
                 if correct_pw:
-                    return (True, person_email.id)
+                    return (True, user_by_email.id)
             else:
                 errors.append('Invalid action.')
         return (False, errors)
-

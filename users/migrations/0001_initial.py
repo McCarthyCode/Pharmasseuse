@@ -23,8 +23,8 @@ class Migration(migrations.Migration):
                 'indexes': [],
             },
             bases=('auth.user',),
-            managers=[
-                ('objects', users.managers.PersonManager()),
-            ],
+            # managers=[
+            #     ('objects', users.managers.PersonManager()),
+            # ],
         ),
     ]

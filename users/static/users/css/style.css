@@ -4,6 +4,10 @@
   font-family: 'Varela Round', Arial, sans-serif
 }
 
+.alert, input {
+  font-family: 'Open Sans', Arial, sans-serif;
+}
+
 .page {
   min-height: 100vh;
   background-color: #ffcc8d;
@@ -35,14 +39,18 @@
   padding: 1rem;
 }
 
-.alert {
-  font-family: 'Open Sans', Arial, sans-serif;
-}
-
 .alert .close {
   position: absolute;
   top: 7px;
   right: 0.5rem;
+}
+
+.alert p {
+  line-height: 1.5;
+}
+
+input[type=submit] {
+  margin-top: 1rem;
 }
 
 .contact-header > * {
