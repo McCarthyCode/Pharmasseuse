@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.shortcuts import render
+from users.models import Profile
 
 
 def index(request):

@@ -52,10 +52,6 @@
   background-color: #414141;
 }
 
-#sign-in {
-  font-family: 'Open Sans', Arial, sans-serif;
-}
-
 @media all and (min-width: 768px) {
 /* @media (min-width: var(--breakpoint-md)) { */
   .navbar-dark .navbar-nav .nav-link {
