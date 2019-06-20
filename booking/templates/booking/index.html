@@ -3,6 +3,11 @@
 
 {% block content %}
 <div id="date-picker"></div>
+<div id="date">
+    <input type="hidden" name="year" value="{{ date|date:'Y' }}">
+    <input type="hidden" name="month" value="{{ date|date:'n' }}">
+    <input type="hidden" name="day" value="{{ date|date:'j' }}">
+</div>
 <div class="page">
     <div class="nav-placeholder"></div>
     <div class="container">
@@ -13,7 +18,7 @@
                     <i class="fas fa-arrow-left"></i>
                 </div>
                 <div class="date text-center">
-                    <span>Today, {{ date|date:"n/j" }}</span>
+                    <span>{{ date|date:"D n/j" }}</span>
                     <i id="date-picker-icon" class="far fa-calendar-alt"></i>
                 </div>
                 <div class="button">

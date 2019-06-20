@@ -9,7 +9,7 @@ $(document).ready(function () {
         $('#calendar-content').css('height', size - 42);
     }
 
-    // event listeners
+    // window event listeners
     updateCalendarHeight();
     $(window).resize(function () {
         updateCalendarHeight();
@@ -37,7 +37,13 @@ $(document).ready(function () {
     }
 
     // populate calendar
-    $.get('/booking/day', function (response) {
+    context = {
+        'year': $('#date input[name="year"]').val(),
+        'month': $('#date input[name="month"]').val(),
+        'day': $('#date input[name="day"]').val(),
+    };
+
+    $.get('/booking/day', context, function (response) {
         $('#calendar-content').append(response);
         alignAppointmentTimes();
         scrollTop();

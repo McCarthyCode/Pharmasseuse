@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     '192.168.0.100',
     '192.168.1.100',
     '10.0.0.100',
+    '127.0.0.1',
     'localhost',
 ]
 
@@ -113,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'US/Central'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
