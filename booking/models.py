@@ -1,21 +1,22 @@
 from django.db import models
 from .managers import AppointmentManager
-from enum import Enum
-
-
-class MassageChoice(Enum):
-    NA = "None"
-    SW = "Swedish"
-    DT = "Deep Tissue"
 
 
 class Appointment(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    profile = models.ForeignKey(
+        'users.Profile',
+        on_delete=models.PROTECT,
+        unique=False,
+        null=True,
+    )
     massage = models.CharField(
-        default=MassageChoice.NA,
+        default=None,
         max_length=2,
-        choices=[(tag, tag.value) for tag in MassageChoice],
+        choices=[
+            ('SW', 'Swedish'),
+            ('DT', 'Deep Tissue'),
+        ],
+        null=True,
     )
     date_start = models.DateTimeField()
     date_end = models.DateTimeField()
