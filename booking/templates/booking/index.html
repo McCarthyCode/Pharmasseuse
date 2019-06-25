@@ -14,14 +14,20 @@
         <h3 class="h3 title text-center">Schedule an Appointment</h3>
         <div id="calendar">
             <div id="calendar-controls">
-                <div class="button inactive">
+                <div class="prev button inactive"
+                    data-year="{{ prev|date:'Y' }}"
+                    data-month="{{ prev|date:'n' }}"
+                    data-day="{{ prev|date:'j' }}">
                     <i class="fas fa-arrow-left"></i>
                 </div>
                 <div class="date text-center">
                     <span>{{ date|date:"D n/j" }}</span>
                     <i id="date-picker-icon" class="far fa-calendar-alt"></i>
                 </div>
-                <div class="button">
+                <div class="next button"
+                    data-year="{{ next|date:'Y' }}"
+                    data-month="{{ next|date:'n' }}"
+                    data-day="{{ next|date:'j' }}">
                     <i class="fas fa-arrow-right"></i>
                 </div>
             </div>

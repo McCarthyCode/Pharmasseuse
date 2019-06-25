@@ -1,6 +1,7 @@
 import pytz
 
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from datetime import date, datetime
 from pharmasseuse.settings import TIME_ZONE
 
@@ -8,6 +9,16 @@ from pharmasseuse.settings import TIME_ZONE
 class AppointmentManager(models.Manager):
     def create_appointment(self, date_start, date_end):
         from booking.models import Appointment
+
+        try:
+            appt = Appointment.objects.get(
+                date_start=date_start,
+                date_end=date_end,
+            )
+
+            return (True, appt)
+        except ObjectDoesNotExist:
+            pass
 
         try:
             appt = Appointment.objects.create(

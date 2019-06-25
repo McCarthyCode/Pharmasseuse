@@ -37,13 +37,8 @@ $(document).ready(function () {
     }
 
     // populate calendar
-    context = {
-        'year': $('#date input[name="year"]').val(),
-        'month': $('#date input[name="month"]').val(),
-        'day': $('#date input[name="day"]').val(),
-    };
-
-    $.get('/booking/day', context, function (response) {
+    $.get('/booking/day', function (response) {
+        $('#calendar-content').empty();
         $('#calendar-content').append(response);
         alignAppointmentTimes();
         scrollTop();

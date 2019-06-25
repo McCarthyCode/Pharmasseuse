@@ -1,8 +1,8 @@
 import pytz
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from .models import Appointment
 from pharmasseuse.settings import TIME_ZONE
@@ -13,8 +13,14 @@ def index(request):
     profile = Profile.objects.get(user__pk=request.session['id']) \
         if 'id' in request.session else None
 
+    now = datetime.now(pytz.timezone(TIME_ZONE))
+    prev = now - timedelta(days=1)
+    next = now + timedelta(days=1)
+
     return render(request, 'booking/index.html', {
-        'date': datetime.now(pytz.timezone(TIME_ZONE)),
+        'date': now,
+        'prev': prev,
+        'next': next,
         'profile': profile,
     })
 
@@ -31,9 +37,14 @@ def date_picker(request):
         date = date - timedelta(days=1)
 
     for _ in range(42):
+        appts = Appointment.objects.filter(date_start__date=date)
+
         calendar.append({
             'date': date,
-            'active': date > today and date.month == first_of_month.month,
+            'active': \
+                date > today and \
+                date.month == first_of_month.month and \
+                len(appts) > 0,
         })
 
         date = date + timedelta(days=1)
@@ -56,11 +67,12 @@ def day(request):
         })
 
     slots = []
+    today = date.today()
     appointments = Appointment.objects.filter(
         profile_id=None,
-        date_start__year=int(request.GET.get('year')),
-        date_start__month=int(request.GET.get('month')),
-        date_start__day=int(request.GET.get('day')),
+        date_start__year=int(request.GET.get('year', today.year)),
+        date_start__month=int(request.GET.get('month', today.month)),
+        date_start__day=int(request.GET.get('day', today.day)),
     )
 
     for appt in appointments:
@@ -99,3 +111,59 @@ def day(request):
         'times': times,
         'slots': slots,
     })
+
+
+def prev(request):
+    day = date(
+        int(request.GET.get('year')),
+        int(request.GET.get('month')),
+        int(request.GET.get('day')) - 1,
+    )
+
+    appts = Appointment.objects \
+        .filter(date_start__date__lt=day) \
+        .order_by('-date_start')
+
+    if len(appts) > 0:
+        print(appts[0].date_start.year)
+        print(appts[0].date_start.month)
+        print(appts[0].date_start.day)
+
+        return JsonResponse({
+            'exists': True,
+            'date': {
+                'year': appts[0].date_start.year,
+                'month': appts[0].date_start.month,
+                'day': appts[0].date_start.day,
+            }
+        })
+    else:
+        return JsonResponse({
+            'exists': False,
+        })
+
+
+def next(request):
+    day = date(
+        int(request.GET.get('year')),
+        int(request.GET.get('month')),
+        int(request.GET.get('day')),
+    )
+
+    appts = Appointment.objects \
+        .filter(date_start__date__gt=day) \
+        .order_by('date_start')
+
+    if len(appts) > 0:
+        return JsonResponse({
+            'exists': True,
+            'date': {
+                'year': appts[0].date_start.year,
+                'month': appts[0].date_start.month,
+                'day': appts[0].date_start.day,
+            }
+        })
+    else:
+        return JsonResponse({
+            'exists': False,
+        })
