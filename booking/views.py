@@ -8,12 +8,14 @@ from .models import Appointment
 from pharmasseuse.settings import TIME_ZONE
 from users.models import Profile
 
+tz = pytz.timezone(TIME_ZONE)
+
 
 def index(request):
     profile = Profile.objects.get(user__pk=request.session['id']) \
         if 'id' in request.session else None
 
-    now = datetime.now(pytz.timezone(TIME_ZONE))
+    now = datetime.now(tz)
     prev = now - timedelta(days=1)
     next = now + timedelta(days=1)
 
@@ -26,12 +28,12 @@ def index(request):
 
 
 def date_picker(request):
-    today = datetime.now(pytz.timezone(TIME_ZONE))
+    today = datetime.now(tz)
     year = int(request.GET.get('year', today.year))
     month = int(request.GET.get('month', today.month))
 
     date = first_of_month = \
-        datetime(year, month, 1, tzinfo=pytz.timezone(TIME_ZONE))
+        datetime(year, month, 1, tzinfo=tz)
     calendar = []
     while date.weekday() != 6:
         date = date - timedelta(days=1)
@@ -79,8 +81,6 @@ def day(request):
         date_start = appt.date_start
         date_end = appt.date_end
 
-        tz = pytz.timezone(TIME_ZONE)
-
         date_start = date_start.astimezone(tz)
         date_end = date_end.astimezone(tz)
 
@@ -114,27 +114,29 @@ def day(request):
 
 
 def prev(request):
-    day = date(
+    now = datetime.now(tz).replace(
+        hour=0, minute=0, second=0, microsecond=0)
+
+    day = datetime(
         int(request.GET.get('year')),
         int(request.GET.get('month')),
-        int(request.GET.get('day')) - 1,
+        int(request.GET.get('day')),
+        0, 0, 0, 0,
     )
+    day = tz.localize(day)
 
-    appts = Appointment.objects \
-        .filter(date_start__date__lt=day) \
-        .order_by('-date_start')
+    appts = Appointment.objects.filter(
+            date_start__lt=day.astimezone(pytz.utc),
+            date_start__gte=now.astimezone(pytz.utc) + timedelta(days=1),
+        ).order_by('-date_start')
 
     if len(appts) > 0:
-        print(appts[0].date_start.year)
-        print(appts[0].date_start.month)
-        print(appts[0].date_start.day)
-
         return JsonResponse({
             'exists': True,
             'date': {
-                'year': appts[0].date_start.year,
-                'month': appts[0].date_start.month,
-                'day': appts[0].date_start.day,
+                'year': appts[0].date_start.astimezone(tz).year,
+                'month': appts[0].date_start.astimezone(tz).month,
+                'day': appts[0].date_start.astimezone(tz).day,
             }
         })
     else:
@@ -144,23 +146,25 @@ def prev(request):
 
 
 def next(request):
-    day = date(
+    day = datetime(
         int(request.GET.get('year')),
         int(request.GET.get('month')),
         int(request.GET.get('day')),
+        0, 0, 0, 0,
     )
+    day = tz.localize(day)
 
     appts = Appointment.objects \
-        .filter(date_start__date__gt=day) \
+        .filter(date_start__gte=day + timedelta(days=1)) \
         .order_by('date_start')
 
     if len(appts) > 0:
         return JsonResponse({
             'exists': True,
             'date': {
-                'year': appts[0].date_start.year,
-                'month': appts[0].date_start.month,
-                'day': appts[0].date_start.day,
+                'year': appts[0].date_start.astimezone(tz).year,
+                'month': appts[0].date_start.astimezone(tz).month,
+                'day': appts[0].date_start.astimezone(tz).day,
             }
         })
     else:

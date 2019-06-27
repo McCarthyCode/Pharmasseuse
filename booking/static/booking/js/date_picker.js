@@ -2,7 +2,7 @@ $(document).ready(function () {
     var $dp = $('#date-picker');
 
     function positionDatePicker() {
-        let position = $('.date i').position();
+        let position = $('#calendar-controls .date i').position();
         var x = position.left - 136 + 18 < $(window).width() - 272 - 12 ?
             position.left - 136 + 18 :
             $(window).width() - 272 - 12;
@@ -168,8 +168,12 @@ $(document).ready(function () {
                 $prev.data('year', response['date']['year']);
                 $prev.data('month', response['date']['month']);
                 $prev.data('day', response['date']['day']);
+
+                $prev.attr('data-year', response['date']['year']);
+                $prev.attr('data-month', response['date']['month']);
+                $prev.attr('data-day', response['date']['day']);
             } else {
-                $button.addClass('inactive');
+                $prev.addClass('inactive');
             }
         });
 
@@ -180,8 +184,12 @@ $(document).ready(function () {
                 $next.data('year', response['date']['year']);
                 $next.data('month', response['date']['month']);
                 $next.data('day', response['date']['day']);
+
+                $next.attr('data-year', response['date']['year']);
+                $next.attr('data-month', response['date']['month']);
+                $next.attr('data-day', response['date']['day']);
             } else {
-                $button.addClass('inactive');
+                $next.addClass('inactive');
             }
         });
     });
