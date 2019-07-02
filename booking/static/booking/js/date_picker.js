@@ -128,20 +128,62 @@ $(document).ready(function () {
             scrollTop();
         });
     }
-    
+
+    // update prev/next buttons
+    function updatePrev(context) {
+        $.get('/booking/prev', context, function (response) {
+            var $prev = $('#calendar-controls .prev');
+
+            if (response['exists']) {
+                $prev.data('year', response['date']['year']);
+                $prev.data('month', response['date']['month']);
+                $prev.data('day', response['date']['day']);
+
+                $prev.attr('data-year', response['date']['year']);
+                $prev.attr('data-month', response['date']['month']);
+                $prev.attr('data-day', response['date']['day']);
+
+                $prev.removeClass('inactive');
+            } else {
+                $prev.addClass('inactive');
+            }
+        });
+    }
+
+    function updateNext(context) {
+        $.get('/booking/next', context, function (response) {
+            var $next = $('#calendar-controls .next');
+
+            if (response['exists']) {
+                $next.data('year', response['date']['year']);
+                $next.data('month', response['date']['month']);
+                $next.data('day', response['date']['day']);
+
+                $next.attr('data-year', response['date']['year']);
+                $next.attr('data-month', response['date']['month']);
+                $next.attr('data-day', response['date']['day']);
+
+                $next.removeClass('inactive');
+            } else {
+                $next.addClass('inactive');
+            }
+        });
+    }
+
     // display date clicked in date picker
     $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
-        var year = $(this).data('year');
-        var month = $(this).data('month');
-        var day = $(this).data('day');
+        var context = {
+            'year': $(this).data('year'),
+            'month': $(this).data('month'),
+            'day': $(this).data('day'),
+        };
 
-        getDatePicker({
-            'year': year,
-            'month': month,
-            'day': day,
-        });
+        getDatePicker(context);
 
-        displayDate(year, month, day);
+        displayDate(context['year'], context['month'], context['day']);
+
+        updatePrev(context);
+        updateNext(context);
     });
 
     // navigate to previous/next day
@@ -167,36 +209,11 @@ $(document).ready(function () {
             'day': $button.data('day'),
         };
 
-        $.get('/booking/prev', context, function (response) {
-            var $prev = $('#calendar-controls .prev');
+        if ($dp.is(':visible')) {
+            getDatePicker(context);
+        }
 
-            if (response['exists']) {
-                $prev.data('year', response['date']['year']);
-                $prev.data('month', response['date']['month']);
-                $prev.data('day', response['date']['day']);
-
-                $prev.attr('data-year', response['date']['year']);
-                $prev.attr('data-month', response['date']['month']);
-                $prev.attr('data-day', response['date']['day']);
-            } else {
-                $prev.addClass('inactive');
-            }
-        });
-
-        $.get('/booking/next', context, function (response) {
-            var $next = $('#calendar-controls .next');
-
-            if (response['exists']) {
-                $next.data('year', response['date']['year']);
-                $next.data('month', response['date']['month']);
-                $next.data('day', response['date']['day']);
-
-                $next.attr('data-year', response['date']['year']);
-                $next.attr('data-month', response['date']['month']);
-                $next.attr('data-day', response['date']['day']);
-            } else {
-                $next.addClass('inactive');
-            }
-        });
+        updatePrev(context);
+        updateNext(context);
     });
 });

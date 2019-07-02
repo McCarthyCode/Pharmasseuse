@@ -15,12 +15,12 @@ def index(request):
     profile = Profile.objects.get(user__pk=request.session['id']) \
         if 'id' in request.session else None
 
-    now = datetime.now(tz)
-    prev = now - timedelta(days=1)
-    next = now + timedelta(days=1)
+    tomorrow = datetime.now(tz) + timedelta(days=1)
+    prev = tomorrow - timedelta(days=1)
+    next = tomorrow + timedelta(days=1)
 
     return render(request, 'booking/index.html', {
-        'date': now,
+        'date': tomorrow,
         'prev': prev,
         'next': next,
         'profile': profile,
@@ -69,11 +69,12 @@ def day(request):
         })
 
     today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
+    tomorrow = today + timedelta(days=1)
 
     day = datetime(
-        int(request.GET.get('year', today.year)),
-        int(request.GET.get('month', today.month)),
-        int(request.GET.get('day', today.day)),
+        int(request.GET.get('year', tomorrow.year)),
+        int(request.GET.get('month', tomorrow.month)),
+        int(request.GET.get('day', tomorrow.day)),
         0, 0, 0, 0,
     )
     day = tz.localize(day)
@@ -114,7 +115,7 @@ def day(request):
                 ampm_end,
             ),
         })
-    
+
     return render(request, 'booking/day.html', {
         'times': times,
         'slots': slots,
@@ -154,6 +155,9 @@ def prev(request):
 
 
 def next(request):
+    today = datetime.now(tz).replace(
+        hour=0, minute=0, second=0, microsecond=0)
+
     day = datetime(
         int(request.GET.get('year')),
         int(request.GET.get('month')),
@@ -163,7 +167,8 @@ def next(request):
     day = tz.localize(day)
 
     appts = Appointment.objects \
-        .filter(date_start__gte=day + timedelta(days=1)) \
+        .filter(date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1)) \
+        .filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
         .order_by('date_start')
 
     if len(appts) > 0:
