@@ -131,11 +131,17 @@ $(document).ready(function () {
     
     // display date clicked in date picker
     $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
-        displayDate(
-            $(this).data('year'),
-            $(this).data('month'),
-            $(this).data('day'),
-        );
+        var year = $(this).data('year');
+        var month = $(this).data('month');
+        var day = $(this).data('day');
+
+        getDatePicker({
+            'year': year,
+            'month': month,
+            'day': day,
+        });
+
+        displayDate(year, month, day);
     });
 
     // navigate to previous/next day

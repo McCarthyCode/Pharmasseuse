@@ -68,15 +68,23 @@ def day(request):
             'ampm': 'am' if i < 12 else 'pm',
         })
 
-    slots = []
-    today = date.today()
-    appointments = Appointment.objects.filter(
-        profile_id=None,
-        date_start__year=int(request.GET.get('year', today.year)),
-        date_start__month=int(request.GET.get('month', today.month)),
-        date_start__day=int(request.GET.get('day', today.day)),
-    )
+    today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
 
+    day = datetime(
+        int(request.GET.get('year', today.year)),
+        int(request.GET.get('month', today.month)),
+        int(request.GET.get('day', today.day)),
+        0, 0, 0, 0,
+    )
+    day = tz.localize(day)
+
+    appointments = Appointment.objects.filter(
+        date_start__gte=day.astimezone(pytz.utc),
+        date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
+        profile__isnull=True,
+    ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1))
+
+    slots = []
     for appt in appointments:
         date_start = appt.date_start
         date_end = appt.date_end
@@ -114,7 +122,7 @@ def day(request):
 
 
 def prev(request):
-    now = datetime.now(tz).replace(
+    today = datetime.now(tz).replace(
         hour=0, minute=0, second=0, microsecond=0)
 
     day = datetime(
@@ -127,7 +135,7 @@ def prev(request):
 
     appts = Appointment.objects.filter(
             date_start__lt=day.astimezone(pytz.utc),
-            date_start__gte=now.astimezone(pytz.utc) + timedelta(days=1),
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
         ).order_by('-date_start')
 
     if len(appts) > 0:

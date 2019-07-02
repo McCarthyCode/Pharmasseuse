@@ -11,22 +11,18 @@ class Command(BaseCommand):
     help = 'Adds available appointment slots for booking'
 
     def handle(self, *args, **options):
-        today = date.today()
+        today = datetime.now(pytz.timezone(TIME_ZONE)).replace(
+            hour=0, minute=0, second=0, microsecond=0)
 
         # delete empty slots today or earlier
         Appointment.objects.filter(
-            date_start__year__lte=today.year,
-            date_start__month__lte=today.month,
-            date_start__day__lte=today.day,
+            date_start__lt=today + timedelta(days=1),
             profile__isnull=True,
         ).delete()
 
         # delete booked appointmnets before today
-        yesterday = today - timedelta(days=1)
         Appointment.objects.filter(
-            date_start__year__lte=yesterday.year,
-            date_start__month__lte=yesterday.month,
-            date_start__day__lte=yesterday.day,
+            date_start__lt=today,
             profile__isnull=False,
         ).delete()
 
