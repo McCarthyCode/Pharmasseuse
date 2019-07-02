@@ -5,6 +5,6 @@
 </ol>
 <ul>
     {% for slot in slots %}
-    <li data-hour="{{ slot.hour }}">{{ slot.start }}&ndash;{{ slot.end }}</li>
+    <li data-hour="{{ slot.hour }}" data-id="{{ slot.id }}">{{ slot.start }}&ndash;{{ slot.end }}</li>
     {% endfor %}
 </ul>

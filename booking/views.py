@@ -60,15 +60,8 @@ def date_picker(request):
 
 
 def day(request):
-    times = []
-    for i in range(24):
-        times.append({
-            'hour': '12' if i % 12 == 0 else str(i % 12),
-            'minute': '00',
-            'ampm': 'am' if i < 12 else 'pm',
-        })
-
-    today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
+    today = datetime.now(tz).replace(
+        hour=0, minute=0, second=0, microsecond=0)
     tomorrow = today + timedelta(days=1)
 
     day = datetime(
@@ -77,7 +70,52 @@ def day(request):
         int(request.GET.get('day', tomorrow.day)),
         0, 0, 0, 0,
     )
+    after_change = day + timedelta(hours=3)
     day = tz.localize(day)
+    after_change = tz.localize(after_change)
+
+    spring_forward = day.tzinfo._dst.seconds < after_change.tzinfo._dst.seconds
+    fall_back = day.tzinfo._dst.seconds > after_change.tzinfo._dst.seconds
+
+    times = []
+    if spring_forward:
+        for i in range(2):
+            times.append({
+                'hour': '12' if i % 12 == 0 else str(i % 12),
+                'minute': '00',
+                'ampm': 'am' if i < 12 else 'pm',
+            })
+        for i in range(3, 24):
+            times.append({
+                'hour': '12' if i % 12 == 0 else str(i % 12),
+                'minute': '00',
+                'ampm': 'am' if i < 12 else 'pm',
+            })
+    elif fall_back:
+        for i in range(2):
+            times.append({
+                'hour': '12' if i % 12 == 0 else str(i % 12),
+                'minute': '00',
+                'ampm': 'am' if i < 12 else 'pm',
+            })
+        times.append({
+            'hour': 1,
+            'minute': '00',
+            'ampm': 'am' if i < 12 else 'pm',
+        })
+        for i in range(2, 24):
+            times.append({
+                'hour': '12' if i % 12 == 0 else str(i % 12),
+                'minute': '00',
+                'ampm': 'am' if i < 12 else 'pm',
+            })
+    else:
+        for i in range(24):
+            times.append({
+                'hour': '12' if i % 12 == 0 else str(i % 12),
+                'minute': '00',
+                'ampm': 'am' if i < 12 else 'pm',
+            })
 
     appointments = Appointment.objects.filter(
         date_start__gte=day.astimezone(pytz.utc),
@@ -102,8 +140,17 @@ def day(request):
         if ampm_end == 'AM' or ampm_end == 'PM':
             ampm_end = ampm_end.lower()
 
+        hour = date_start.astimezone(tz).hour
+
+        if spring_forward and hour >= 2:
+            hour = hour - 1
+
+        if fall_back and hour >= 2:
+            hour = hour + 1
+
         slots.append({
-            'hour': date_start.hour,
+            'hour': hour,
+            'id': appt.id,
             'start': '%d:%02d %s' % (
                 date_start.hour % 12,
                 date_start.minute,

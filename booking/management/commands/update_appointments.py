@@ -27,7 +27,7 @@ class Command(BaseCommand):
         ).delete()
 
         day = today + timedelta(days=1)
-        for _ in range(7):
+        for _ in range(56):
             valid, response = Appointment.objects.create_appointments(
                 day,
                 verbose=options['verbosity'] > 1,
