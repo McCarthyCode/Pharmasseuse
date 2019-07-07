@@ -8,6 +8,30 @@
     <input type="hidden" name="month" value="{{ date|date:'n' }}">
     <input type="hidden" name="day" value="{{ date|date:'j' }}">
 </div>
+<div id="modal">
+    <div class="container">
+        <div id="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="h3"></h3>
+            <form method="POST" action="{% url 'booking:submit' %}">
+                {% csrf_token %}
+                {% if profile == None %}
+                <input type="hidden" name="profile-id" id="profile-id">
+                {% else %}
+                <input type="hidden" name="profile-id" value="{{ profile.id }}" id="profile-id">
+                {% endif %}
+                <input type="hidden" name="appointment-id">
+                <input type="radio" name="massage" value="SW">
+                <label for="massage">Swedish</label>
+                <br/>
+                <input type="radio" name="massage" value="DT">
+                <label for="massage">Deep Tissue</label>
+                <br/>
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
 <div class="page">
     <div class="nav-placeholder"></div>
     <div class="container">

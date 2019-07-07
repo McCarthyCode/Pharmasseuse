@@ -17,6 +17,11 @@
             <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
             <p>{{ message }}</p>
         </div>
+        {% elif message.tags == 'info' %}
+        <div class="alert alert-info" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+            <p>{{ message }}</p>
+        </div>
         {% endif %}
         {% endfor %}
         {% endif %}

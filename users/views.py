@@ -47,7 +47,15 @@ def register(request):
 def logout(request):
     del request.session['id']
 
-    messages.success(request, 'You have successfully logged out.')
+    messages.success(request, 'You have successfully signed out.')
+    return redirect('users:index')
+
+
+def login_redirect(request):
+    messages.info(
+        request,
+        'You must sign in or register to select an appointment slot.',
+    )
     return redirect('users:index')
 
 ######################

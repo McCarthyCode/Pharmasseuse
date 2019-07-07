@@ -3,7 +3,7 @@ import pytz
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Appointment
 from pharmasseuse.settings import TIME_ZONE
 from users.models import Profile
@@ -231,3 +231,7 @@ def next(request):
         return JsonResponse({
             'exists': False,
         })
+
+
+def submit(request):
+    return redirect('users:index')

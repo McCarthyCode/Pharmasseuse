@@ -7,5 +7,6 @@ urlpatterns = [
     path('date_picker', views.date_picker, name='date_picker'),
     path('day', views.day, name='day'),
     path('prev', views.prev, name='prev'),
-    path('next', views.next, name='day'),
+    path('next', views.next, name='next'),
+    path('submit', views.submit, name='submit'),
 ]
