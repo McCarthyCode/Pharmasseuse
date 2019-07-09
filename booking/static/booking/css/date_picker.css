@@ -1,5 +1,7 @@
 #date-picker {
   display: none;
+  width: 272px;
+  height: 208px;
   position: absolute;
   background-color: #efefef;
   border: 0.5rem solid #a2b817;
@@ -10,7 +12,16 @@
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
-  z-index: 9999;
+  z-index: 2;
+}
+
+#date-picker .img-container {
+  display: grid;
+  height: 100%;
+}
+
+#date-picker .img-container img {
+  margin: auto;
 }
 
 #date-picker .close, 

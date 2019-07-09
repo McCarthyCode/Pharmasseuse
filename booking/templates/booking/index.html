@@ -3,6 +3,10 @@
 
 {% block content %}
 <div id="date-picker"></div>
+<div id="date-picker-date">
+    <input type="hidden" name="year" value="{{ date|date:'Y' }}">
+    <input type="hidden" name="month" value="{{ date|date:'n' }}">
+</div>
 <div id="date">
     <input type="hidden" name="year" value="{{ date|date:'Y' }}">
     <input type="hidden" name="month" value="{{ date|date:'n' }}">
