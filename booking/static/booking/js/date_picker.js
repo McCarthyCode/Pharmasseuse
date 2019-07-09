@@ -1,29 +1,45 @@
 $(document).ready(function () {
     var $dp = $('#date-picker');
+    var $calendarContent = $('#calendar-content');
 
     function positionDatePicker() {
         let position = $('#calendar-controls .date i').position();
-        var x = position.left - 136 + 18 < $(window).width() - 272 - 12 ?
+        var x = position.left - 136 + 18 < $(window).width() - 287 ?
             position.left - 136 + 18 :
-            $(window).width() - 272 - 12;
-        var y = position.top + 32 < $(window).height() - 217 ?
-            position.top + 32 :
+            $(window).width() - 287;
+        var y = position.top + 48 < $(window).height() - 217 ?
+            position.top + 48 :
             $(window).height() - 217;
 
         $dp.css('top', y);
         $dp.css('left', x);
     }
 
-    var $imgContainer = $('<div>').addClass('img-container');
-    var $img = $('<img>')
-        .attr('src', '/static/booking/img/loading.gif')
-        .attr('alt', 'Loading');
+    // show loading icon while waiting for GET response
 
-    function showLoadingIcon() {
+    // date picker
+    function showDPLoadingIcon() {
+        var $imgContainer = $('<div>').addClass('img-container');
+        var $img = $('<img>')
+            .attr('src', '/static/booking/img/loading.gif')
+            .attr('alt', 'Loading');
+
         $dp.empty();
         $dp.append($imgContainer);
         $imgContainer.append($img);
         $dp.show();
+    }
+
+    // calendar content
+    function showCCLoadingIcon() {
+        var $imgContainer = $('<div>').addClass('img-container');
+        var $img = $('<img>')
+            .attr('src', '/static/booking/img/loading.gif')
+            .attr('alt', 'Loading');
+
+        $calendarContent.empty();
+        $calendarContent.append($imgContainer);
+        $imgContainer.append($img);
     }
 
     function getDatePicker(context = {}) {
@@ -57,7 +73,7 @@ $(document).ready(function () {
         } else {
             $(window).trigger('resize'); // workaround for positioning bug
             positionDatePicker();
-            showLoadingIcon();
+            showDPLoadingIcon();
             getDatePicker();
         }
     });
@@ -74,7 +90,7 @@ $(document).ready(function () {
     });
 
     $dp.on('click touchend', '.prev', function () {
-        showLoadingIcon();
+        showDPLoadingIcon();
         getDatePicker({
             'year': $(this).data('year'),
             'month': $(this).data('month'),
@@ -82,7 +98,7 @@ $(document).ready(function () {
     });
 
     $dp.on('click touchend', '.next', function () {
-        showLoadingIcon();
+        showDPLoadingIcon();
         getDatePicker({
             'year': $(this).data('year'),
             'month': $(this).data('month'),
@@ -91,7 +107,7 @@ $(document).ready(function () {
 
     // format calendar objects
     function alignAppointmentTimes() {
-        $('#calendar-content').find('ul li').each(function () {
+        $calendarContent.find('ul li').each(function () {
             let $li = $(this);
             let offset = $li.data('hour') * 4 * 16;
 
@@ -101,10 +117,10 @@ $(document).ready(function () {
 
     // scroll to first object in list
     function scrollTop() {
-        let $li = $('#calendar-content').find('ul li:first');
+        let $li = $calendarContent.find('ul li:first');
         let offset = $li.data('hour') * 4 * 16;
 
-        $('#calendar-content').scrollTop(offset);
+        $calendarContent.scrollTop(offset);
     }
 
     // show date in calendar controls and populate calendar with slots
@@ -152,8 +168,8 @@ $(document).ready(function () {
         };
 
         $.get('/booking/day', context, function (response) {
-            $('#calendar-content').empty();
-            $('#calendar-content').append(response);
+            $calendarContent.empty();
+            $calendarContent.append(response);
             alignAppointmentTimes();
             scrollTop();
         });
@@ -161,6 +177,8 @@ $(document).ready(function () {
 
     // update prev/next buttons
     function updatePrev(context) {
+        showCCLoadingIcon();
+
         $.get('/booking/prev', context, function (response) {
             var $prev = $('#calendar-controls .prev');
 
@@ -181,6 +199,8 @@ $(document).ready(function () {
     }
 
     function updateNext(context) {
+        showCCLoadingIcon();
+
         $.get('/booking/next', context, function (response) {
             var $next = $('#calendar-controls .next');
 
@@ -209,7 +229,7 @@ $(document).ready(function () {
         };
 
         if (context['month'] !== Number($('#date-picker-date input[name=month]').val())) {
-            showLoadingIcon();
+            showDPLoadingIcon();
             getDatePicker(context);
         }
 
@@ -238,7 +258,7 @@ $(document).ready(function () {
 
         if ($dp.is(':visible') &&
             context['month'] !== Number($('#date-picker-date input[name=month]').val())) {
-            showLoadingIcon();
+            showDPLoadingIcon();
             getDatePicker(context);
         }
 

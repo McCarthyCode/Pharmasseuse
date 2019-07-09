@@ -4,63 +4,63 @@
 {% block content %}
 <div id="date-picker"></div>
 <div id="date-picker-date">
-    <input type="hidden" name="year" value="{{ date|date:'Y' }}">
-    <input type="hidden" name="month" value="{{ date|date:'n' }}">
+  <input type="hidden" name="year" value="{{ date|date:'Y' }}">
+  <input type="hidden" name="month" value="{{ date|date:'n' }}">
 </div>
 <div id="date">
-    <input type="hidden" name="year" value="{{ date|date:'Y' }}">
-    <input type="hidden" name="month" value="{{ date|date:'n' }}">
-    <input type="hidden" name="day" value="{{ date|date:'j' }}">
+  <input type="hidden" name="year" value="{{ date|date:'Y' }}">
+  <input type="hidden" name="month" value="{{ date|date:'n' }}">
+  <input type="hidden" name="day" value="{{ date|date:'j' }}">
 </div>
 <div id="modal">
-    <div class="container">
-        <div id="modal-content">
-            <span class="close">&times;</span>
-            <h3 class="h3"></h3>
-            <form method="POST" action="{% url 'booking:submit' %}">
-                {% csrf_token %}
-                {% if profile == None %}
-                <input type="hidden" name="profile-id" id="profile-id">
-                {% else %}
-                <input type="hidden" name="profile-id" value="{{ profile.id }}" id="profile-id">
-                {% endif %}
-                <input type="hidden" name="appointment-id">
-                <input type="radio" name="massage" value="SW">
-                <label for="massage">Swedish</label>
-                <br/>
-                <input type="radio" name="massage" value="DT">
-                <label for="massage">Deep Tissue</label>
-                <br/>
-                <input type="submit" class="btn btn-primary" value="Submit">
-            </form>
-        </div>
+  <div class="container">
+    <div id="modal-content">
+      <span class="close">&times;</span>
+      <h3 class="h3"></h3>
+      <form method="POST" action="{% url 'booking:submit' %}">
+        {% csrf_token %}
+        {% if profile == None %}
+        <input type="hidden" name="profile-id" id="profile-id">
+        {% else %}
+        <input type="hidden" name="profile-id" value="{{ profile.id }}" id="profile-id">
+        {% endif %}
+        <input type="hidden" name="appointment-id">
+        <input type="radio" name="massage" value="SW">
+        <label for="massage">Swedish</label>
+        <br/>
+        <input type="radio" name="massage" value="DT">
+        <label for="massage">Deep Tissue</label>
+        <br/>
+        <input type="submit" class="btn btn-primary" value="Submit">
+      </form>
     </div>
+  </div>
 </div>
 <div class="page">
-    <div class="nav-placeholder"></div>
-    <div class="container">
-        <h3 class="h3 title text-center">Schedule an Appointment</h3>
-        <div id="calendar">
-            <div id="calendar-controls">
-                <div class="prev button inactive"
-                    data-year="{{ prev|date:'Y' }}"
-                    data-month="{{ prev|date:'n' }}"
-                    data-day="{{ prev|date:'j' }}">
-                    <i class="fas fa-arrow-left"></i>
-                </div>
-                <div class="date text-center">
-                    <span>{{ date|date:"D n/j" }}</span>
-                    <i id="date-picker-icon" class="far fa-calendar-alt"></i>
-                </div>
-                <div class="next button"
-                    data-year="{{ next|date:'Y' }}"
-                    data-month="{{ next|date:'n' }}"
-                    data-day="{{ next|date:'j' }}">
-                    <i class="fas fa-arrow-right"></i>
-                </div>
-            </div>
-            <div id="calendar-content"></div>
+  <div class="nav-placeholder"></div>
+  <div class="container">
+    <h3 class="h3 title text-center">Schedule an Appointment</h3>
+    <div id="calendar">
+      <div id="calendar-controls">
+        <div class="prev button inactive"
+          data-year="{{ prev|date:'Y' }}"
+          data-month="{{ prev|date:'n' }}"
+          data-day="{{ prev|date:'j' }}">
+          <i class="fas fa-arrow-left"></i>
         </div>
+        <div class="date text-center">
+          <span>{{ date|date:"D n/j" }}</span>
+          <i id="date-picker-icon" class="far fa-calendar-alt"></i>
+        </div>
+        <div class="next button"
+          data-year="{{ next|date:'Y' }}"
+          data-month="{{ next|date:'n' }}"
+          data-day="{{ next|date:'j' }}">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </div>
+      <div id="calendar-content"></div>
     </div>
+  </div>
 </div>
 {% endblock %}

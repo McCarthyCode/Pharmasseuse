@@ -1,10 +1,10 @@
 <ol>
-    {% for time in times %}
-    <li class="text-right">{{ time.hour }}:{{ time.minute }} {{ time.ampm }}</li>
-    {% endfor %}
+  {% for time in times %}
+  <li class="text-right">{{ time.hour }}:{{ time.minute }} {{ time.ampm }}</li>
+  {% endfor %}
 </ol>
 <ul>
-    {% for slot in slots %}
-    <li data-hour="{{ slot.hour }}" data-id="{{ slot.id }}">{{ slot.start }}&ndash;{{ slot.end }}</li>
-    {% endfor %}
+  {% for slot in slots %}
+  <li data-hour="{{ slot.hour }}" data-id="{{ slot.id }}">{{ slot.start }}&ndash;{{ slot.end }}</li>
+  {% endfor %}
 </ul>

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    var $calendarContent = $('#calendar-content');
+
     // update dimensions and set height attributes
     function updateCalendarHeight() {
         let size = $(window).height()
@@ -6,7 +8,7 @@ $(document).ready(function () {
             - $('#navbar').outerHeight()
             - 40;
         $('#calendar').css('height', size);
-        $('#calendar-content').css('height', size - 42);
+        $calendarContent.css('height', size - 42);
     }
 
     // window event listeners
@@ -20,7 +22,7 @@ $(document).ready(function () {
 
     // format calendar objects
     function alignAppointmentTimes() {
-        $('#calendar-content').find('ul li').each(function () {
+        $calendarContent.find('ul li').each(function () {
             let $li = $(this);
             let offset = $li.data('hour') * 4 * 16;
 
@@ -30,16 +32,29 @@ $(document).ready(function () {
 
     // scroll to first object in list
     function scrollTop() {
-        let $li = $('#calendar-content').find('ul li:first');
+        let $li = $calendarContent.find('ul li:first');
         let offset = $li.data('hour') * 4 * 16;
 
-        $('#calendar-content').scrollTop(offset);
+        $calendarContent.scrollTop(offset);
+    }
+
+    // show loading icon while waiting for GET response
+    var $imgContainer = $('<div>').addClass('img-container');
+    var $img = $('<img>')
+        .attr('src', '/static/booking/img/loading.gif')
+        .attr('alt', 'Loading');
+
+    function showLoadingIcon() {
+        $calendarContent.empty();
+        $calendarContent.append($imgContainer);
+        $imgContainer.append($img);
     }
 
     // populate calendar
+    showLoadingIcon();
     $.get('/booking/day', function (response) {
-        $('#calendar-content').empty();
-        $('#calendar-content').append(response);
+        $calendarContent.empty();
+        $calendarContent.append(response);
         alignAppointmentTimes();
         scrollTop();
     });
@@ -47,7 +62,7 @@ $(document).ready(function () {
     var $modal = $('#modal');
 
     // handle click event
-    $('#calendar-content').on('click touchend', 'ul li', function (event) {
+    $calendarContent.on('click touchend', 'ul li', function (event) {
         var id = $('#profile-id').val();
 
         if (id === '') {

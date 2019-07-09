@@ -1,28 +1,28 @@
 <nav id="navbar" class="navbar fixed-top navbar-expand-md navbar-dark">
-    <a class="navbar-brand" href="{% url 'home:index' %}">The Pharmasseuse</a>
-    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'home:index' %}">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'booking:index' %}">Booking</a>
-            </li>
-            {% if profile == None %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:index' %}" title="Sign In">Sign In</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:index' %}" title="Profile">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:logout' %}" title="Sign Out">Sign Out</a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
+  <a class="navbar-brand" href="{% url 'home:index' %}">The Pharmasseuse</a>
+  <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'home:index' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'booking:index' %}">Booking</a>
+      </li>
+      {% if profile == None %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'users:index' %}" title="Sign In">Sign In</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'users:index' %}" title="Profile">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'users:logout' %}" title="Sign Out">Sign Out</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
 </nav>
