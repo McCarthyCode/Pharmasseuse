@@ -85,7 +85,8 @@ $(document).ready(function () {
         positionDatePicker();
     });
 
-    $dp.on('click touchend', '.close', function () {
+    $dp.on('click touchend', '.close', function (event) {
+        event.preventDefault();
         $dp.hide();
     });
 
