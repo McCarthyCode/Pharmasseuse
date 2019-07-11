@@ -84,38 +84,38 @@ def day(request):
             times.append({
                 'hour': '12' if i % 12 == 0 else str(i % 12),
                 'minute': '00',
-                'ampm': 'am' if i < 12 else 'pm',
+                'ampm': 'a.m.' if i < 12 else 'p.m.',
             })
         for i in range(3, 24):
             times.append({
                 'hour': '12' if i % 12 == 0 else str(i % 12),
                 'minute': '00',
-                'ampm': 'am' if i < 12 else 'pm',
+                'ampm': 'a.m.' if i < 12 else 'p.m.',
             })
     elif fall_back:
         for i in range(2):
             times.append({
                 'hour': '12' if i % 12 == 0 else str(i % 12),
                 'minute': '00',
-                'ampm': 'am' if i < 12 else 'pm',
+                'ampm': 'a.m.' if i < 12 else 'p.m.',
             })
         times.append({
             'hour': 1,
             'minute': '00',
-            'ampm': 'am' if i < 12 else 'pm',
+            'ampm': 'a.m.' if i < 12 else 'p.m.',
         })
         for i in range(2, 24):
             times.append({
                 'hour': '12' if i % 12 == 0 else str(i % 12),
                 'minute': '00',
-                'ampm': 'am' if i < 12 else 'pm',
+                'ampm': 'a.m.' if i < 12 else 'p.m.',
             })
     else:
         for i in range(24):
             times.append({
                 'hour': '12' if i % 12 == 0 else str(i % 12),
                 'minute': '00',
-                'ampm': 'am' if i < 12 else 'pm',
+                'ampm': 'a.m.' if i < 12 else 'p.m.',
             })
 
     appointments = Appointment.objects.filter(
@@ -135,11 +135,15 @@ def day(request):
         ampm_start = date_start.strftime('%p')
         ampm_end = date_end.strftime('%p')
 
-        if ampm_start == 'AM' or ampm_start == 'PM':
-            ampm_start = ampm_start.lower()
+        if ampm_start == 'AM':
+            ampm_start = 'a.m.'
+        elif ampm_start == 'PM':
+            ampm_start = 'p.m.'
 
-        if ampm_end == 'AM' or ampm_end == 'PM':
-            ampm_end = ampm_end.lower()
+        if ampm_end == 'AM':
+            ampm_end = 'a.m.'
+        elif ampm_end == 'PM':
+            ampm_end = 'p.m.'
 
         hour = date_start.astimezone(tz).hour
 
