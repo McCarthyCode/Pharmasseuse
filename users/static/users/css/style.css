@@ -58,7 +58,9 @@ input[type=submit] {
 }
 
 .edit {
-  padding-left: 1em;
+  position: absolute;
+  top: 10px;
+  right: 1rem;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
@@ -83,4 +85,18 @@ input[type=submit] {
   text-align: right;
   font-style: italic;
   padding-right: 1px;
+}
+
+.next-appointment {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+.appointment {
+  width: 125px;
+  height: 125px;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  color: white;
+  background-color: #1647d2;
 }
