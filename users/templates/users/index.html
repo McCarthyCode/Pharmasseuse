@@ -79,9 +79,9 @@
       <div class="col-12 col-md-6 next-appointment">
         <h3 class="h3">Next Appointment</h3>
         <div class="appointment">
-          <h5 class="h5">Dec</h5>
-          <h1 class="h1">30</h1>
-          <p>5:00 pm</p>
+          <h5 class="h5">{{ appt.date_start|date:"D M" }}</h5>
+          <h1 class="h1">{{ appt.date_start|date:"j" }}</h1>
+          <p>{{ appt.date_start|date:"g:i a" }}</p>
         </div>
         <a href="#">Cancel</a>
       </div>

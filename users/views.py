@@ -6,14 +6,21 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from users.models import Profile
+from booking.models import Appointment
 
 
 def index(request):
     profile = Profile.objects.get(user__pk=request.session['id']) \
         if 'id' in request.session else None
 
+    if profile == None:
+        appt = None
+    else:
+        appt = Appointment.objects.get(profile=profile)
+
     return render(request, 'users/index.html', {
         'profile': profile,
+        'appt': appt,
     })
 
 
