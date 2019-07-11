@@ -63,6 +63,7 @@ $(document).ready(function () {
 
     // handle click event
     $calendarContent.on('click touchend', 'ul li', function (event) {
+        event.preventDefault();
         var id = $('#profile-id').val();
 
         if (id === '') {
@@ -72,7 +73,8 @@ $(document).ready(function () {
             // trigger new appointment modal
             var date = $('#calendar-controls .date span').text();
             var time = $(this).text();
-            $('#modal-content h3').text(`${date}, ${time}`);
+            $('#modal-content h3').text(date);
+            $('#modal-content h4').text(time);
 
             var id = $(event.target).attr('data-id');
             $('#modal-content input[name=appointment-id]').val(id);
@@ -82,9 +84,13 @@ $(document).ready(function () {
     });
 
     // handle click in darkened area outside of modal
-    $(window).on('click touchend', function (event) {
-        if ($(event.target).is($modal) ||
-            $(event.target).is($('#modal .container'))) {
+    debounce = false;
+    $(window).on('click touchend contextmenu', function (event) {
+        if (event.type === 'contextmenu') {
+            debounce = true;
+            window.setTimeout(() => debounce = false, 250);
+        } else if ($(event.target).is($('#modal, #modal .container')) &&
+            !debounce) {
             $modal.stop().fadeOut();
         }
     });
@@ -93,4 +99,13 @@ $(document).ready(function () {
     $('#modal-content').on('click touchend', '.close', function (event) {
         $modal.stop().fadeOut();
     });
+
+    // select radio buttons on corresponding label click
+    $('#SW').on('click touchend', function (event) {
+        $('input[type="radio"][name="massage"][value="SW"]').prop('checked', true);
+    });
+    $('#DT').on('click touchend', function (event) {
+        $('input[type="radio"][name="massage"][value="DT"]').prop('checked', true);
+    });
+
 });

@@ -17,6 +17,7 @@
     <div id="modal-content">
       <span class="close">&times;</span>
       <h3 class="h3"></h3>
+      <h4 class="h4"></h4>
       <form method="POST" action="{% url 'booking:submit' %}">
         {% csrf_token %}
         {% if profile == None %}
@@ -25,12 +26,13 @@
         <input type="hidden" name="profile-id" value="{{ profile.id }}" id="profile-id">
         {% endif %}
         <input type="hidden" name="appointment-id">
-        <input type="radio" name="massage" value="SW">
-        <label for="massage">Swedish</label>
-        <br/>
-        <input type="radio" name="massage" value="DT">
-        <label for="massage">Deep Tissue</label>
-        <br/>
+        <div class="radio">
+          <input type="radio" name="massage" value="SW">
+          <label id="SW" for="massage">Swedish</label>
+          <input type="radio" name="massage" value="DT">
+          <label id="DT" for="massage">Deep Tissue</label>
+        </div>
+        <p class="text-center">You may change your selection at the time of your appointment.</p>
         <input type="submit" class="btn btn-primary" value="Submit">
       </form>
     </div>

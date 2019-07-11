@@ -148,10 +148,21 @@ html, body {
   padding: 1rem;
 }
 
-#modal-content label{
-  padding-bottom: 0.5rem;
+#modal-content .radio {
+  width: 7.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
+  display: grid;
+  grid-template-columns: 1.5rem auto;
+  grid-gap: 0.25rem;
 }
 
-#modal-content input[type=submit]{
-  margin: 1rem auto 0 auto;
+#modal-content p {
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+#modal-content .radio label,
+#modal-content .radio input[type="radio"] {
+  cursor: pointer;
 }
