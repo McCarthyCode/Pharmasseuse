@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Appointment
 from pharmasseuse.settings import TIME_ZONE
 from users.models import Profile
@@ -234,4 +235,21 @@ def next(request):
 
 
 def submit(request):
+    try:
+        profile_id = request.POST.get('profile-id')
+        appointment_id = request.POST.get('appointment-id')
+        massage = request.POST.get('massage')
+
+        profile = Profile.objects.get(pk=profile_id)
+        appt = Appointment.objects.get(pk=appointment_id)
+
+        appt.profile = profile
+        appt.massage = massage
+
+        appt.save()
+    except Exception:
+        messages.error(request, 'There was an error booking your appointment.')
+
+    messages.success(request, 'You have successfully booked your appointment.')
+
     return redirect('users:index')
