@@ -49,7 +49,7 @@
   line-height: 1.5;
 }
 
-input[type=submit] {
+.sign-in input[type=submit] {
   margin-top: 1rem;
 }
 
@@ -89,7 +89,6 @@ input[type=submit] {
 
 .next-appointment {
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  text-align: center;
 }
 
 .appointment {
@@ -99,4 +98,22 @@ input[type=submit] {
   padding: 0.5rem;
   color: white;
   background-color: #1647d2;
+}
+
+.profile .btn-container {
+  position: relative;
+  height: 2.5rem;
+}
+
+.profile .btn {
+  position: absolute;
+  right: 50%;
+  transform: translate(50%);
+}
+
+.empty {
+  height: 125px;
+  line-height: 1.5;
+  display: table-cell;
+  vertical-align: middle;
 }

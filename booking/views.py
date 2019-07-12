@@ -245,15 +245,39 @@ def submit(request):
         massage = request.POST.get('massage')
 
         profile = Profile.objects.get(pk=profile_id)
-        appt = Appointment.objects.get(pk=appointment_id)
+        appts = Appointment.objects.filter(profile=profile)
 
-        appt.profile = profile
-        appt.massage = massage
+        if len(appts) == 0:
+            appt = Appointment.objects.get(pk=appointment_id)
 
-        appt.save()
+            appt.profile = profile
+            appt.massage = massage
+
+            appt.save()
+        else:
+            messages.error(request, 'You may only book one appointment at a time.')
+
+            return redirect('users:index')
     except Exception:
         messages.error(request, 'There was an error booking your appointment.')
 
     messages.success(request, 'You have successfully booked your appointment.')
+
+    return redirect('users:index')
+
+def cancel(request):
+    try:
+        appointment_id = request.POST.get('appointment-id')
+
+        appt = Appointment.objects.get(pk=appointment_id)
+
+        appt.profile = None
+        appt.massage = None
+
+        appt.save()
+    except Exception:
+        messages.error(request, 'There was an error cancelling your appointment.')
+
+    messages.success(request, 'You have successfully cancelled your appointment.')
 
     return redirect('users:index')

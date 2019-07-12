@@ -9,4 +9,5 @@ urlpatterns = [
     path('prev', views.prev, name='prev'),
     path('next', views.next, name='next'),
     path('submit', views.submit, name='submit'),
+    path('cancel', views.cancel, name='cancel'),
 ]

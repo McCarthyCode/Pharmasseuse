@@ -16,7 +16,10 @@ def index(request):
     if profile == None:
         appt = None
     else:
-        appt = Appointment.objects.get(profile=profile)
+        try:
+            appt = Appointment.objects.get(profile=profile)
+        except Appointment.DoesNotExist:
+            appt = None
 
     return render(request, 'users/index.html', {
         'profile': profile,
