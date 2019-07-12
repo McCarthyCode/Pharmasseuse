@@ -64,6 +64,10 @@
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
+.info-container {
+  height: 157px;
+}
+
 .info {
   display: grid;
   grid-gap: 15px;
@@ -100,6 +104,14 @@
   background-color: #1647d2;
 }
 
+.massage-type {
+  margin-bottom: 1rem;
+}
+
+.massage-type span {
+  font-style: italic;
+}
+
 .profile .btn-container {
   position: relative;
   height: 2.5rem;
@@ -116,4 +128,18 @@
   line-height: 1.5;
   display: table-cell;
   vertical-align: middle;
+}
+
+@media (min-width: 768px) {
+  .info-container {
+    position: relative;
+    height: 221px;
+  }
+
+  .info {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+  }
 }
