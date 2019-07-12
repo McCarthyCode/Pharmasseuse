@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import pytz
 from datetime import datetime
 
 from django.shortcuts import render, redirect
@@ -17,7 +18,10 @@ def index(request):
         appt = None
     else:
         try:
-            appt = Appointment.objects.get(profile=profile)
+            appt = Appointment.objects.get(
+                profile=profile,
+                date_end__gt=datetime.now(pytz.utc),
+            )
         except Appointment.DoesNotExist:
             appt = None
 

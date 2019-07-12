@@ -245,7 +245,10 @@ def submit(request):
         massage = request.POST.get('massage')
 
         profile = Profile.objects.get(pk=profile_id)
-        appts = Appointment.objects.filter(profile=profile)
+        appts = Appointment.objects.filter(
+            profile=profile,
+            date_end__gt=datetime.now(pytz.utc),
+        )
 
         if len(appts) == 0:
             appt = Appointment.objects.get(pk=appointment_id)
