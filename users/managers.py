@@ -87,4 +87,35 @@ class ProfileManager(Manager):
                     return (True, user_by_email.id)
             else:
                 errors.append('Invalid action.')
+
+        return (False, errors)
+
+
+    def edit_profile(self, request):
+        errors = []
+
+        if len(request.POST['firstName']) == 0 or \
+            len(request.POST['lastName']) == 0:
+            errors.append('Please enter your first and last name.')
+        if len(request.POST['email']) == 0:
+            errors.append('Please enter your email.')
+        elif not EMAIL_REGEX.match(request.POST['email']):
+            errors.append('Please enter a valid email.')
+        if len(request.POST['phone']) == 0:
+            errors.append('Please enter your phone number.')
+
+        if not errors:
+            profile = models.Profile.objects.get(pk=request.POST['profileId'])
+            user = profile.user
+
+            user.first_name = request.POST['firstName']
+            user.last_name = request.POST['lastName']
+            user.email = request.POST['email']
+            profile.phone = request.POST['phone']
+
+            user.save()
+            profile.save()
+
+            return (True, profile)
+
         return (False, errors)

@@ -91,6 +91,19 @@
   padding-right: 1px;
 }
 
+.edit-profile {
+  display: none;
+}
+
+.edit-profile .btn-container {
+  height: 3.5rem;
+  text-align: center;
+}
+
+.edit-profile .btn {
+  margin-top: 1rem;
+}
+
 .next-appointment {
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
@@ -112,12 +125,12 @@
   font-style: italic;
 }
 
-.profile .btn-container {
+.next-appointment .btn-container {
   position: relative;
   height: 2.5rem;
 }
 
-.profile .btn {
+.next-appointment .btn {
   position: absolute;
   right: 50%;
   transform: translate(50%);
@@ -131,12 +144,14 @@
 }
 
 @media (min-width: 768px) {
-  .info-container {
+  .info-container,
+  .edit-profile  {
     position: relative;
     height: 221px;
   }
 
-  .info {
+  .info,
+  .edit-profile form  {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
