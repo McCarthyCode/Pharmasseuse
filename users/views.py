@@ -88,6 +88,21 @@ def edit_profile(request):
     return redirect('users:index')
 
 
+def edit_password(request):
+    valid, response = Profile.objects.edit_password(request)
+
+    if valid:
+        messages.success(
+            request,
+            'You have successfully updated your password.',
+        )
+    else:
+        for error in response:
+            messages.error(request, error)
+
+    return redirect('users:index')
+
+
 ######################
 # FOR DEBUG USE ONLY #
 ######################

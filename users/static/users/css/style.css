@@ -91,16 +91,19 @@
   padding-right: 1px;
 }
 
-.edit-profile {
+.edit-profile,
+.edit-password {
   display: none;
 }
 
-.edit-profile .btn-container {
+.edit-profile .btn-container,
+.edit-password .btn-container {
   height: 3.5rem;
   text-align: center;
 }
 
-.edit-profile .btn {
+.edit-profile .btn,
+.edit-password .btn {
   margin-top: 1rem;
 }
 
@@ -145,16 +148,19 @@
 
 @media (min-width: 768px) {
   .info-container,
-  .edit-profile  {
+  .edit-profile,
+  .edit-password {
     position: relative;
     height: 221px;
   }
 
   .info,
-  .edit-profile form  {
+  .edit-profile form,
+  .edit-password form {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     margin: 0;
+    width: 100%;
   }
 }

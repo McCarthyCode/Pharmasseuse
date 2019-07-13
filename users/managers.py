@@ -5,6 +5,7 @@ import re
 from django.db.models import Manager
 from django.contrib.auth.models import User, UserManager
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.hashers import make_password
 from users import models
 
 EMAIL_REGEX = re.compile(
@@ -117,5 +118,27 @@ class ProfileManager(Manager):
             profile.save()
 
             return (True, profile)
+
+        return (False, errors)
+
+    def edit_password(self, request):
+        errors = []
+
+        user = User.objects.get(pk=request.POST['userId'])
+        correct_pw = user.check_password(request.POST['currentPassword'])
+
+        if not correct_pw:
+            errors.append('The current password you entered was not correct.')
+        if len(request.POST['newPassword']) < 8:
+            errors.append(
+                'Please enter a password that contains at least 8 characters.')
+        if request.POST['passwordConfirm'] != request.POST['newPassword']:
+            errors.append('Passwords must match.')
+
+        if not errors:
+            user.password = make_password(request.POST['newPassword'])
+            user.save()
+
+            return (True, user)
 
         return (False, errors)
