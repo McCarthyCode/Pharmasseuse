@@ -5,6 +5,14 @@
   font-family: 'Varela Round', Arial, sans-serif;
 }
 
+.navbar-brand {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+}
+
 .navbar-toggler {
   border: none;
 }
@@ -21,11 +29,11 @@
   padding: 0.5rem;
   background: #17a2b8;
   text-align: center;
+  user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -o-user-select: none;
-  user-select: none;
   cursor: pointer;
 }
 
@@ -54,7 +62,6 @@
 }
 
 @media all and (min-width: 768px) {
-/* @media (min-width: var(--breakpoint-md)) { */
   .navbar-dark .navbar-nav .nav-link {
     color: white;
   }

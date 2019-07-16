@@ -38,26 +38,10 @@ p {
 }
 
 .cover {
-  position: relative;
-  height: 100vh;
-  margin: 0;
-  opacity: 0.8;
-  background: url("/static/home/img/waterfall.jpg") no-repeat center bottom fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -ms-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  margin-top: 48px;
 }
 
 .title {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
   line-height: 1.5;
   width: 100%;
   padding: 1rem;
@@ -71,11 +55,11 @@ p {
 .title h3 {
   margin: 0 auto;
   text-indent: -9999px;
+  background-size: contain;
   -webkit-background-size: contain;
   -moz-background-size: contain;
   -ms-background-size: contain;
   -o-background-size: contain;
-  background-size: contain;
 }
 
 .title h1 {
@@ -91,10 +75,14 @@ p {
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
   text-align: center;
   color: #b82d17;
   cursor: pointer;
-  z-index: 1;
+  z-index: 0;
 }
 
 .content {
@@ -137,6 +125,10 @@ p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
   max-width: 300px;
   max-height: 300px;
   margin: auto;
@@ -149,20 +141,54 @@ p {
   line-height: 2;
 }
 
-.lotus {
+.lotus,
+.rocks {
   display: none;
   height: 100vh;
   opacity: 0.8;
-  background: url("/static/home/img/lotus.jpg") no-repeat center center fixed;
+  background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -ms-background-size: cover;
   -o-background-size: cover;
-  background-size: cover;
 }
 
-.container.m-tb-2rem {
+.lotus {
+  background: url("/static/home/img/lotus.jpg") no-repeat center center fixed;
+}
+
+.rocks {
+  background: url("/static/home/img/rocks.jpg") no-repeat center center fixed;
+}
+
+.content .h3 {
+  font-family: 'Varela Round', 'Open Sans', Arial, sans-serif;
+}
+
+.content .contact,
+.content .hours {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.m-tb-2rem {
   margin: 2rem auto;
+}
+
+.map-outer {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.gmap-canvas {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  background: none !important;
 }
 
 @media (min-width: 1200px) {
@@ -172,6 +198,36 @@ p {
 
   h3 {
     font-size: 1.75rem;
+  }
+
+  .cover {
+    position: relative;
+    height: 100vh;
+    margin: 0;
+    opacity: 0.8;
+    background: url("/static/home/img/waterfall.jpg") no-repeat center bottom fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+  }
+
+  .title {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    line-height: 1.5;
+    width: 100%;
+    padding: 1rem;
+    background-color: #414141;
+    color: white;
+    text-align: center;
+    font-family: 'Charm', cursive;
   }
 
   .title h1 {
@@ -191,10 +247,22 @@ p {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
   }
 
-  .lotus {
+  .lotus,
+  .rocks {
     display: block;
+  }
+}
+
+@media (min-width: 992px) {
+  .content img {
+    max-width: 400px;
+    max-height: 400px;
   }
 }
 
@@ -223,9 +291,26 @@ p {
   }
 }
 
-@media (min-width: 992px) {
-  .content img {
-    max-width: 400px;
-    max-height: 400px;
+@media (min-width: 576px) {
+  .map-outer {
+    width: 400px;
+    height: 400px;
+  }
+
+  .gmap-canvas {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 575px) {
+  .map-outer {
+    width: 300px;
+    height: 300px;
+  }
+
+  .gmap-canvas {
+    width: 300px;
+    height: 300px;
   }
 }

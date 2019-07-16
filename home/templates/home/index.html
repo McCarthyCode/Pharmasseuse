@@ -8,7 +8,7 @@
     <h1>The Pharmasseuse</h1>
   </div>
 </div>
-<div class="chevron">
+<div class="chevron d-none d-xl-block">
   <h1 class="h1"><i class="fas fa-chevron-down"></i></h1>
 </div>
 <div class="content">
@@ -18,8 +18,14 @@
         <img src="{% static 'home/img/pills.jpg' %}" alt="pills">
       </div>
       <div class="paragraph col col-md-6 col-sm-12">
-        <div class="gradient-border"></div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id ex sit amet enim tincidunt aliquet vehicula eu neque. Morbi condimentum, odio a interdum interdum, urna velit hendrerit nunc, vitae ornare massa metus nec leo. Sed aliquet feugiat sagittis.</p>
+        <div class="gradient-border">
+        </div>
+        <p>
+          The Pharmasseuse&mdash;a pharmacist who doubles a
+          masseuse&mdash;offers massage services to clients after her pharmacy
+          work on the weekdays and during the weekends.
+          <a href="{% url 'booking:index' %}">Schedule an appointment</a> today!
+        </p>
       </div>
     </div>
     <div class="row">
@@ -27,11 +33,52 @@
         <img src="{% static 'home/img/massage.jpg' %}" alt="massage">
       </div>
       <div class="paragraph col col-md-6 col-sm-12">
-        <div class="gradient-border"></div>
-        <p class="text-md-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id ex sit amet enim tincidunt aliquet vehicula eu neque. Morbi condimentum, odio a interdum interdum, urna velit hendrerit nunc, vitae ornare massa metus nec leo. Sed aliquet feugiat sagittis.</p>
+        <div class="gradient-border">
+        </div>
+        <p class="text-md-right">
+          Choose from a Swedish or a deep tissue massage. The Swedish massage is
+          a gentler and softer massage, more suited for those who have sensitive
+          skin. The deep tissue massage is more suited for those in chronic pain,
+          were involved in strenuous activities, or who are continually troubled
+          by previous injuries.
+          <br>
+          <a href="http://www.differencebetween.net/miscellaneous/difference-between-swedish-massage-and-deep-tissue-massage/#ixzz5tmtx6Bdb">Read more</a>
+        </p>
       </div>
       <div class="col col-md-6 d-none d-md-block img">
         <img src="{% static 'home/img/massage.jpg' %}" alt="massage">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="rocks">
+</div>
+<div class="content">
+  <div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="map-outer">
+              <div class="gmap-canvas">
+                <iframe width="300" height="300" id="gmap-canvas" src="https://maps.google.com/maps?q=10745%20S%20California%20ave%20Chicago%2C%20IL%2060655&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+              </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 m-tb-2rem contact">
+          <div>
+            <h3 class="h3">Contact Info</h3>
+            <p>Robin McCarthy</p>
+            <p>10745 S. California Ave.</p>
+            <p>Chicago, IL 60655</p>
+            <p>(773) 612-2468</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 m-tb-2rem hours">
+          <div>
+            <h3 class="h3">Hours</h3>
+            <p>Mon&ndash;Fri: 5 p.m.&ndash;8 p.m.</p>
+            <p>Sat&ndash;Sun: 8 a.m.&ndash;8 p.m.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
