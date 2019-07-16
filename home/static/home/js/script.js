@@ -10,15 +10,15 @@ $(document).ready(function () {
 
     // resize Google Maps widget
     function resizeMap() {
-        var $map = $('#gmap-canvas');
+        var $canvas = $('#gmapCanvas');
         var width = $(this).width();
 
         if (width >= 576) {
-            $map.attr('width', 400).attr('height', 400);
+            $canvas.attr('width', 400).attr('height', 400);
         } else if (width >= 360 && width < 576) {
-            $map.attr('width', 300).attr('height', 300);
+            $canvas.attr('width', 300).attr('height', 300);
         } else  {
-            $map.attr('width', 200).attr('height', 200);
+            $canvas.attr('width', 200).attr('height', 200);
         }
     }
 
