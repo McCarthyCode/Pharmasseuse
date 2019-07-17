@@ -1,9 +1,9 @@
 $(document).ready(function () {
-    var $dp = $('#date-picker');
-    var $calendarContent = $('#calendar-content');
+    var $dp = $('#datePicker');
+    var $calendarContent = $('#calendarContent');
 
     function positionDatePicker() {
-        let position = $('#calendar-controls .date i').position();
+        let position = $('#calendarControls .date i').position();
         var x = position.left - 136 + 18 < $(window).width() - 287 ?
             position.left - 136 + 18 :
             $(window).width() - 287;
@@ -47,16 +47,16 @@ $(document).ready(function () {
             var year = $('#date input[name=year]').val();
             var month = $('#date input[name=month]').val();
 
-            $('#date-picker-date input[name=year]').val(year);
-            $('#date-picker-date input[name=month]').val(month);
+            $('#datePickerDate input[name=year]').val(year);
+            $('#datePickerDate input[name=month]').val(month);
 
             context = {
                 'year': year,
                 'month': month,
             }
         } else {
-            $('#date-picker-date input[name=year]').val(context['year']);
-            $('#date-picker-date input[name=month]').val(context['month']);
+            $('#datePickerDate input[name=year]').val(context['year']);
+            $('#datePickerDate input[name=month]').val(context['month']);
         }
 
         $.get('/booking/date_picker', context, function (response) {
@@ -65,7 +65,7 @@ $(document).ready(function () {
         });
     }
 
-    $('#date-picker-icon').on('click touchend', function (event) {
+    $('#datePickerIcon').on('click touchend', function (event) {
         event.preventDefault();
 
         if ($dp.is(':visible')) {
@@ -158,7 +158,7 @@ $(document).ready(function () {
                 break;
         }
 
-        $('#calendar-controls .date span').text(
+        $('#calendarControls .date span').text(
             `${dow} ${date.getMonth() + 1}/${date.getDate()}`
         );
 
@@ -181,7 +181,7 @@ $(document).ready(function () {
         showCCLoadingIcon();
 
         $.get('/booking/prev', context, function (response) {
-            var $prev = $('#calendar-controls .prev');
+            var $prev = $('#calendarControls .prev');
 
             if (response['exists']) {
                 $prev.data('year', response['date']['year']);
@@ -203,7 +203,7 @@ $(document).ready(function () {
         showCCLoadingIcon();
 
         $.get('/booking/next', context, function (response) {
-            var $next = $('#calendar-controls .next');
+            var $next = $('#calendarControls .next');
 
             if (response['exists']) {
                 $next.data('year', response['date']['year']);
@@ -229,7 +229,7 @@ $(document).ready(function () {
             'day': $(this).data('day'),
         };
 
-        if (context['month'] !== Number($('#date-picker-date input[name=month]').val())) {
+        if (context['month'] !== Number($('#datePickerDate input[name=month]').val())) {
             showDPLoadingIcon();
             getDatePicker(context);
         }
@@ -241,14 +241,14 @@ $(document).ready(function () {
     });
 
     // navigate to previous/next day
-    $('#calendar-controls').on('click touchend', '.prev, .next', function () {
+    $('#calendarControls').on('click touchend', '.prev, .next', function () {
         var $button = $(this);
 
         if ($button.hasClass('inactive')) {
             return;
         }
 
-        $('#calendar-controls .prev, #calendar-controls .next')
+        $('#calendarControls .prev, #calendarControls .next')
             .removeClass('inactive');
 
         var context = {
@@ -258,7 +258,7 @@ $(document).ready(function () {
         };
 
         if ($dp.is(':visible') &&
-            context['month'] !== Number($('#date-picker-date input[name=month]').val())) {
+            context['month'] !== Number($('#datePickerDate input[name=month]').val())) {
             showDPLoadingIcon();
             getDatePicker(context);
         }

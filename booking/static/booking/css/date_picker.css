@@ -1,4 +1,4 @@
-#date-picker {
+#datePicker {
   display: none;
   width: 272px;
   height: 208px;
@@ -15,30 +15,30 @@
   z-index: 2;
 }
 
-#date-picker .img-container {
+#datePicker .img-container {
   display: grid;
   height: 100%;
 }
 
-#date-picker .img-container img {
+#datePicker .img-container img {
   margin: auto;
 }
 
-#date-picker .close, 
-#date-picker .grid {
+#datePicker .close,
+#datePicker .grid {
   color: white;
 }
 
-#date-picker .close span,
-#date-picker .grid span,
-#date-picker .grid i {
+#datePicker .close span,
+#datePicker .grid span,
+#datePicker .grid i {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-#date-picker .close {
+#datePicker .close {
   position: absolute;
   top: -1rem;
   right: -1rem;
@@ -51,17 +51,17 @@
   opacity: 1;
 }
 
-#date-picker .month,
-#date-picker .grid {
+#datePicker .month,
+#datePicker .grid {
   font-family: 'Varela Round', Helvetica, Arial, sans-serif;
 }
 
-#date-picker .month {
+#datePicker .month {
   width: 100%;
   margin-bottom: 0.25rem;
 }
 
-#date-picker .grid {
+#datePicker .grid {
   display: grid;
   grid-template-columns:
     1.5rem 1.5rem 1.5rem
@@ -70,7 +70,7 @@
   grid-gap: 0.25rem;
 }
 
-#date-picker .grid div {
+#datePicker .grid div {
   position: relative;
   width: 1.5rem;
   height: 1.5rem;
@@ -79,16 +79,16 @@
   cursor: pointer;
 }
 
-#date-picker .grid div.active {
+#datePicker .grid div.active {
   background-color: blue;
 }
 
-#date-picker .grid .prev,
-#date-picker .grid .next {
+#datePicker .grid .prev,
+#datePicker .grid .next {
   grid-row: 1 / span 6;
   height: 10.25rem;
 }
 
-#date-picker .grid .next {
+#datePicker .grid .next {
   grid-column: 9 / span 1;
 }

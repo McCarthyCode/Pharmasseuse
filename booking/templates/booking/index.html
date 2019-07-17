@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block content %}
-<div id="date-picker"></div>
-<div id="date-picker-date">
+<div id="datePicker"></div>
+<div id="datePickerDate">
   <input type="hidden" name="year" value="{{ date|date:'Y' }}">
   <input type="hidden" name="month" value="{{ date|date:'n' }}">
 </div>
@@ -14,16 +14,16 @@
 </div>
 <div id="modal">
   <div class="container">
-    <div id="modal-content">
+    <div id="modalContent">
       <span class="close">&times;</span>
       <h3 class="h3"></h3>
       <h4 class="h4"></h4>
       <form method="POST" action="{% url 'booking:submit' %}">
         {% csrf_token %}
         {% if profile == None %}
-        <input type="hidden" name="profile-id" id="profile-id">
+        <input type="hidden" name="profile-id" id="profileId">
         {% else %}
-        <input type="hidden" name="profile-id" value="{{ profile.id }}" id="profile-id">
+        <input type="hidden" name="profile-id" value="{{ profile.id }}" id="profileId">
         {% endif %}
         <input type="hidden" name="appointment-id">
         <div class="radio">
@@ -43,7 +43,7 @@
   <div class="container">
     <h3 class="h3 title text-center">Schedule an Appointment</h3>
     <div id="calendar">
-      <div id="calendar-controls">
+      <div id="calendarControls">
         <div class="prev button inactive"
           data-year="{{ prev|date:'Y' }}"
           data-month="{{ prev|date:'n' }}"
@@ -52,7 +52,7 @@
         </div>
         <div class="date text-center">
           <span>{{ date|date:"D n/j" }}</span>
-          <i id="date-picker-icon" class="far fa-calendar-alt"></i>
+          <i id="datePickerIcon" class="far fa-calendar-alt"></i>
         </div>
         <div class="next button"
           data-year="{{ next|date:'Y' }}"
@@ -61,7 +61,7 @@
           <i class="fas fa-arrow-right"></i>
         </div>
       </div>
-      <div id="calendar-content"></div>
+      <div id="calendarContent"></div>
     </div>
   </div>
 </div>

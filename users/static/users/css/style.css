@@ -64,7 +64,7 @@
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
-.info-container {
+.profile .info-container {
   height: 157px;
 }
 
@@ -97,9 +97,14 @@
 }
 
 .edit-profile .btn-container,
+.edit-password .btn-container,
+#modalContent .btn-container {
+  text-align: center;
+}
+
+.edit-profile .btn-container,
 .edit-password .btn-container {
   height: 3.5rem;
-  text-align: center;
 }
 
 .edit-profile .btn,
@@ -146,15 +151,50 @@
   vertical-align: middle;
 }
 
+.admin:not(.h1) {
+  font-family: 'Open Sans', Arial, sans-serif;
+}
+
+.admin .h1 {
+  margin-top: 2rem;
+}
+
+#appointments tbody tr:hover :not(.dataTables_empty) {
+  color: white;
+  background-color: #1647d2;
+  cursor: pointer;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  padding-top: 6rem;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#modalContent {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  background-color: #efefef;
+  margin: 2rem;
+  padding: 1rem;
+}
+
 @media (min-width: 768px) {
-  .info-container,
+  .profile .info-container,
   .edit-profile,
   .edit-password {
     position: relative;
     height: 221px;
   }
 
-  .info,
+  .profile .info,
   .edit-profile form,
   .edit-password form {
     position: absolute;

@@ -198,7 +198,7 @@
         </div>
         <div class="col-12 col-md-6 next-appointment">
           <h3 class="h3">Next Appointment</h3>
-          {% if appt == None %}
+          {% if next_appt == None %}
           <p class="empty text-center">
             You currently do not have an appointment scheduled.
             You may schedule one by choosing an appointment slot
@@ -206,29 +206,100 @@
           </p>
           {% else %}
           <div class="appointment">
-            <h5 class="h5 text-center">{{ appt.date_start|date:"D M" }}</h5>
-            <h1 class="h1 text-center">{{ appt.date_start|date:"j" }}</h1>
-            <p class="text-center">{{ appt.date_start|date:"g:i a" }}</p>
+            <h5 class="h5 text-center">{{ next_appt.date_start|date:"D M" }}</h5>
+            <h1 class="h1 text-center">{{ next_appt.date_start|date:"j" }}</h1>
+            <p class="text-center">{{ next_appt.date_start|date:"g:i a" }}</p>
           </div>
-          {% if appt.massage == "DT" %}
-          <p class="massage-type text-center">Massage type: <span>Swedish</span></p>
-          {% elif appt.massage == "SW" %}
+          {% if next_appt.massage == "DT" %}
           <p class="massage-type text-center">Massage type: <span>Deep Tissue</span></p>
+          {% elif next_appt.massage == "SW" %}
+          <p class="massage-type text-center">Massage type: <span>Swedish</span></p>
           {% else %}
           <p class="massage-type text-center">Massage type: <span>unspecified</span></p>
           {% endif %}
           <form action="{% url 'booking:cancel' %}" method="POST">
             {% csrf_token %}
-            <input type="hidden" name="appointment-id" value="{{ appt.pk }}">
+            <input type="hidden" name="appointment-id" value="{{ next_appt.pk }}">
             <div class="btn-container">
-              <input class="btn btn-secondary" type="submit" value="Cancel">
+              <input class="btn btn-secondary" type="submit" value="Cancel Appointment">
             </div>
           </form>
           {% endif %}
         </div>
       </div>
     </div>
+    {% if profile.user.is_superuser == True %}
+    <div class="row admin">
+      <div class="col-12">
+          <h1 class="h1">Admin Page</h1>
+          <table id="appointments">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Appointment Time</th>
+                <th>Massage Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appt in appts %}
+              <tr>
+                <td class="first-name">{{ appt.profile.user.first_name }}</td>
+                <td class="last-name">{{ appt.profile.user.last_name }}</td>
+                {% load tz %}
+                {% timezone "America/Chicago" %}
+                <td>{{ appt.date_start|date:"Y-m-d H:i" }}</td>
+                {% endtimezone %}
+                {% if appt.massage == "DT" %}
+                <td>Deep Tissue</td>
+                {% elif appt.massage == "SW" %}
+                <td>Swedish</td>
+                {% else %}
+                <td class="font-italic">unspecified</td>
+                {% endif %}
+                <input type="hidden" name="email" value="{{ appt.profile.user.email }}">
+                <input type="hidden" name="phone" value="{{ appt.profile.phone }}">
+                <input type="hidden" name="date" value="{{ appt.date_start|date:'D M j, g:i a' }}">
+                <input type="hidden" name="massage" value="{{ appt.massage }}">
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      </div>
+    </div>
+    {% endif %}
     {% endif %}
   </div>
 </div>
+{% if profile.user.is_superuser == True %}
+<div id="modal">
+  <div class="container">
+    <div id="modalContent">
+      <span class="close">&times;</span>
+      <h3 class="h3">Details</h3>
+      <h5 class="h5">Client Info</h5>
+      <div class="info">
+        <div>Name</div>
+        <div id="name"></div>
+        <div>Email</div>
+        <div id="email"></div>
+        <div>Phone Number</div>
+        <div id="phone"></div>
+      </div>
+      <h5 class="h5">Appointment Details</h5>
+      <div class="info">
+        <div>Date/Time</div>
+        <div id="date"></div>
+        <div>Massage Type</div>
+        <div id="massage"></div>
+      </div>
+      <h5 class="h5">Actions</h5>
+      <div class="btn-container">
+        <a class="btn btn-primary" href="#">Change Details</a>
+        <a class="btn btn-danger" href="#">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

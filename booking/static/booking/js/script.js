@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var $calendarContent = $('#calendar-content');
+    var $calendarContent = $('#calendarContent');
 
     // update dimensions and set height attributes
     function updateCalendarHeight() {
@@ -64,20 +64,20 @@ $(document).ready(function () {
     // handle click event
     $calendarContent.on('click touchend', 'ul li', function (event) {
         event.preventDefault();
-        var id = $('#profile-id').val();
+        var id = $('#profileId').val();
 
         if (id === '') {
             // redirect to sign in page
             window.location.replace('/profile/login_redirect');
         } else {
             // trigger new appointment modal
-            var date = $('#calendar-controls .date span').text();
+            var date = $('#calendarControls .date span').text();
             var time = $(this).text();
-            $('#modal-content h3').text(date);
-            $('#modal-content h4').text(time);
+            $('#modalContent h3').text(date);
+            $('#modalContent h4').text(time);
 
             var id = $(event.target).attr('data-id');
-            $('#modal-content input[name=appointment-id]').val(id);
+            $('#modalContent input[name=appointment-id]').val(id);
 
             $modal.stop().fadeIn();
         }
@@ -96,7 +96,7 @@ $(document).ready(function () {
     });
 
     // handle close button
-    $('#modal-content').on('click touchend', '.close', function (event) {
+    $('#modalContent').on('click touchend', '.close', function (event) {
         $modal.stop().fadeOut();
     });
 

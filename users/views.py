@@ -14,20 +14,28 @@ def index(request):
     profile = Profile.objects.get(user__pk=request.session['id']) \
         if 'id' in request.session else None
 
+    appts = []
+    next_appt = None
+
     if profile == None:
         appt = None
     else:
         try:
-            appt = Appointment.objects.get(
+            next_appt = Appointment.objects.get(
                 profile=profile,
                 date_end__gt=datetime.now(pytz.utc),
             )
         except Appointment.DoesNotExist:
-            appt = None
+            next_appt = None
+
+        appts = Appointment.objects \
+            .filter(date_end__gt=datetime.now(pytz.utc)) \
+            .exclude(profile__user=None)
 
     return render(request, 'users/index.html', {
         'profile': profile,
-        'appt': appt,
+        'next_appt': next_appt,
+        'appts': appts,
     })
 
 

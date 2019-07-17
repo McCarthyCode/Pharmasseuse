@@ -44,7 +44,7 @@ html, body {
   border-radius: 0.5rem;
 }
 
-#calendar-controls {
+#calendarControls {
   display: grid;
   grid-template-columns: 2.5rem calc(100% - 5rem) 2.5rem;
   height: 2.5rem;
@@ -57,66 +57,66 @@ html, body {
   user-select: none;
 }
 
-#calendar-controls .button {
+#calendarControls .button {
   padding: 0.5rem;
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
 }
 
-#calendar-controls .button.inactive {
+#calendarControls .button.inactive {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-#calendar-controls .date {
+#calendarControls .date {
   padding: 0.5rem;
   color: white;
   font-size: 1.5rem;
 }
 
-#calendar-controls .date i {
+#calendarControls .date i {
   margin-left: 0.5rem;
   cursor: pointer;
 }
 
-#calendar-content {
+#calendarContent {
   position: relative;
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   overflow-y: auto;
 }
 
-#calendar-content .img-container {
+#calendarContent .img-container {
   display: grid;
   height: 100%;
 }
 
-#calendar-content .img-container img {
+#calendarContent .img-container img {
   margin: auto;
 }
 
-#calendar-content::-webkit-scrollbar {
+#calendarContent::-webkit-scrollbar {
   width: 1rem;
 }
 
-#calendar-content::-webkit-scrollbar-track {
+#calendarContent::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 0.375rem rgba(0,0,0,0.3);
   box-shadow: inset 0 0 0.375rem rgba(0,0,0,0.3);
 }
 
-#calendar-content::-webkit-scrollbar-thumb {
+#calendarContent::-webkit-scrollbar-thumb {
   background-color: #b817a2;
   border-radius: 0.5rem;
 }
 
-#calendar-content ol li {
+#calendarContent ol li {
   height: 4rem;
   padding: 0.5rem;
   border-bottom: 1px solid #c7c7c7;
 }
 
-#calendar-content ul li {
+#calendarContent ul li {
   position: absolute;
   height: 3.33rem;
   width: calc(100% - 6rem);
@@ -141,14 +141,14 @@ html, body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-#modal-content {
+#modalContent {
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background-color: #efefef;
   margin: 2rem;
   padding: 1rem;
 }
 
-#modal-content .radio {
+#modalContent .radio {
   width: 7.5rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem 0;
@@ -157,12 +157,12 @@ html, body {
   grid-gap: 0.25rem;
 }
 
-#modal-content p {
+#modalContent p {
   margin-bottom: 1rem;
   font-style: italic;
 }
 
-#modal-content .radio label,
-#modal-content .radio input[type="radio"] {
+#modalContent .radio label,
+#modalContent .radio input[type="radio"] {
   cursor: pointer;
 }
