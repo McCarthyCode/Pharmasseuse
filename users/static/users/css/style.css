@@ -83,6 +83,10 @@ a, input {
   line-height: 1.25;
 }
 
+.info p {
+  margin-bottom: 0.25rem;
+}
+
 .info > div {
   white-space: nowrap;
   overflow: hidden;

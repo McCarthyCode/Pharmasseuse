@@ -155,7 +155,8 @@ class ProfileManager(Manager):
         errors = []
 
         try:
-            profile = models.Profile.objects.get(pk=request.POST['profile-id'])
+            profile_id = int(request.POST['profile-id'])
+            profile = models.Profile.objects.get(pk=profile_id)
             appt = Appointment.objects.get(
                 profile=profile,
                 date_end__gt=datetime.now(pytz.utc),
@@ -172,10 +173,10 @@ class ProfileManager(Manager):
             appt.massage = massage
             appt.save()
 
-            return (
-                True,
-                'You have successfully changed %s %s\'s massage type.' %
-                    (first_name, last_name),
-                )
+            name = 'your' if request.session['id'] == profile_id \
+                else '%s %s\'s' % (first_name, last_name)
+            message = 'You have successfully updated %s massage type.' % name
+
+            return (True, message)
 
         return (False, errors)
