@@ -72,12 +72,13 @@ $(document).ready(function () {
     var $swedishRadio = $('input[type="radio"][name="massage"][value="SW"]');
     var $deepTissueRadio = $('input[type="radio"][name="massage"][value="DT"]');
     var $unspecifiedRadio = $('input[type="radio"][name="massage"][value=""]');
+    var profileId = 0;
     $('#appointments tbody tr').on('click touchend', function (event) {
         if ($(this).children('td').hasClass('dataTables_empty')) {
             return;
         }
 
-        var profileId = $(this).children('input[name=profileId]').val();
+        profileId = $(this).children('input[name=profile-id]').val();
         var firstName = $(this).children('.first-name').text();
         var lastName = $(this).children('.last-name').text();
         var email = $(this).children('input[name=email]').val();
@@ -115,7 +116,24 @@ $(document).ready(function () {
     });
 
     // edit massage type
-    $('#updateMassageType').on('click touchend', function () {
+    $('#updateMassageType').on('click touchend', function (event) {
+        event.preventDefault();
+
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
         var massage = $('input[name=massage]:checked').val();
+
+        if (massage === '') {
+            massage = null;
+        }
+
+        var context = {
+            'csrfmiddlewaretoken': csrf,
+            'massage': massage,
+            'profile-id': profileId,
+        }
+
+        $.post('/profile/edit_massage_type', context, function () {
+            window.location.replace('/profile');
+        });
     });
 });

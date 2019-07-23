@@ -6,6 +6,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from users.models import Profile
 from booking.models import Appointment
 
@@ -119,7 +120,7 @@ def edit_massage_type(request):
         for error in response:
             messages.error(request, error)
 
-    return redirect('users:index')
+    return HttpResponse(response)
 
 
 ######################

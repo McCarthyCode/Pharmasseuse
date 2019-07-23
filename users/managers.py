@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 import re
+import pytz
+from datetime import datetime
 
 from django.db.models import Manager
 from django.contrib.auth.models import User, UserManager
@@ -149,10 +151,14 @@ class ProfileManager(Manager):
 
         try:
             profile = models.Profile.objects.get(pk=request.POST['profile-id'])
-            appt = Appointment.objects.get(profile=profile)
+            appt = Appointment.objects.get(
+                profile=profile,
+                date_end__gt=datetime.now(pytz.utc),
+            )
             massage = request.POST['massage']
-        except:
+        except Exception as exception:
             errors.append('There was an error changing the massage type.')
+            errors.append(exception)
 
         if not errors:
             first_name = profile.user.first_name
@@ -163,7 +169,7 @@ class ProfileManager(Manager):
 
             return (
                 True,
-                'You have successfully changed %s %s\'s massage type' %
+                'You have successfully changed %s %s\'s massage type.' %
                     (first_name, last_name),
                 )
 
