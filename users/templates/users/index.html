@@ -279,6 +279,9 @@
       <span class="close">&times;</span>
       <h3 class="h3">Details</h3>
       <h5 class="h5">Client Info</h5>
+      <div class="edit">
+        <a href="#">Edit</a>
+      </div>
       <div class="info">
         <div>Name</div>
         <div id="name"></div>
@@ -286,6 +289,42 @@
         <div id="email"></div>
         <div>Phone Number</div>
         <div id="phone"></div>
+      </div>
+      <div class="edit-profile">
+        <form action="{% url 'users:edit_profile' %}" method="POST">
+          {% csrf_token %}
+          <input id="profileId" type="hidden" name="profile-id">
+          <div class="form-inline">
+            <input
+              type="text"
+              name="first-name"
+              placeholder="First Name"
+              class="form-control col-6"
+            >
+            <input
+              type="text"
+              name="last-name"
+              placeholder="Last Name"
+              class="form-control col-6"
+            >
+          </div>
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            class="form-control"
+          >
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            class="form-control"
+          >
+          <div class="btn-container">
+            <input class="btn btn-primary" type="submit" value="Edit">
+            <input class="btn btn-secondary" type="submit" value="Cancel">
+          </div>
+        </form>
       </div>
       <h5 class="h5">Appointment Details</h5>
       <div class="details-form info">

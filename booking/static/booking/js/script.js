@@ -79,7 +79,7 @@ $(document).ready(function () {
             var id = $(event.target).attr('data-id');
             $('#modalContent input[name=appointment-id]').val(id);
 
-            $modal.stop().fadeIn();
+            $modal.stop().fadeIn(500);
         }
     });
 
@@ -91,13 +91,13 @@ $(document).ready(function () {
             window.setTimeout(() => debounce = false, 250);
         } else if ($(event.target).is($('#modal, #modal .container')) &&
             !debounce) {
-            $modal.stop().fadeOut();
+            $modal.stop().fadeOut(500);
         }
     });
 
     // handle close button
     $('#modalContent').on('click touchend', '.close', function (event) {
-        $modal.stop().fadeOut();
+        $modal.stop().fadeOut(500);
     });
 
     // select radio buttons on corresponding label click

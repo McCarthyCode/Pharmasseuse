@@ -1,16 +1,14 @@
 $(document).ready(function () {
-    var $infoContainer = $('.info-container');
-    var $editProfile = $('.edit-profile');
-    var $editPassword = $('.edit-password');
-
-    var state = "info";
-
     $('#appointments').DataTable({
-        "order": [[ 2, "asc" ]],
+        'order': [[ 2, 'asc' ]],
     });
 
     // change state based on edit anchor click
-    $('.edit a').on('click touchend', function (event) {
+    var state = 'info';
+    var $infoContainer = $('.profile .info-container');
+    var $editProfile = $('.profile .edit-profile');
+    var $editPassword = $('.profile .edit-password');
+    $('.profile .edit a').on('click touchend', function (event) {
         event.preventDefault();
 
         if (state === "info") {
@@ -50,22 +48,32 @@ $(document).ready(function () {
         state = "info";
     });
 
+    // revert edit form to info grid after modal close
+    var $modalInfo = $('#modalContent .info:not(.details-form)');
+    var $modalEdit = $('#modalContent .edit-profile');
+    function revertModalInfo() {
+        $modalInfo.show();
+        $modalEdit.hide();
+    }
+
     // handle click in darkened area outside of modal
-    var $modal = $('#modal');
     debounce = false;
+    var $modal = $('#modal');
     $(window).on('click touchend contextmenu', function (event) {
         if (event.type === 'contextmenu') {
             debounce = true;
             window.setTimeout(() => debounce = false, 250);
         } else if ($(event.target).is($('#modal, #modal .container')) &&
             !debounce) {
-            $modal.stop().fadeOut();
+            $modal.stop().fadeOut(500);
+            window.setTimeout(revertModalInfo, 500);
         }
     });
 
     // handle close button
     $('#modalContent').on('click touchend', '.close', function (event) {
-        $modal.stop().fadeOut();
+        $modal.stop().fadeOut(500);
+        window.setTimeout(revertModalInfo, 500);
     });
 
     // handle table row modal trigger
@@ -86,11 +94,16 @@ $(document).ready(function () {
         var date = $(this).children('input[name=date]').val();
         var massage = $(this).children('input[name=massage]').val();
 
-        $('#profileId').val(profileId);
         $('#name').text(`${firstName} ${lastName}`);
         $('#email').text(email);
         $('#phone').text(phone);
         $('#date').text(date);
+
+        $('#profileId').val(profileId);
+        $('#modalContent input[name=first-name]').val(firstName);
+        $('#modalContent input[name=last-name]').val(lastName);
+        $('#modalContent input[name=email]').val(email);
+        $('#modalContent input[name=phone]').val(phone);
 
         var $massage = $('#massage');
         if (massage === "DT") {
@@ -101,7 +114,7 @@ $(document).ready(function () {
             $unspecifiedRadio.prop('checked', true);
         }
 
-        $modal.stop().fadeIn();
+        $modal.stop().fadeIn(500);
     });
 
     // select radio buttons on corresponding label click
@@ -135,5 +148,13 @@ $(document).ready(function () {
         $.post('/profile/edit_massage_type', context, function () {
             window.location.replace('/profile');
         });
+    });
+
+    // change state based on edit anchor click
+    $('#modalContent .edit a, #modalContent form .btn-secondary').on('click touchend', function (event) {
+        event.preventDefault();
+
+        $modalInfo.toggle();
+        $modalEdit.toggle();
     });
 });

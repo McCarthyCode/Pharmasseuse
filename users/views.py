@@ -86,10 +86,7 @@ def edit_profile(request):
     valid, response = Profile.objects.edit_profile(request)
 
     if valid:
-        messages.success(
-            request,
-            'You have successfully updated your contact info.',
-        )
+        messages.success(request, response)
     else:
         for error in response:
             messages.error(request, error)

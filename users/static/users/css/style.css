@@ -211,10 +211,18 @@ a, input {
 }
 
 #modalContent {
+  position: relative;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background-color: #efefef;
   margin: 2rem;
   padding: 1rem;
+}
+
+#modalContent .edit {
+  z-index: 4;
+  position: absolute;
+  top: 55px;
+  right: 1rem;
 }
 
 #modalContent .radio {

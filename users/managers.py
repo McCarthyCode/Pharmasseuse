@@ -109,7 +109,8 @@ class ProfileManager(Manager):
             errors.append('Please enter your phone number.')
 
         if not errors:
-            profile = models.Profile.objects.get(pk=request.POST['profile-id'])
+            profile_id = int(request.POST['profile-id'])
+            profile = models.Profile.objects.get(pk=profile_id)
             user = profile.user
 
             user.first_name = request.POST['first-name']
@@ -120,7 +121,11 @@ class ProfileManager(Manager):
             user.save()
             profile.save()
 
-            return (True, profile)
+            name = 'your' if request.session['id'] == profile_id \
+                else '%s %s\'s' % (user.first_name, user.last_name)
+            message = 'You have successfully updated %s contact info.' % name
+
+            return (True, message)
 
         return (False, errors)
 
