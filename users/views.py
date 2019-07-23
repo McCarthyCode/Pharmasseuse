@@ -110,6 +110,17 @@ def edit_password(request):
 
     return redirect('users:index')
 
+def edit_massage_type(request):
+    valid, response = Profile.objects.edit_massage_type(request)
+
+    if valid:
+        messages.success(request, response)
+    else:
+        for error in response:
+            messages.error(request, error)
+
+    return redirect('users:index')
+
 
 ######################
 # FOR DEBUG USE ONLY #

@@ -21,7 +21,7 @@ footer a:hover {
 }
 
 .footer-list {
-  max-width: 26rem;
+  max-width: 28rem;
   position: relative;
   margin: auto;
   overflow: hidden;
@@ -44,4 +44,11 @@ footer a:hover {
   padding: 0 0.5rem;
   text-align: center;
   border-left: 1px solid white;
+}
+
+footer .fa-external-link-alt {
+  color: #00ffff;
+  vertical-align: 1px;
+  font-size: 9px;
+  cursor: pointer;
 }

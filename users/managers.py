@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, UserManager
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.hashers import make_password
 from users import models
+from booking.models import Appointment
 
 EMAIL_REGEX = re.compile(
     r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$')
@@ -20,8 +21,8 @@ class ProfileManager(Manager):
         """
         # checks if user is registering
         if action == 'register':
-            if len(request.POST['firstName']) == 0 or \
-                len(request.POST['lastName']) == 0:
+            if len(request.POST['first-name']) == 0 or \
+                len(request.POST['last-name']) == 0:
                 errors.append('Please enter your first and last name.')
             if len(request.POST['email']) == 0:
                 errors.append('Please enter your email.')
@@ -32,7 +33,7 @@ class ProfileManager(Manager):
             if len(request.POST['password']) < 8:
                 errors.append(
                     'Please enter a password that contains at least 8 characters.')
-            if request.POST['confirmPassword'] != request.POST['password']:
+            if request.POST['confirm-password'] != request.POST['password']:
                 errors.append('Passwords must match.')
         # checks if user is logging in
         elif action == 'login':
@@ -63,8 +64,8 @@ class ProfileManager(Manager):
                     username=request.POST['email'],
                     email=request.POST['email'],
                     password=request.POST['password'],
-                    first_name=request.POST['firstName'],
-                    last_name=request.POST['lastName'],
+                    first_name=request.POST['first-name'],
+                    last_name=request.POST['last-name'],
                 )
                 models.Profile.objects.create(
                     user=user,
@@ -95,8 +96,8 @@ class ProfileManager(Manager):
     def edit_profile(self, request):
         errors = []
 
-        if len(request.POST['firstName']) == 0 or \
-            len(request.POST['lastName']) == 0:
+        if len(request.POST['first-name']) == 0 or \
+            len(request.POST['last-name']) == 0:
             errors.append('Please enter your first and last name.')
         if len(request.POST['email']) == 0:
             errors.append('Please enter your email.')
@@ -106,11 +107,11 @@ class ProfileManager(Manager):
             errors.append('Please enter your phone number.')
 
         if not errors:
-            profile = models.Profile.objects.get(pk=request.POST['profileId'])
+            profile = models.Profile.objects.get(pk=request.POST['profile-id'])
             user = profile.user
 
-            user.first_name = request.POST['firstName']
-            user.last_name = request.POST['lastName']
+            user.first_name = request.POST['first-name']
+            user.last_name = request.POST['last-name']
             user.email = request.POST['email']
             profile.phone = request.POST['phone']
 
@@ -124,21 +125,46 @@ class ProfileManager(Manager):
     def edit_password(self, request):
         errors = []
 
-        user = User.objects.get(pk=request.POST['userId'])
-        correct_pw = user.check_password(request.POST['currentPassword'])
+        user = User.objects.get(pk=request.POST['user-id'])
+        correct_pw = user.check_password(request.POST['current-password'])
 
         if not correct_pw:
             errors.append('The current password you entered was not correct.')
-        if len(request.POST['newPassword']) < 8:
+        if len(request.POST['new-password']) < 8:
             errors.append(
                 'Please enter a password that contains at least 8 characters.')
-        if request.POST['passwordConfirm'] != request.POST['newPassword']:
+        if request.POST['password-confirm'] != request.POST['new-password']:
             errors.append('Passwords must match.')
 
         if not errors:
-            user.password = make_password(request.POST['newPassword'])
+            user.password = make_password(request.POST['new-password'])
             user.save()
 
             return (True, user)
+
+        return (False, errors)
+
+    def edit_massage_type(self, request):
+        errors = []
+
+        try:
+            profile = models.Profile.objects.get(pk=request.POST['profile-id'])
+            appt = Appointment.objects.get(profile=profile)
+            massage = request.POST['massage']
+        except:
+            errors.append('There was an error changing the massage type.')
+
+        if not errors:
+            first_name = profile.user.first_name
+            last_name = profile.user.last_name
+
+            appt.massage = massage
+            appt.save()
+
+            return (
+                True,
+                'You have successfully changed %s %s\'s massage type' %
+                    (first_name, last_name),
+                )
 
         return (False, errors)

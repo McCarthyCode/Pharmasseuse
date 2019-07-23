@@ -58,13 +58,13 @@
             {% csrf_token %}
             <input
               type="text"
-              name="firstName"
+              name="first-name"
               placeholder="First Name"
               class="form-control"
             >
             <input
               type="text"
-              name="lastName"
+              name="last-name"
               placeholder="Last Name"
               class="form-control"
             >
@@ -88,7 +88,7 @@
             >
             <input
               type="password"
-              name="confirmPassword"
+              name="confirm-password"
               placeholder="Confirm Password"
               class="form-control"
             >
@@ -130,18 +130,18 @@
           <div class="edit-profile">
             <form action="{% url 'users:edit_profile' %}" method="POST">
               {% csrf_token %}
-              <input type="hidden" name="profileId" value="{{ profile.pk }}">
+              <input type="hidden" name="profile-id" value="{{ profile.pk }}">
               <div class="form-inline">
                 <input
                   type="text"
-                  name="firstName"
+                  name="first-name"
                   placeholder="First Name"
                   class="form-control col-6"
                   value="{{ profile.user.first_name }}"
                 >
                 <input
                   type="text"
-                  name="lastName"
+                  name="last-name"
                   placeholder="Last Name"
                   class="form-control col-6"
                   value="{{ profile.user.last_name }}"
@@ -170,22 +170,22 @@
           <div class="edit-password">
               <form action="{% url 'users:edit_password' %}" method="POST">
                 {% csrf_token %}
-                <input type="hidden" name="userId" value="{{ profile.user.pk }}">
+                <input type="hidden" name="user-id" value="{{ profile.user.pk }}">
                 <input
                   type="password"
-                  name="currentPassword"
+                  name="current-password"
                   placeholder="Current Password"
                   class="form-control"
                 >
                 <input
                   type="password"
-                  name="newPassword"
+                  name="new-password"
                   placeholder="New Password"
                   class="form-control"
                 >
                 <input
                   type="password"
-                  name="passwordConfirm"
+                  name="password-confirm"
                   placeholder="Confirm Password"
                   class="form-control"
                 >
@@ -257,6 +257,7 @@
                 {% else %}
                 <td class="font-italic">unspecified</td>
                 {% endif %}
+                <input type="hidden" name="profile-id" value="{{ appt.profile.pk }}">
                 <input type="hidden" name="email" value="{{ appt.profile.user.email }}">
                 <input type="hidden" name="phone" value="{{ appt.profile.phone }}">
                 <input type="hidden" name="date" value="{{ appt.date_start|date:'D M j, g:i a' }}">
@@ -287,16 +288,27 @@
         <div id="phone"></div>
       </div>
       <h5 class="h5">Appointment Details</h5>
-      <div class="info">
+      <div class="details-form info">
         <div>Date/Time</div>
-        <div id="date"></div>
-        <div>Massage Type</div>
-        <div id="massage"></div>
+        <div>
+          <a href="#" id="date"></a>
+        </div>
+        <div class="vertical-center">
+          <div>Massage Type</div>
+        </div>
+        <div class="radio">
+          <input type="radio" name="massage" value="SW">
+          <label id="swedish" for="massage">Swedish</label>
+          <input type="radio" name="massage" value="DT">
+          <label id="deepTissue" for="massage">Deep Tissue</label>
+          <input type="radio" name="massage" value="">
+          <label id="unspecified" class="font-italic" for="massage">unspecified</label>
+        </div>
       </div>
       <h5 class="h5">Actions</h5>
       <div class="btn-container">
-        <a class="btn btn-primary" href="#">Change Details</a>
-        <a class="btn btn-danger" href="#">Cancel</a>
+        <a id="updateMassageType" class="btn btn-primary" href="#">Update Massage Type</a>
+        <a class="btn btn-danger" href="#">Cancel Appointment</a>
       </div>
     </div>
   </div>

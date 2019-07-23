@@ -155,6 +155,7 @@ html, body {
   display: grid;
   grid-template-columns: 1.5rem auto;
   grid-gap: 0.25rem;
+  line-height: 1;
 }
 
 #modalContent p {

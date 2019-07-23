@@ -8,6 +8,10 @@
   font-family: 'Open Sans', Arial, sans-serif;
 }
 
+a, input {
+  outline: 0;
+}
+
 .page {
   min-height: 100vh;
   background-color: #ffcc8d;
@@ -91,6 +95,25 @@
   padding-right: 1px;
 }
 
+.info > .vertical-center {
+  position: relative;
+}
+
+.info > div.vertical-center div,
+.info > div.vertical-center div {
+  position: absolute;
+  bottom: 50%;
+  transform: translateY(50%);
+}
+
+.info > div.vertical-center:nth-child(2n + 1) div {
+  right: 0;
+}
+
+.info > div.vertical-center:nth-child(2n) div {
+  left: 0;
+}
+
 .edit-profile,
 .edit-password {
   display: none;
@@ -165,6 +188,14 @@
   cursor: pointer;
 }
 
+#appointments tbody tr,
+.dataTables_empty {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 #modal {
   display: none;
   position: fixed;
@@ -184,6 +215,21 @@
   background-color: #efefef;
   margin: 2rem;
   padding: 1rem;
+}
+
+#modalContent .radio {
+  width: 7.5rem;
+  padding: 0.5rem 0;
+  display: grid;
+  grid-template-columns: 1.5rem auto;
+  grid-gap: 0.25rem;
+  line-height: 1;
+}
+
+#modalContent .radio label,
+#modalContent .radio input[type="radio"] {
+  cursor: pointer;
+  height: 1rem;
 }
 
 @media (min-width: 768px) {

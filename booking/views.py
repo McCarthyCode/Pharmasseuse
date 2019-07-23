@@ -239,48 +239,28 @@ def next(request):
 
 
 def submit(request):
-    try:
-        profile_id = request.POST.get('profile-id')
-        appointment_id = request.POST.get('appointment-id')
-        massage = request.POST.get('massage')
+    valid, response = Appointment.objects.submit(request)
 
-        profile = Profile.objects.get(pk=profile_id)
-        appts = Appointment.objects.filter(
-            profile=profile,
-            date_end__gt=datetime.now(pytz.utc),
-        )
+    if not valid:
+        for error in response:
+            messages.error(request, error)
 
-        if len(appts) == 0:
-            appt = Appointment.objects.get(pk=appointment_id)
+        return redirect('users:index')
 
-            appt.profile = profile
-            appt.massage = massage
-
-            appt.save()
-        else:
-            messages.error(request, 'You may only book one appointment at a time.')
-
-            return redirect('users:index')
-    except Exception:
-        messages.error(request, 'There was an error booking your appointment.')
-
-    messages.success(request, 'You have successfully booked your appointment.')
+    messages.success(request, response)
 
     return redirect('users:index')
 
+
 def cancel(request):
-    try:
-        appointment_id = request.POST.get('appointment-id')
+    valid, response = Appointment.objects.cancel_appointment(request)
 
-        appt = Appointment.objects.get(pk=appointment_id)
+    if not valid:
+        for error in response:
+            messages.error(request, error)
 
-        appt.profile = None
-        appt.massage = None
+        return redirect('users:index')
 
-        appt.save()
-    except Exception:
-        messages.error(request, 'There was an error cancelling your appointment.')
-
-    messages.success(request, 'You have successfully cancelled your appointment.')
+    messages.success(request, response)
 
     return redirect('users:index')

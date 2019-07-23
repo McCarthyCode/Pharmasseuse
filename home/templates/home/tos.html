@@ -5,8 +5,8 @@
 <div class="container m-tb-2rem tos-privacy">
   <h1>Terms and Conditions for {{ name }}</h1>
   <h3>Introduction</h3>
-  <p>These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, {{ name }} accessible at {{ domain }}.</p>
-  <p>These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed to accept all terms and conditions written in here. You must not use this Website if you disagree with any of these Website Standard Terms and Conditions. Our Terms and Conditions have been generated at <a href="https://termsandconditionstemplate.net">Terms And Conditions Template</a> website.</p>
+  <p>These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, {{ name }} accessible at <a href="{% url 'home:index' %}">{{ domain }}</a>.</p>
+  <p>These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed to accept all terms and conditions written in here. You must not use this Website if you disagree with any of these Website Standard Terms and Conditions. Our Terms and Conditions have been generated at <a href="https://termsandconditionstemplate.net">Terms And Conditions Template</a> <i class="fas fa-external-link-alt" title="External Link"></i> website.</p>
   <p>Minors or people below 18 years old are not allowed to use this Website.</p>
   <h3>Intellectual Property Rights</h3>
   <p>Other than the content you own, under these Terms, {{ name }} and/or its licensors own all the intellectual property rights and materials contained in this Website.</p>
@@ -27,7 +27,7 @@
   <h3>Your Content</h3>
   <p>In these Website Standard Terms and Conditions, "Your Content" shall mean any audio, video text, images or other material you choose to display on this Website. By displaying Your Content, you grant {{ name }} a non-exclusive, worldwide irrevocable, sub licensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.</p>
   <h3>Your Privacy</h3>
-  <p>Please read <a href="https://privacypolicygenerator.info/">our Privacy Policy</a>.</p>
+  <p>Please read <a href="{% url 'home:privacy' %}">our Privacy Policy</a>.</p>
   <p>Your Content must be your own and must not be invading any third-party’s rights. {{ name }} reserves the right to remove any of Your Content from this Website at any time without notice.</p>
   <h3>No warranties</h3>
   <p>This Website is provided "as is," with all faults, and {{ name }} express no representations or warranties, of any kind related to this Website or the materials contained on this Website. Also, nothing contained on this Website shall be interpreted as advising you.</p>

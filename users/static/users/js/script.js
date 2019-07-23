@@ -8,7 +8,7 @@ $(document).ready(function () {
     $('#appointments').DataTable({
         "order": [[ 2, "asc" ]],
     });
-    
+
     // change state based on edit anchor click
     $('.edit a').on('click touchend', function (event) {
         event.preventDefault();
@@ -69,7 +69,15 @@ $(document).ready(function () {
     });
 
     // handle table row modal trigger
+    var $swedishRadio = $('input[type="radio"][name="massage"][value="SW"]');
+    var $deepTissueRadio = $('input[type="radio"][name="massage"][value="DT"]');
+    var $unspecifiedRadio = $('input[type="radio"][name="massage"][value=""]');
     $('#appointments tbody tr').on('click touchend', function (event) {
+        if ($(this).children('td').hasClass('dataTables_empty')) {
+            return;
+        }
+
+        var profileId = $(this).children('input[name=profileId]').val();
         var firstName = $(this).children('.first-name').text();
         var lastName = $(this).children('.last-name').text();
         var email = $(this).children('input[name=email]').val();
@@ -77,19 +85,37 @@ $(document).ready(function () {
         var date = $(this).children('input[name=date]').val();
         var massage = $(this).children('input[name=massage]').val();
 
+        $('#profileId').val(profileId);
         $('#name').text(`${firstName} ${lastName}`);
         $('#email').text(email);
         $('#phone').text(phone);
         $('#date').text(date);
 
+        var $massage = $('#massage');
         if (massage === "DT") {
-            $('#massage').text("Deep Tissue");
+            $deepTissueRadio.prop('checked', true);
         } else if (massage === "SW") {
-            $('#massage').text("Swedish");
+            $swedishRadio.prop('checked', true);
         } else {
-            $('#massage').text("unspecified");
+            $unspecifiedRadio.prop('checked', true);
         }
 
         $modal.stop().fadeIn();
+    });
+
+    // select radio buttons on corresponding label click
+    $('#swedish').on('click touchend', function (event) {
+        $swedishRadio.prop('checked', true);
+    });
+    $('#deepTissue').on('click touchend', function (event) {
+        $deepTissueRadio.prop('checked', true);
+    });
+    $('#unspecified').on('click touchend', function (event) {
+        $unspecifiedRadio.prop('checked', true);
+    });
+
+    // edit massage type
+    $('#updateMassageType').on('click touchend', function () {
+        var massage = $('input[name=massage]:checked').val();
     });
 });

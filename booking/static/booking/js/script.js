@@ -101,11 +101,15 @@ $(document).ready(function () {
     });
 
     // select radio buttons on corresponding label click
-    $('#SW').on('click touchend', function (event) {
+    $('input[type="radio"][name="massage"][value=""]').prop('checked', true);
+    $('#swedish').on('click touchend', function (event) {
         $('input[type="radio"][name="massage"][value="SW"]').prop('checked', true);
     });
-    $('#DT').on('click touchend', function (event) {
+    $('#deepTissue').on('click touchend', function (event) {
         $('input[type="radio"][name="massage"][value="DT"]').prop('checked', true);
+    });
+    $('#unspecified').on('click touchend', function (event) {
+        $('input[type="radio"][name="massage"][value=""]').prop('checked', true);
     });
 
 });

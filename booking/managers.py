@@ -115,9 +115,55 @@ class AppointmentManager(models.Manager):
         ))
 
 
-    def edit_appointment(self, request):
-        pass
+    def submit(self, request):
+        from users.models import Profile
+        from .models import Appointment
 
-    def delete_appointment(self, request):
-        pass
+        profile_id = request.POST.get('profile-id')
+        appointment_id = request.POST.get('appointment-id')
+        massage = request.POST.get('massage')
 
+        try:
+            profile = Profile.objects.get(pk=profile_id)
+            appts = Appointment.objects.filter(
+                profile=profile,
+                date_end__gt=datetime.now(pytz.utc),
+            )
+        except Exception as exception:
+            return (False, [
+                'There was an error booking your appointment.',
+                exception,
+            ])
+
+        if len(appts) == 0:
+            appt = Appointment.objects.get(pk=appointment_id)
+
+            appt.profile = profile
+            appt.massage = massage if massage != '' else None
+
+            appt.save()
+        else:
+            return (False, ['You may only book one appointment at a time.'])
+
+        return (True, 'You have successfully booked your appointment.')
+
+
+    def cancel_appointment(self, request):
+        from .models import Appointment
+
+        try:
+            appointment_id = request.POST.get('appointment-id')
+
+            appt = Appointment.objects.get(pk=appointment_id)
+
+            appt.profile = None
+            appt.massage = None
+
+            appt.save()
+        except Exception as exception:
+            return (False, [
+                'There was an error cancelling your appointment.',
+                exception,
+            ])
+
+        return (True, 'You have successfully cancelled your appointment.')
