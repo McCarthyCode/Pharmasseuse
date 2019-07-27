@@ -2,8 +2,10 @@ import pytz
 
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pharmasseuse.settings import TIME_ZONE
+
+tz = pytz.timezone(TIME_ZONE)
 
 
 class AppointmentManager(models.Manager):
@@ -113,6 +115,226 @@ class AppointmentManager(models.Manager):
             date_start__month=date.month,
             date_start__day=date.day,
         ))
+
+
+    def date_picker(self, request):
+        from booking.models import Appointment
+
+        today = datetime.now(tz)
+        try:
+            year = int(request.GET.get('year', today.year))
+            month = int(request.GET.get('month', today.month))
+        except Exception as e:
+            return (False, ['There was an error with the date picker.', e])
+
+        date = first_of_month = datetime(year, month, 1, tzinfo=tz)
+        calendar = []
+        while date.weekday() != 6:
+            date = date - timedelta(days=1)
+
+        for _ in range(42):
+            appts = Appointment.objects.filter(date_start__date=date)
+
+            calendar.append({
+                'date': date,
+                'active': \
+                    date > today and \
+                    date.month == first_of_month.month and \
+                    len(appts) > 0,
+            })
+
+            date = date + timedelta(days=1)
+
+        return (True, (first_of_month, calendar))
+
+
+    def day(self, request):
+        from booking.models import Appointment
+
+        today = datetime.now(tz).replace(
+            hour=0, minute=0, second=0, microsecond=0)
+        tomorrow = today + timedelta(days=1)
+
+        try:
+            day = datetime(
+                int(request.GET.get('year', tomorrow.year)),
+                int(request.GET.get('month', tomorrow.month)),
+                int(request.GET.get('day', tomorrow.day)),
+                0, 0, 0, 0,
+            )
+        except Exception as e:
+            return (False, ['There was an error getting the date.', e])
+
+        after_change = day + timedelta(hours=3)
+        day = tz.localize(day)
+        after_change = tz.localize(after_change)
+
+        spring_forward = day.tzinfo._dst.seconds < after_change.tzinfo._dst.seconds
+        fall_back = day.tzinfo._dst.seconds > after_change.tzinfo._dst.seconds
+
+        times = []
+        if spring_forward:
+            for i in range(2):
+                times.append({
+                    'hour': '12' if i % 12 == 0 else str(i % 12),
+                    'minute': '00',
+                    'ampm': 'a.m.' if i < 12 else 'p.m.',
+                })
+            for i in range(3, 24):
+                times.append({
+                    'hour': '12' if i % 12 == 0 else str(i % 12),
+                    'minute': '00',
+                    'ampm': 'a.m.' if i < 12 else 'p.m.',
+                })
+        elif fall_back:
+            for i in range(2):
+                times.append({
+                    'hour': '12' if i % 12 == 0 else str(i % 12),
+                    'minute': '00',
+                    'ampm': 'a.m.' if i < 12 else 'p.m.',
+                })
+            times.append({
+                'hour': 1,
+                'minute': '00',
+                'ampm': 'a.m.' if i < 12 else 'p.m.',
+            })
+            for i in range(2, 24):
+                times.append({
+                    'hour': '12' if i % 12 == 0 else str(i % 12),
+                    'minute': '00',
+                    'ampm': 'a.m.' if i < 12 else 'p.m.',
+                })
+        else:
+            for i in range(24):
+                times.append({
+                    'hour': '12' if i % 12 == 0 else str(i % 12),
+                    'minute': '00',
+                    'ampm': 'a.m.' if i < 12 else 'p.m.',
+                })
+
+        appointments = Appointment.objects.filter(
+            date_start__gte=day.astimezone(pytz.utc),
+            date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+        ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1))
+
+        slots = []
+        for appt in appointments:
+            date_start = appt.date_start
+            date_end = appt.date_end
+
+            date_start = date_start.astimezone(tz)
+            date_end = date_end.astimezone(tz)
+
+            ampm_start = date_start.strftime('%p')
+            ampm_end = date_end.strftime('%p')
+
+            if ampm_start == 'AM':
+                ampm_start = 'a.m.'
+            elif ampm_start == 'PM':
+                ampm_start = 'p.m.'
+
+            if ampm_end == 'AM':
+                ampm_end = 'a.m.'
+            elif ampm_end == 'PM':
+                ampm_end = 'p.m.'
+
+            hour = date_start.astimezone(tz).hour
+
+            if spring_forward and hour >= 2:
+                hour = hour - 1
+
+            if fall_back and hour >= 2:
+                hour = hour + 1
+
+            slots.append({
+                'hour': hour,
+                'id': appt.id,
+                'start': '%d:%02d %s' % (
+                    date_start.hour % 12,
+                    date_start.minute,
+                    ampm_start,
+                ),
+                'end': '%d:%02d %s' % (
+                    date_end.hour % 12,
+                    date_end.minute,
+                    ampm_end,
+                ),
+            })
+
+        return (True, (times, slots))
+
+
+    def prev(self, request):
+        from booking.models import Appointment
+
+        today = datetime.now(tz).replace(
+            hour=0, minute=0, second=0, microsecond=0)
+
+        try:
+            day = datetime(
+                int(request.GET.get('year')),
+                int(request.GET.get('month')),
+                int(request.GET.get('day')),
+                0, 0, 0, 0,
+            )
+        except Exception as e:
+            return (False, ['There was an error getting the previous date.', e])
+
+        day = tz.localize(day)
+
+        appts = Appointment.objects.filter(
+                date_start__lt=day.astimezone(pytz.utc),
+                date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            ).order_by('-date_start')
+
+        if len(appts) > 0:
+            return (True, {
+                'exists': True,
+                'date': {
+                    'year': appts[0].date_start.astimezone(tz).year,
+                    'month': appts[0].date_start.astimezone(tz).month,
+                    'day': appts[0].date_start.astimezone(tz).day,
+                }
+            })
+        else:
+            return (True, {'exists': False})
+
+
+    def next(self, request):
+        from booking.models import Appointment
+
+        today = datetime.now(tz).replace(
+            hour=0, minute=0, second=0, microsecond=0)
+
+        try:
+            day = datetime(
+                int(request.GET.get('year')),
+                int(request.GET.get('month')),
+                int(request.GET.get('day')),
+                0, 0, 0, 0,
+            )
+        except Exception as e:
+            return (False, ['There was an error getting the next date.', e])
+
+        day = tz.localize(day)
+
+        appts = Appointment.objects \
+            .filter(date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1)) \
+            .filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+            .order_by('date_start')
+
+        if len(appts) > 0:
+            return (True, {
+                'exists': True,
+                'date': {
+                    'year': appts[0].date_start.astimezone(tz).year,
+                    'month': appts[0].date_start.astimezone(tz).month,
+                    'day': appts[0].date_start.astimezone(tz).day,
+                }
+            })
+        else:
+            return (True, {'exists': False})
 
 
     def submit(self, request):

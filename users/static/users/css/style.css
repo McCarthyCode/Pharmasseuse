@@ -153,22 +153,26 @@ a, input {
 }
 
 .massage-type {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .massage-type span {
   font-style: italic;
 }
 
-.next-appointment .btn-container {
-  position: relative;
-  height: 2.5rem;
+.next-appointment .form-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.next-appointment .form-container form {
+  display: inline;
 }
 
 .next-appointment .btn {
-  position: absolute;
-  right: 50%;
-  transform: translate(50%);
+  margin: 0.25rem;
 }
 
 .empty {

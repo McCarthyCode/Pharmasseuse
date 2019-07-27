@@ -29,28 +29,15 @@ def index(request):
 
 
 def date_picker(request):
-    today = datetime.now(tz)
-    year = int(request.GET.get('year', today.year))
-    month = int(request.GET.get('month', today.month))
+    valid, response = Appointment.objects.date_picker(request)
 
-    date = first_of_month = \
-        datetime(year, month, 1, tzinfo=tz)
-    calendar = []
-    while date.weekday() != 6:
-        date = date - timedelta(days=1)
+    if not valid:
+        for error in response:
+            messages.error(request, error)
 
-    for _ in range(42):
-        appts = Appointment.objects.filter(date_start__date=date)
+        return redirect('users:index')
 
-        calendar.append({
-            'date': date,
-            'active': \
-                date > today and \
-                date.month == first_of_month.month and \
-                len(appts) > 0,
-        })
-
-        date = date + timedelta(days=1)
+    first_of_month, calendar = response
 
     return render(request, 'booking/date_picker.html', {
         'date': first_of_month,
@@ -61,112 +48,15 @@ def date_picker(request):
 
 
 def day(request):
-    today = datetime.now(tz).replace(
-        hour=0, minute=0, second=0, microsecond=0)
-    tomorrow = today + timedelta(days=1)
+    valid, response = Appointment.objects.day(request)
 
-    day = datetime(
-        int(request.GET.get('year', tomorrow.year)),
-        int(request.GET.get('month', tomorrow.month)),
-        int(request.GET.get('day', tomorrow.day)),
-        0, 0, 0, 0,
-    )
-    after_change = day + timedelta(hours=3)
-    day = tz.localize(day)
-    after_change = tz.localize(after_change)
+    if not valid:
+        for error in response:
+            messages.error(request, error)
 
-    spring_forward = day.tzinfo._dst.seconds < after_change.tzinfo._dst.seconds
-    fall_back = day.tzinfo._dst.seconds > after_change.tzinfo._dst.seconds
+        return redirect('users:index')
 
-    times = []
-    if spring_forward:
-        for i in range(2):
-            times.append({
-                'hour': '12' if i % 12 == 0 else str(i % 12),
-                'minute': '00',
-                'ampm': 'a.m.' if i < 12 else 'p.m.',
-            })
-        for i in range(3, 24):
-            times.append({
-                'hour': '12' if i % 12 == 0 else str(i % 12),
-                'minute': '00',
-                'ampm': 'a.m.' if i < 12 else 'p.m.',
-            })
-    elif fall_back:
-        for i in range(2):
-            times.append({
-                'hour': '12' if i % 12 == 0 else str(i % 12),
-                'minute': '00',
-                'ampm': 'a.m.' if i < 12 else 'p.m.',
-            })
-        times.append({
-            'hour': 1,
-            'minute': '00',
-            'ampm': 'a.m.' if i < 12 else 'p.m.',
-        })
-        for i in range(2, 24):
-            times.append({
-                'hour': '12' if i % 12 == 0 else str(i % 12),
-                'minute': '00',
-                'ampm': 'a.m.' if i < 12 else 'p.m.',
-            })
-    else:
-        for i in range(24):
-            times.append({
-                'hour': '12' if i % 12 == 0 else str(i % 12),
-                'minute': '00',
-                'ampm': 'a.m.' if i < 12 else 'p.m.',
-            })
-
-    appointments = Appointment.objects.filter(
-        date_start__gte=day.astimezone(pytz.utc),
-        date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
-        profile__isnull=True,
-    ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1))
-
-    slots = []
-    for appt in appointments:
-        date_start = appt.date_start
-        date_end = appt.date_end
-
-        date_start = date_start.astimezone(tz)
-        date_end = date_end.astimezone(tz)
-
-        ampm_start = date_start.strftime('%p')
-        ampm_end = date_end.strftime('%p')
-
-        if ampm_start == 'AM':
-            ampm_start = 'a.m.'
-        elif ampm_start == 'PM':
-            ampm_start = 'p.m.'
-
-        if ampm_end == 'AM':
-            ampm_end = 'a.m.'
-        elif ampm_end == 'PM':
-            ampm_end = 'p.m.'
-
-        hour = date_start.astimezone(tz).hour
-
-        if spring_forward and hour >= 2:
-            hour = hour - 1
-
-        if fall_back and hour >= 2:
-            hour = hour + 1
-
-        slots.append({
-            'hour': hour,
-            'id': appt.id,
-            'start': '%d:%02d %s' % (
-                date_start.hour % 12,
-                date_start.minute,
-                ampm_start,
-            ),
-            'end': '%d:%02d %s' % (
-                date_end.hour % 12,
-                date_end.minute,
-                ampm_end,
-            ),
-        })
+    times, slots = response
 
     return render(request, 'booking/day.html', {
         'times': times,
@@ -175,67 +65,27 @@ def day(request):
 
 
 def prev(request):
-    today = datetime.now(tz).replace(
-        hour=0, minute=0, second=0, microsecond=0)
+    valid, response = Appointment.objects.prev(request)
 
-    day = datetime(
-        int(request.GET.get('year')),
-        int(request.GET.get('month')),
-        int(request.GET.get('day')),
-        0, 0, 0, 0,
-    )
-    day = tz.localize(day)
+    if not valid:
+        for error in response:
+            messages.error(request, error)
 
-    appts = Appointment.objects.filter(
-            date_start__lt=day.astimezone(pytz.utc),
-            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
-        ).order_by('-date_start')
+        return redirect('users:index')
 
-    if len(appts) > 0:
-        return JsonResponse({
-            'exists': True,
-            'date': {
-                'year': appts[0].date_start.astimezone(tz).year,
-                'month': appts[0].date_start.astimezone(tz).month,
-                'day': appts[0].date_start.astimezone(tz).day,
-            }
-        })
-    else:
-        return JsonResponse({
-            'exists': False,
-        })
+    return JsonResponse(response)
 
 
 def next(request):
-    today = datetime.now(tz).replace(
-        hour=0, minute=0, second=0, microsecond=0)
+    valid, response = Appointment.objects.next(request)
 
-    day = datetime(
-        int(request.GET.get('year')),
-        int(request.GET.get('month')),
-        int(request.GET.get('day')),
-        0, 0, 0, 0,
-    )
-    day = tz.localize(day)
+    if not valid:
+        for error in response:
+            messages.error(request, error)
 
-    appts = Appointment.objects \
-        .filter(date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1)) \
-        .filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
-        .order_by('date_start')
+        return redirect('users:index')
 
-    if len(appts) > 0:
-        return JsonResponse({
-            'exists': True,
-            'date': {
-                'year': appts[0].date_start.astimezone(tz).year,
-                'month': appts[0].date_start.astimezone(tz).month,
-                'day': appts[0].date_start.astimezone(tz).day,
-            }
-        })
-    else:
-        return JsonResponse({
-            'exists': False,
-        })
+    return JsonResponse(response)
 
 
 def submit(request):
@@ -264,3 +114,11 @@ def cancel(request):
     messages.success(request, response)
 
     return redirect('users:index')
+
+
+def reschedule(request):
+    return redirect('booking:index')
+
+
+def reschedule_form(request):
+    return redirect('booking:index')

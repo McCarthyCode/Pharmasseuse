@@ -217,13 +217,19 @@
           {% else %}
           <p class="massage-type text-center">Massage type: <span>unspecified</span></p>
           {% endif %}
-          <form action="{% url 'booking:cancel' %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="appointment-id" value="{{ next_appt.pk }}">
-            <div class="btn-container">
+          <div class="form-container">
+            <form action="{% url 'booking:reschedule_form' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="profile-id" value="{{ profile.pk }}">
+              <input type="hidden" name="appointment-id" value="{{ next_appt.pk }}">
+              <input class="btn btn-secondary" type="submit" value="Reschedule Appointment">
+            </form>
+            <form action="{% url 'booking:cancel' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="appointment-id" value="{{ next_appt.pk }}">
               <input class="btn btn-secondary" type="submit" value="Cancel Appointment">
-            </div>
-          </form>
+            </form>
+          </div>
           {% endif %}
         </div>
       </div>
