@@ -117,8 +117,26 @@ def cancel(request):
 
 
 def reschedule(request):
-    return redirect('booking:index')
+    valid, response = Appointment.objects.reschedule(request)
+
+    if not valid:
+        for error in response:
+            messages.error(request, error)
+
+        return redirect('users:index')
+
+    return render(request, 'booking/reschedule.html', response)
 
 
 def reschedule_form(request):
-    return redirect('booking:index')
+    valid, response = Appointment.objects.reschedule_form(request)
+
+    if not valid:
+        for error in response:
+            messages.error(request, error)
+
+        return redirect('users:index')
+
+    request.session['profile-id'] = response
+
+    return redirect('booking:reschedule')

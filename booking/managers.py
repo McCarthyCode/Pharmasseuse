@@ -389,3 +389,48 @@ class AppointmentManager(models.Manager):
             ])
 
         return (True, 'You have successfully cancelled your appointment.')
+
+
+    def reschedule(self, request):
+        from users.models import Profile
+
+        errors = []
+
+        user_id = int(request.session.get('id', 0))
+        client_id = int(request.session.get('profile-id', 0))
+
+        if user_id == 0:
+            errors.append(
+                'There was an error retrieving your profile. Please sign in.')
+        if client_id == 0:
+            errors.append(
+                'There was an error retrieving the client\'s profile.')
+
+        if errors:
+            return (False, errors)
+
+        profile = Profile.objects.get(user__pk=client_id)
+
+        tomorrow = datetime.now(tz) + timedelta(days=1)
+        prev = tomorrow - timedelta(days=1)
+        next = tomorrow + timedelta(days=1)
+
+        name = 'your' if user_id == client_id \
+            else '%s %s\'s' % (profile.user.first_name, profile.user.last_name)
+
+        return (True, {
+            'date': tomorrow,
+            'prev': prev,
+            'next': next,
+            'profile': profile,
+            'name': name,
+        })
+
+
+    def reschedule_form(self, request):
+        profile_id = int(request.POST.get('profile-id', 0))
+
+        if profile_id == 0:
+            return (False, ['There was an error retrieving the client\'s profile.'])
+
+        return (True, profile_id)
