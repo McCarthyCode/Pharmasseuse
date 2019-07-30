@@ -12,6 +12,15 @@ a, input {
   outline: 0;
 }
 
+.btn-link {
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .page {
   min-height: 100vh;
   background-color: #ffcc8d;

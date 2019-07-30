@@ -299,7 +299,7 @@
       <div class="edit-profile">
         <form action="{% url 'users:edit_profile' %}" method="POST">
           {% csrf_token %}
-          <input id="profileId" type="hidden" name="profile-id">
+          <input type="hidden" name="profile-id">
           <div class="form-inline">
             <input
               type="text"
@@ -339,7 +339,11 @@
         </div>
         <div>
           <p id="date"></p>
-          <a href="#">Click to reschedule.</a>
+          <form action="{% url 'booking:reschedule_form' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="profile-id">
+            <input class="btn-link" type="submit" value="Click to reschedule.">
+          </form>
         </div>
         <div class="vertical-center">
           <div>Massage Type</div>

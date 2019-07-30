@@ -99,7 +99,7 @@ $(document).ready(function () {
         $('#phone').text(phone);
         $('#date').text(date);
 
-        $('#profileId').val(profileId);
+        $('#modalContent input[name=profile-id]').val(profileId);
         $('#modalContent input[name=first-name]').val(firstName);
         $('#modalContent input[name=last-name]').val(lastName);
         $('#modalContent input[name=email]').val(email);
