@@ -52,7 +52,12 @@ $(document).ready(function () {
 
     // populate calendar
     showLoadingIcon();
-    $.get('/booking/day', function (response) {
+    var context = {
+        'year': $('#date input[name="year"]').val(),
+        'month': $('#date input[name="month"]').val(),
+        'day': $('#date input[name="day"]').val(),
+    };
+    $.get('/booking/day', context, function (response) {
         $calendarContent.empty();
         $calendarContent.append(response);
         alignAppointmentTimes();
@@ -77,7 +82,7 @@ $(document).ready(function () {
             $('#modalContent h4').text(time);
 
             var id = $(event.target).attr('data-id');
-            $('#modalContent input[name=appointment-id]').val(id);
+            $('#modalContent input[name="appointment-id"]').val(id);
 
             $modal.stop().fadeIn(500);
         }

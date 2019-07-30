@@ -117,6 +117,35 @@ class AppointmentManager(models.Manager):
         ))
 
 
+    def index(self, request):
+        from users.models import Profile
+        from booking.models import Appointment
+
+        profile = Profile.objects.get(user__pk=request.session['id']) \
+            if 'id' in request.session else None
+
+        today = datetime.now(tz).replace(
+            hour=0, minute=0, second=0, microsecond=0)
+
+        appts = Appointment.objects.filter(
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+        ).order_by('date_start')
+
+        print(appts[0].date_start)
+
+        date_begin = appts[0].date_start
+        prev = date_begin - timedelta(days=1)
+        next = date_begin + timedelta(days=1)
+
+        return (True, {
+            'date': date_begin,
+            'prev': prev,
+            'next': next,
+            'profile': profile,
+        })
+
+
     def date_picker(self, request):
         from booking.models import Appointment
 
@@ -133,7 +162,10 @@ class AppointmentManager(models.Manager):
             date = date - timedelta(days=1)
 
         for _ in range(42):
-            appts = Appointment.objects.filter(date_start__date=date)
+            appts = Appointment.objects.filter(
+                date_start__date=date,
+                profile__isnull=True,
+            )
 
             calendar.append({
                 'date': date,
@@ -286,6 +318,7 @@ class AppointmentManager(models.Manager):
         appts = Appointment.objects.filter(
                 date_start__lt=day.astimezone(pytz.utc),
                 date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
             ).order_by('-date_start')
 
         if len(appts) > 0:
@@ -320,8 +353,10 @@ class AppointmentManager(models.Manager):
         day = tz.localize(day)
 
         appts = Appointment.objects \
-            .filter(date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1)) \
-            .filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+            .filter(
+                date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+            ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
             .order_by('date_start')
 
         if len(appts) > 0:

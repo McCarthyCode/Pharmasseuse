@@ -7,25 +7,20 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Appointment
 from pharmasseuse.settings import TIME_ZONE
-from users.models import Profile
 
 tz = pytz.timezone(TIME_ZONE)
 
 
 def index(request):
-    profile = Profile.objects.get(user__pk=request.session['id']) \
-        if 'id' in request.session else None
+    valid, response = Appointment.objects.index(request)
 
-    tomorrow = datetime.now(tz) + timedelta(days=1)
-    prev = tomorrow - timedelta(days=1)
-    next = tomorrow + timedelta(days=1)
+    if not valid:
+        for error in response:
+            messages.error(request, error)
 
-    return render(request, 'booking/index.html', {
-        'date': tomorrow,
-        'prev': prev,
-        'next': next,
-        'profile': profile,
-    })
+        return redirect('users:index')
+
+    return render(request, 'booking/index.html', response)
 
 
 def date_picker(request):

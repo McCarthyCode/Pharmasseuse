@@ -86,24 +86,24 @@ $(document).ready(function () {
             return;
         }
 
-        profileId = $(this).children('input[name=profile-id]').val();
+        profileId = $(this).children('input[name="profile-id"]').val();
         var firstName = $(this).children('.first-name').text();
         var lastName = $(this).children('.last-name').text();
-        var email = $(this).children('input[name=email]').val();
-        var phone = $(this).children('input[name=phone]').val();
-        var date = $(this).children('input[name=date]').val();
-        var massage = $(this).children('input[name=massage]').val();
+        var email = $(this).children('input[name="email"]').val();
+        var phone = $(this).children('input[name="phone"]').val();
+        var date = $(this).children('input[name="date"]').val();
+        var massage = $(this).children('input[name="massage"]').val();
 
         $('#name').text(`${firstName} ${lastName}`);
         $('#email').text(email);
         $('#phone').text(phone);
         $('#date').text(date);
 
-        $('#modalContent input[name=profile-id]').val(profileId);
-        $('#modalContent input[name=first-name]').val(firstName);
-        $('#modalContent input[name=last-name]').val(lastName);
-        $('#modalContent input[name=email]').val(email);
-        $('#modalContent input[name=phone]').val(phone);
+        $('#modalContent input[name="profile-id"]').val(profileId);
+        $('#modalContent input[name="first-name"]').val(firstName);
+        $('#modalContent input[name="last-name"]').val(lastName);
+        $('#modalContent input[name="email"]').val(email);
+        $('#modalContent input[name="phone"]').val(phone);
 
         var $massage = $('#massage');
         if (massage === "DT") {
@@ -132,8 +132,8 @@ $(document).ready(function () {
     $('#updateMassageType').on('click touchend', function (event) {
         event.preventDefault();
 
-        var csrf = $('input[name=csrfmiddlewaretoken]').val();
-        var massage = $('input[name=massage]:checked').val();
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        var massage = $('input[name="massage"]:checked').val();
 
         if (massage === '') {
             massage = null;

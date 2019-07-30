@@ -44,19 +44,19 @@ $(document).ready(function () {
 
     function getDatePicker(context = {}) {
         if ($.isEmptyObject(context)) {
-            var year = $('#date input[name=year]').val();
-            var month = $('#date input[name=month]').val();
+            var year = $('#date input[name="year"]').val();
+            var month = $('#date input[name="month"]').val();
 
-            $('#datePickerDate input[name=year]').val(year);
-            $('#datePickerDate input[name=month]').val(month);
+            $('#datePickerDate input[name="year"]').val(year);
+            $('#datePickerDate input[name="month"]').val(month);
 
             context = {
                 'year': year,
                 'month': month,
             }
         } else {
-            $('#datePickerDate input[name=year]').val(context['year']);
-            $('#datePickerDate input[name=month]').val(context['month']);
+            $('#datePickerDate input[name="year"]').val(context['year']);
+            $('#datePickerDate input[name="month"]').val(context['month']);
         }
 
         $.get('/booking/date_picker', context, function (response) {
@@ -229,7 +229,7 @@ $(document).ready(function () {
             'day': $(this).data('day'),
         };
 
-        if (context['month'] !== Number($('#datePickerDate input[name=month]').val())) {
+        if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
             showDPLoadingIcon();
             getDatePicker(context);
         }
@@ -258,7 +258,7 @@ $(document).ready(function () {
         };
 
         if ($dp.is(':visible') &&
-            context['month'] !== Number($('#datePickerDate input[name=month]').val())) {
+            context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
             showDPLoadingIcon();
             getDatePicker(context);
         }

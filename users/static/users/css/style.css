@@ -62,7 +62,7 @@ a, input {
   line-height: 1.5;
 }
 
-.sign-in input[type=submit] {
+.sign-in input[type="submit"] {
   margin-top: 1rem;
 }
 
