@@ -4,13 +4,13 @@
 {% block content %}
 <div id="datePicker"></div>
 <div id="datePickerDate">
-  <input type="hidden" name="year" value="{{ date|date:'Y' }}">
-  <input type="hidden" name="month" value="{{ date|date:'n' }}">
+  <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+  <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
 </div>
 <div id="date">
-  <input type="hidden" name="year" value="{{ date|date:'Y' }}">
-  <input type="hidden" name="month" value="{{ date|date:'n' }}">
-  <input type="hidden" name="day" value="{{ date|date:'j' }}">
+  <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+  <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+  <input type="hidden" name="day" value="{{ date|date:'j' }}" autocomplete="off">
 </div>
 <div id="modal">
   <div class="container">

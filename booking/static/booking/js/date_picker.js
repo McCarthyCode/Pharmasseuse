@@ -22,7 +22,7 @@ $(document).ready(function () {
         var $imgContainer = $('<div>').addClass('img-container');
         var $img = $('<img>')
             .attr('src', '/static/booking/img/loading.gif')
-            .attr('alt', 'Loading');
+            .attr('alt', 'Loading…');
 
         $dp.empty();
         $dp.append($imgContainer);
@@ -35,7 +35,7 @@ $(document).ready(function () {
         var $imgContainer = $('<div>').addClass('img-container');
         var $img = $('<img>')
             .attr('src', '/static/booking/img/loading.gif')
-            .attr('alt', 'Loading');
+            .attr('alt', 'Loading…');
 
         $calendarContent.empty();
         $calendarContent.append($imgContainer);
