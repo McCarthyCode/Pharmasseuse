@@ -1,4 +1,5 @@
 import pytz
+import sys
 
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
@@ -124,19 +125,50 @@ class AppointmentManager(models.Manager):
         profile = Profile.objects.get(user__pk=request.session['id']) \
             if 'id' in request.session else None
 
-        today = datetime.now(tz).replace(
-            hour=0, minute=0, second=0, microsecond=0)
+        today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
 
         appts = Appointment.objects.filter(
             date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
         ).order_by('date_start')
 
-        print(appts[0].date_start)
-
         date_begin = appts[0].date_start
-        prev = date_begin - timedelta(days=1)
-        next = date_begin + timedelta(days=1)
+        date_begin = date_begin.astimezone(tz)
+        date_begin = date_begin.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        prev_appts = Appointment.objects.filter(
+            date_start__lt=date_begin.astimezone(pytz.utc),
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+        ).order_by('-date_start')
+
+        next_appts = Appointment.objects \
+            .filter(
+                date_start__gte=date_begin.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+            ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+            .order_by('date_start')
+
+        errors = []
+
+        try:
+            prev = prev_appts[0].date_start
+        except IndexError:
+            prev = date_begin - timedelta(days=1)
+        except Exception as e:
+            errors.append('There was an error retrieving the previous day.')
+            errors.append(e)
+
+        try:
+            next = next_appts[0].date_start
+        except IndexError:
+            next = date_begin + timedelta(days=1)
+        except Exception as e:
+            errors.append('There was an error retrieving the next day.')
+            errors.append(e)
+
+        if errors:
+            return (False, errors)
 
         return (True, {
             'date': date_begin,
@@ -428,6 +460,7 @@ class AppointmentManager(models.Manager):
 
     def reschedule(self, request):
         from users.models import Profile
+        from booking.models import Appointment
 
         errors = []
 
@@ -441,20 +474,57 @@ class AppointmentManager(models.Manager):
             errors.append(
                 'There was an error retrieving the client\'s profile.')
 
+        profile = Profile.objects.get(user__pk=client_id) \
+            if 'client_id' in request.session else None
+
+        today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
+
+        appts = Appointment.objects.filter(
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+        ).order_by('date_start')
+
+        date_begin = appts[0].date_start
+        date_begin = date_begin.astimezone(tz)
+        date_begin = date_begin.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        prev_appts = Appointment.objects.filter(
+            date_start__lt=date_begin.astimezone(pytz.utc),
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+        ).order_by('-date_start')
+
+        next_appts = Appointment.objects \
+            .filter(
+                date_start__gte=date_begin.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+            ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+            .order_by('date_start')
+
+        try:
+            prev = prev_appts[0].date_start
+        except IndexError:
+            prev = date_begin - timedelta(days=1)
+        except Exception as e:
+            errors.append('There was an error retrieving the previous day.')
+            errors.append(e)
+
+        try:
+            next = next_appts[0].date_start
+        except IndexError:
+            next = date_begin + timedelta(days=1)
+        except Exception as e:
+            errors.append('There was an error retrieving the next day.')
+            errors.append(e)
+
         if errors:
             return (False, errors)
-
-        profile = Profile.objects.get(user__pk=client_id)
-
-        tomorrow = datetime.now(tz) + timedelta(days=1)
-        prev = tomorrow - timedelta(days=1)
-        next = tomorrow + timedelta(days=1)
 
         name = 'your' if user_id == client_id \
             else '%s %s\'s' % (profile.user.first_name, profile.user.last_name)
 
         return (True, {
-            'date': tomorrow,
+            'date': date_begin,
             'prev': prev,
             'next': next,
             'profile': profile,
