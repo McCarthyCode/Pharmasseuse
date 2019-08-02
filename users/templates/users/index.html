@@ -235,25 +235,26 @@
             <input type="hidden" name="profile-id" value="{{ profile.pk }}">
             <div class="radio">
               {% if next_appt.massage == "SW" %}
-              <input type="radio" name="massage" value="SW" checked>
-              <label id="swedish" for="massage">Swedish</label>
-              <input type="radio" name="massage" value="DT">
-              <label id="deepTissue" for="massage">Deep Tissue</label>
-              <input type="radio" name="massage" value="">
-              <label id="unspecified" class="font-italic" for="massage">unspecified</label>
+              <input type="radio" name="massage-user" value="SW" checked>
+              <label id="swedish" for="massage-user">Swedish</label>
+              <input type="radio" name="massage-user" value="DT">
+              <label id="deepTissue" for="massage-user">Deep Tissue</label>
+              <input type="radio" name="massage-user" value="">
+              <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
               {% elif next_appt.massage == "DT" %}
-              <input type="radio" name="massage" value="SW">
-              <label id="swedish" for="massage">Swedish</label>
-              <input type="radio" name="massage" value="DT" checked>
-              <label id="deepTissue" for="massage">Deep Tissue</label>
-              <input type="radio" name="massage" value="">
-              <label id="unspecified" class="font-italic" for="massage">unspecified</label>
+              <input type="radio" name="massage-user" value="SW">
+              <label id="swedish" for="massage-user">Swedish</label>
+              <input type="radio" name="massage-user" value="DT" checked>
+              <label id="deepTissue" for="massage-user">Deep Tissue</label>
+              <input type="radio" name="massage-user" value="">
+              <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
               {% else %}
-              <input type="radio" name="massage" value="SW">
-              <label id="swedish" for="massage">Swedish</label>
-              <input type="radio" name="massage" value="DT">
-              <label id="deepTissue" for="massage">Deep Tissue</label>
-              <input type="radio" name="massage" value="" checked>
+              <input type="radio" name="massage-user" value="SW">
+              <label id="swedish" for="massage-user">Swedish</label>
+              <input type="radio" name="massage-user" value="DT">
+              <label id="deepTissue" for="massage-user">Deep Tissue</label>
+              <input type="radio" name="massage-user" value="" checked>
+              <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
               {% endif %}
             </div>
             <div class="btn-container">
@@ -380,12 +381,12 @@
           <div>Massage Type</div>
         </div>
         <div class="radio">
-          <input type="radio" name="massage" value="SW">
-          <label id="swedishModal" for="massage">Swedish</label>
-          <input type="radio" name="massage" value="DT">
-          <label id="deepTissueModal" for="massage">Deep Tissue</label>
-          <input type="radio" name="massage" value="">
-          <label id="unspecifiedModal" class="font-italic" for="massage">unspecified</label>
+          <input type="radio" name="massage-admin" value="SW">
+          <label id="swedishModal" for="massage-admin">Swedish</label>
+          <input type="radio" name="massage-admin" value="DT">
+          <label id="deepTissueModal" for="massage-admin">Deep Tissue</label>
+          <input type="radio" name="massage-admin" value="">
+          <label id="unspecifiedModal" class="font-italic" for="massage-admin">unspecified</label>
         </div>
       </div>
       {% csrf_token %}

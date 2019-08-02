@@ -78,7 +78,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         var csrf = $('#changeMassageType input[name="csrfmiddlewaretoken"]').val();
-        var massage = $('#changeMassageType input[name="massage"]:checked').val();
+        var massage = $('#changeMassageType input[name="massage-user"]:checked').val();
         var profileId = $('#changeMassageType input[name="profile-id"]').val();
 
         if (massage === '') {
@@ -126,17 +126,17 @@ $(document).ready(function () {
 
     // define radio objects
     var $swedishRadio =
-        $('#changeMassageType input[type="radio"][name="massage"][value="SW"]');
+        $('#changeMassageType input[type="radio"][name="massage-user"][value="SW"]');
     var $deepTissueRadio =
-        $('#changeMassageType input[type="radio"][name="massage"][value="DT"]');
+        $('#changeMassageType input[type="radio"][name="massage-user"][value="DT"]');
     var $unspecifiedRadio =
-        $('#changeMassageType input[type="radio"][name="massage"][value=""]');
+        $('#changeMassageType input[type="radio"][name="massage-user"][value=""]');
     var $swedishRadioModal =
-        $('#modalContent input[type="radio"][name="massage"][value="SW"]');
+        $('#modalContent input[type="radio"][name="massage-admin"][value="SW"]');
     var $deepTissueRadioModal =
-        $('#modalContent input[type="radio"][name="massage"][value="DT"]');
+        $('#modalContent input[type="radio"][name="massage-admin"][value="DT"]');
     var $unspecifiedRadioModal =
-        $('#modalContent input[type="radio"][name="massage"][value=""]');
+        $('#modalContent input[type="radio"][name="massage-admin"][value=""]');
 
     // handle table row modal trigger
     var profileIdModal = 0;
@@ -199,7 +199,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         var csrf = $('#modalContent input[name="csrfmiddlewaretoken"]').val();
-        var massage = $('#modalContent input[name="massage"]:checked').val();
+        var massage = $('#modalContent input[name="massage-admin"]:checked').val();
 
         if (massage === '') {
             massage = null;
