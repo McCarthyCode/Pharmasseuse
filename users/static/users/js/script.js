@@ -14,14 +14,17 @@ $(document).ready(function () {
         if (state === "info") {
             $infoContainer.hide();
             $editProfile.show();
+
             state = "edit";
         } else if (state === "edit") {
             $editProfile.hide();
             $infoContainer.show();
+
             state = "info";
         } else if (state === "password") {
             $editPassword.hide();
             $editProfile.show();
+
             state = "edit";
         }
     });
@@ -29,23 +32,68 @@ $(document).ready(function () {
     // show change password form on "Change" click
     $('.change').on('click touchend', function (event) {
         event.preventDefault();
+
         $infoContainer.hide();
         $editPassword.show();
+
         state = "password";
     });
 
     // return to info on cancel button click
     $('.edit-profile .btn-secondary').on('click touchend', function (event) {
         event.preventDefault();
+
         $editProfile.hide();
         $infoContainer.show();
+
         state = "info";
     });
     $('.edit-password .btn-secondary').on('click touchend', function (event) {
         event.preventDefault();
+
         $editPassword.hide();
         $infoContainer.show();
+
         state = "info";
+    });
+
+    // edit massage type on anchor click
+    $('.massage-type a').on('click touchend', function (event) {
+        event.preventDefault();
+
+        $('.massage-type').hide();
+        $('#changeMassageType').css('display', 'grid');
+    });
+
+    // hide massage type form on "Cancel" button click
+    $('#changeMassageType .btn-secondary').on('click touchend', function (event) {
+        event.preventDefault();
+
+        $('.massage-type').show();
+        $('#changeMassageType').hide();
+    });
+
+    // submit massage type on "Update" button click
+    $('#changeMassageType .btn-primary').on('click touchend', function (event) {
+        event.preventDefault();
+
+        var csrf = $('#changeMassageType input[name="csrfmiddlewaretoken"]').val();
+        var massage = $('#changeMassageType input[name="massage"]:checked').val();
+        var profileId = $('#changeMassageType input[name="profile-id"]').val();
+
+        if (massage === '') {
+            massage = null;
+        }
+
+        var context = {
+            'csrfmiddlewaretoken': csrf,
+            'massage': massage,
+            'profile-id': profileId,
+        }
+
+        $.post('/profile/edit_massage_type', context, function () {
+            window.location.replace('/profile');
+        });
     });
 
     // revert edit form to info grid after modal close
@@ -76,17 +124,28 @@ $(document).ready(function () {
         window.setTimeout(revertModalInfo, 500);
     });
 
+    // define radio objects
+    var $swedishRadio =
+        $('#changeMassageType input[type="radio"][name="massage"][value="SW"]');
+    var $deepTissueRadio =
+        $('#changeMassageType input[type="radio"][name="massage"][value="DT"]');
+    var $unspecifiedRadio =
+        $('#changeMassageType input[type="radio"][name="massage"][value=""]');
+    var $swedishRadioModal =
+        $('#modalContent input[type="radio"][name="massage"][value="SW"]');
+    var $deepTissueRadioModal =
+        $('#modalContent input[type="radio"][name="massage"][value="DT"]');
+    var $unspecifiedRadioModal =
+        $('#modalContent input[type="radio"][name="massage"][value=""]');
+
     // handle table row modal trigger
-    var $swedishRadio = $('input[type="radio"][name="massage"][value="SW"]');
-    var $deepTissueRadio = $('input[type="radio"][name="massage"][value="DT"]');
-    var $unspecifiedRadio = $('input[type="radio"][name="massage"][value=""]');
-    var profileId = 0;
+    var profileIdModal = 0;
     $('#appointments tbody tr').on('click touchend', function (event) {
         if ($(this).children('td').hasClass('dataTables_empty')) {
             return;
         }
 
-        profileId = $(this).children('input[name="profile-id"]').val();
+        profileIdModal = $(this).children('input[name="profile-id"]').val();
         var firstName = $(this).children('.first-name').text();
         var lastName = $(this).children('.last-name').text();
         var email = $(this).children('input[name="email"]').val();
@@ -99,25 +158,23 @@ $(document).ready(function () {
         $('#phone').text(phone);
         $('#date').text(date);
 
-        $('#modalContent input[name="profile-id"]').val(profileId);
+        $('#modalContent input[name="profile-id"]').val(profileIdModal);
         $('#modalContent input[name="first-name"]').val(firstName);
         $('#modalContent input[name="last-name"]').val(lastName);
         $('#modalContent input[name="email"]').val(email);
         $('#modalContent input[name="phone"]').val(phone);
 
-        var $massage = $('#massage');
         if (massage === "DT") {
-            $deepTissueRadio.prop('checked', true);
+            $deepTissueRadioModal.prop('checked', true);
         } else if (massage === "SW") {
-            $swedishRadio.prop('checked', true);
+            $swedishRadioModal.prop('checked', true);
         } else {
-            $unspecifiedRadio.prop('checked', true);
+            $unspecifiedRadioModal.prop('checked', true);
         }
 
         $modal.stop().fadeIn(500);
     });
 
-    // select radio buttons on corresponding label click
     $('#swedish').on('click touchend', function (event) {
         $swedishRadio.prop('checked', true);
     });
@@ -127,13 +184,22 @@ $(document).ready(function () {
     $('#unspecified').on('click touchend', function (event) {
         $unspecifiedRadio.prop('checked', true);
     });
+    $('#swedishModal').on('click touchend', function (event) {
+        $swedishRadioModal.prop('checked', true);
+    });
+    $('#deepTissueModal').on('click touchend', function (event) {
+        $deepTissueRadioModal.prop('checked', true);
+    });
+    $('#unspecifiedModal').on('click touchend', function (event) {
+        $unspecifiedRadioModal.prop('checked', true);
+    });
 
     // edit massage type
     $('#updateMassageType').on('click touchend', function (event) {
         event.preventDefault();
 
-        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-        var massage = $('input[name="massage"]:checked').val();
+        var csrf = $('#modalContent input[name="csrfmiddlewaretoken"]').val();
+        var massage = $('#modalContent input[name="massage"]:checked').val();
 
         if (massage === '') {
             massage = null;
@@ -142,7 +208,7 @@ $(document).ready(function () {
         var context = {
             'csrfmiddlewaretoken': csrf,
             'massage': massage,
-            'profile-id': profileId,
+            'profile-id': profileIdModal,
         }
 
         $.post('/profile/edit_massage_type', context, function () {

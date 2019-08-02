@@ -134,6 +134,7 @@ a, input {
 
 .edit-profile .btn-container,
 .edit-password .btn-container,
+#changeMassageType .btn-container,
 #modalContent .btn-container {
   text-align: center;
 }
@@ -158,15 +159,11 @@ a, input {
   margin: 1rem auto;
   padding: 0.5rem;
   color: white;
-  background-color: #1647d2;
+  background-color: #007bff;
 }
 
 .massage-type {
   margin-bottom: 0.75rem;
-}
-
-.massage-type span {
-  font-style: italic;
 }
 
 .next-appointment .form-container {
@@ -191,6 +188,29 @@ a, input {
   vertical-align: middle;
 }
 
+.radio {
+  width: 7.5rem;
+  padding: 0.5rem 0;
+  display: grid;
+  grid-template-columns: 1.5rem auto;
+  grid-gap: 0.25rem;
+  line-height: 1;
+}
+
+.radio label,
+.radio input[type="radio"] {
+  cursor: pointer;
+  height: 1rem;
+}
+
+#changeMassageType {
+  display: none;
+}
+
+#changeMassageType .radio {
+  margin: 0 auto;
+}
+
 .admin:not(.h1) {
   font-family: 'Open Sans', Arial, sans-serif;
 }
@@ -201,7 +221,7 @@ a, input {
 
 #appointments tbody tr:hover :not(.dataTables_empty) {
   color: white;
-  background-color: #1647d2;
+  background-color: #007bff;
   cursor: pointer;
 }
 
@@ -240,21 +260,6 @@ a, input {
   position: absolute;
   top: 55px;
   right: 1rem;
-}
-
-#modalContent .radio {
-  width: 7.5rem;
-  padding: 0.5rem 0;
-  display: grid;
-  grid-template-columns: 1.5rem auto;
-  grid-gap: 0.25rem;
-  line-height: 1;
-}
-
-#modalContent .radio label,
-#modalContent .radio input[type="radio"] {
-  cursor: pointer;
-  height: 1rem;
 }
 
 @media (min-width: 768px) {
