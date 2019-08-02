@@ -2,7 +2,7 @@ import pytz
 import sys
 
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from datetime import date, datetime, timedelta
 from pharmasseuse.settings import TIME_ZONE
 
@@ -465,7 +465,7 @@ class AppointmentManager(models.Manager):
         errors = []
 
         user_id = int(request.session.get('id', 0))
-        client_id = int(request.session.get('profile-id', 0))
+        client_id = int(request.session.get('client-id', 0))
 
         if user_id == 0:
             errors.append(
@@ -474,8 +474,10 @@ class AppointmentManager(models.Manager):
             errors.append(
                 'There was an error retrieving the client\'s profile.')
 
-        profile = Profile.objects.get(user__pk=client_id) \
-            if 'client_id' in request.session else None
+        user_profile = Profile.objects.get(user__pk=user_id) \
+            if 'id' in request.session else None
+        client_profile = Profile.objects.get(user__pk=client_id) \
+            if 'client-id' in request.session else None
 
         today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
 
@@ -521,13 +523,17 @@ class AppointmentManager(models.Manager):
             return (False, errors)
 
         name = 'your' if user_id == client_id \
-            else '%s %s\'s' % (profile.user.first_name, profile.user.last_name)
+            else '%s %s\'s' % (
+                client_profile.user.first_name,
+                client_profile.user.last_name,
+            )
 
         return (True, {
             'date': date_begin,
             'prev': prev,
             'next': next,
-            'profile': profile,
+            'profile': user_profile,
+            'client_profile': client_profile,
             'name': name,
         })
 
@@ -539,3 +545,62 @@ class AppointmentManager(models.Manager):
             return (False, ['There was an error retrieving the client\'s profile.'])
 
         return (True, profile_id)
+
+
+    def reschedule_submit(self, request):
+        from users.models import Profile
+        from booking.models import Appointment
+
+        user_id = int(request.session.get('id', 0))
+        client_id = int(request.session.get('client-id', 0))
+        appt_id = int(request.POST.get('appointment-id', 0))
+
+        profile = Profile.objects.get(user__pk=client_id) \
+            if 'client-id' in request.session else None
+
+        if profile == None:
+            return (False, ['There was an error retrieving the client\'s profile.'])
+
+        today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
+
+        try:
+            old_appt = Appointment.objects.get(
+                profile=profile,
+                date_start__gt=today.astimezone(pytz.utc) + timedelta(days=1),
+            )
+        except Appointment.DoesNotExist:
+            return (False, [
+                'The specified user does not have an appointment. ' +
+                'Please create one by clicking the \'Booking\' tab.',
+            ])
+        except MultipleObjectsReturned:
+            return (False, [
+                'The specified user has multiple appointments scheduled. ' +
+                'Please cancel all appointments and create a new one.',
+            ])
+
+        try:
+            new_appt = Appointment.objects.get(pk=appt_id)
+        except Appointment.DoesNotExist:
+            return (False, [
+                'The specified appointment does not exist.',
+            ])
+        except MultipleObjectsReturned:
+            return (False, [
+                'The specified user has multiple appointments scheduled. ' +
+                'Please cancel all appointments and create a new one.',
+            ])
+
+        new_appt.massage = old_appt.massage
+        old_appt.massage = None
+        old_appt.profile = None
+        new_appt.profile = profile
+
+        old_appt.save()
+        new_appt.save()
+
+        name = 'your' if user_id == client_id \
+            else '%s %s\'s' % (profile.user.first_name, profile.user.last_name)
+        message = 'You have successfully rescheduled %s appointment.' % name
+
+        return (True, message)

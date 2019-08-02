@@ -12,4 +12,5 @@ urlpatterns = [
     path('cancel', views.cancel, name='cancel'),
     path('reschedule', views.reschedule, name='reschedule'),
     path('reschedule_form', views.reschedule_form, name='reschedule_form'),
+    path('reschedule_submit', views.reschedule_submit, name='reschedule_submit'),
 ]

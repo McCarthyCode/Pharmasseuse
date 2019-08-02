@@ -12,6 +12,9 @@
   <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
   <input type="hidden" name="day" value="{{ date|date:'j' }}" autocomplete="off">
 </div>
+<div id="csrf">
+  {% csrf_token %}
+</div>
 <div class="page">
   <div class="nav-placeholder"></div>
   <div class="container">
@@ -39,4 +42,5 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" src="{% static 'booking/js/reschedule.js' %}"></script>
 {% endblock %}

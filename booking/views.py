@@ -2,7 +2,7 @@ import pytz
 
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Appointment
@@ -132,6 +132,22 @@ def reschedule_form(request):
 
         return redirect('users:index')
 
-    request.session['profile-id'] = response
+    request.session['client-id'] = response
 
     return redirect('booking:reschedule')
+
+
+def reschedule_submit(request):
+    valid, response = Appointment.objects.reschedule_submit(request)
+
+    if not valid:
+        for error in response:
+            messages.error(request, error)
+
+        return HttpResponseServerError()
+
+    messages.success(request, response)
+
+    del request.session['client-id']
+
+    return HttpResponse(status=200)

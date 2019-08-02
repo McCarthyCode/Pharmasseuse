@@ -12,32 +12,9 @@ from booking.models import Appointment
 
 
 def index(request):
-    profile = Profile.objects.get(user__pk=request.session['id']) \
-        if 'id' in request.session else None
+    response = Profile.objects.index(request)
 
-    appts = []
-    next_appt = None
-
-    if profile == None:
-        appt = None
-    else:
-        try:
-            next_appt = Appointment.objects.get(
-                profile=profile,
-                date_end__gt=datetime.now(pytz.utc),
-            )
-        except Appointment.DoesNotExist:
-            next_appt = None
-
-        appts = Appointment.objects \
-            .filter(date_end__gt=datetime.now(pytz.utc)) \
-            .exclude(profile__user=None)
-
-    return render(request, 'users/index.html', {
-        'profile': profile,
-        'next_appt': next_appt,
-        'appts': appts,
-    })
+    return render(request, 'users/index.html', response)
 
 
 def login(request):

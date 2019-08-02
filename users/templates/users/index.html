@@ -253,7 +253,7 @@
                 <td class="first-name">{{ appt.profile.user.first_name }}</td>
                 <td class="last-name">{{ appt.profile.user.last_name }}</td>
                 {% load tz %}
-                {% timezone "America/Chicago" %}
+                {% timezone TIME_ZONE %}
                 <td>{{ appt.date_start|date:"Y-m-d H:i" }}</td>
                 {% endtimezone %}
                 {% if appt.massage == "DT" %}

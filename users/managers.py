@@ -6,15 +6,49 @@ from datetime import datetime
 
 from django.db.models import Manager
 from django.contrib.auth.models import User, UserManager
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import MultipleObjectsReturned
 from django.contrib.auth.hashers import make_password
+from pharmasseuse.settings import TIME_ZONE
 from users import models
 from booking.models import Appointment
 
 EMAIL_REGEX = re.compile(
-    r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$')
+    r'^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$')
 
 class ProfileManager(Manager):
+    def index(self, request):
+        profile = models.Profile.objects.get(user__pk=request.session['id']) \
+            if 'id' in request.session else None
+
+        appts = []
+        next_appt = None
+
+        if profile != None:
+            try:
+                next_appt = Appointment.objects.get(
+                    profile=profile,
+                    date_end__gt=datetime.now(pytz.utc),
+                )
+            except Appointment.DoesNotExist:
+                next_appt = None
+            except MultipleObjectsReturned:
+                next_appt = Appointment.objects.filter(
+                    profile=profile,
+                    date_end__gt=datetime.now(pytz.utc),
+                ).first()
+
+            appts = Appointment.objects \
+                .filter(date_end__gt=datetime.now(pytz.utc)) \
+                .exclude(profile__user=None)
+
+        return {
+            'profile': profile,
+            'next_appt': next_appt,
+            'appts': appts,
+            'TIME_ZONE': TIME_ZONE,
+        }
+
+
     def login_register(self, request, action):
         errors = []
 
@@ -50,7 +84,7 @@ class ProfileManager(Manager):
             # stores any User associated with it
             try:
                 user_by_email = User.objects.get(email=request.POST['email'])
-            except ObjectDoesNotExist:
+            except User.DoesNotExist:
                 user_by_email = None
             email_exists = user_by_email != None
 
