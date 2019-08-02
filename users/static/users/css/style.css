@@ -139,6 +139,10 @@ a, input {
   text-align: center;
 }
 
+#modalContent .btn-container form {
+  display: inline;
+}
+
 .edit-profile .btn-container,
 .edit-password .btn-container {
   height: 3.5rem;

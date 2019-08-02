@@ -219,7 +219,7 @@
             </form>
             <form action="{% url 'booking:cancel' %}" method="POST">
               {% csrf_token %}
-              <input type="hidden" name="appointment-id" value="{{ next_appt.pk }}">
+              <input type="hidden" name="profile-id" value="{{ profile.pk }}">
               <input class="btn btn-secondary" type="submit" value="Cancel Appointment">
             </form>
           </div>
@@ -393,7 +393,11 @@
       <h5 class="h5">Actions</h5>
       <div class="btn-container">
         <a id="updateMassageType" class="btn btn-primary" href="#">Update Massage Type</a>
-        <a class="btn btn-danger" href="#">Cancel Appointment</a>
+        <form action="{% url 'booking:cancel' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="profile-id">
+          <input class="btn btn-danger" type="submit" value="Cancel Appointment">
+        </form>
       </div>
     </div>
   </div>

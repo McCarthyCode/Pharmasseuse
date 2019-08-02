@@ -194,6 +194,14 @@ $(document).ready(function () {
         $unspecifiedRadioModal.prop('checked', true);
     });
 
+    // change state based on edit anchor click
+    $('#modalContent .edit a, #modalContent form .btn-secondary').on('click touchend', function (event) {
+        event.preventDefault();
+
+        $modalInfo.toggle();
+        $modalEdit.toggle();
+    });
+
     // edit massage type
     $('#updateMassageType').on('click touchend', function (event) {
         event.preventDefault();
@@ -214,13 +222,5 @@ $(document).ready(function () {
         $.post('/profile/edit_massage_type', context, function () {
             window.location.replace('/profile');
         });
-    });
-
-    // change state based on edit anchor click
-    $('#modalContent .edit a, #modalContent form .btn-secondary').on('click touchend', function (event) {
-        event.preventDefault();
-
-        $modalInfo.toggle();
-        $modalEdit.toggle();
     });
 });
