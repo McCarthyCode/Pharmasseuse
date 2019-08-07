@@ -30,19 +30,19 @@ Go back to the virtual environment and install project dependencies.
 
 ## Running
 
-Generate a secret key and pipe the output to a file. Change the newly created file's permissions to `rw-------`, or `600`. Note that you will need to add the file to `.gitignore` if you name it something other than `secret.txt` and choose to keep it in the repository. Also, your directory structure will likely differ from the one used by `SECRET_KEY_FILE` in `settings.py`. Change the path to `secret.txt` in `SECRET_KEY_FILE` in `settings.py` to match your system's directory structure.
+Generate a secret key and pipe the output to a file. Change the newly created file's permissions to `rw-------`, or `600`. Note that you will need to add the file to `.gitignore` if you name it something other than `secret.txt` and choose to keep it in the repository. Also, your directory structure will likely differ from the one used by `SECRET_KEY_FILE` in `pharmasseuse/settings.py`. Change the path to `secret.txt` in `SECRET_KEY_FILE` in `pharmasseuse/settings.py` to match your system's directory structure.
 
     $ python generate_secret_key.py > secret.txt
     $ sudo chmod 600 secret.txt
 
-Alternatively, export it as an environment variable and edit `settings.py` to read the string that way.
+Alternatively, export it as an environment variable and edit `pharmasseuse/settings.py` to read the string that way.
 
     $ export SECRET_KEY=$(python generate_secret_key.py)
 
 In `settings.py`, change
 
     HOME = os.environ.get('HOME')
-    SECRET_KEY_FILE = '%s/Repositories/pharmasseuse/secret.txt' % HOME
+    SECRET_KEY_FILE = '%s/pharmasseuse/secret.txt' % HOME
     with open(SECRET_KEY_FILE, 'r', encoding='utf8') as f:
         content = f.readlines()
     content = [x.strip() for x in content] 

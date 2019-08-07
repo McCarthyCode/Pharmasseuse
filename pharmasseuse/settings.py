@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 HOME = os.environ.get('HOME')
-SECRET_KEY_FILE = '%s/Repositories/pharmasseuse/secret.txt' % HOME
+SECRET_KEY_FILE = '%s/pharmasseuse/secret.txt' % HOME
 with open(SECRET_KEY_FILE, 'r', encoding='utf8') as f:
     content = f.readlines()
 content = [x.strip() for x in content]
