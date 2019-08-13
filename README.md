@@ -64,3 +64,7 @@ Make and apply migrations.
 To run in development mode, activate the virtual environment and execute the following:
 
     (env) $ python manage.py runserver localhost:8000
+
+### Production Mode
+
+To run in production mode, follow [these steps](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04) after choosing your distribution.
