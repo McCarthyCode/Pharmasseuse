@@ -24,9 +24,12 @@ class AppointmentManager(models.Manager):
             profile__isnull=True,
         ).order_by('date_start')
 
-        date_begin = appts[0].date_start
-        date_begin = date_begin.astimezone(tz)
-        date_begin = date_begin.replace(hour=0, minute=0, second=0, microsecond=0)
+        try:
+            date_begin = appts[0].date_start
+            date_begin = date_begin.astimezone(tz)
+            date_begin = date_begin.replace(hour=0, minute=0, second=0, microsecond=0)
+        except IndexError:
+            date_begin = today
 
         prev_appts = Appointment.objects.filter(
             date_start__lt=date_begin.astimezone(pytz.utc),

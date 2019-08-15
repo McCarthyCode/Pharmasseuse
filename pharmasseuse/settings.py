@@ -33,6 +33,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '165.22.14.65',
     'pharmasseuse.com',
+    'www.pharmasseuse.com',
     'localhost',
 ]
 
@@ -95,7 +96,7 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql pyscopg2',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'pharmasseuse',
             'USER': 'pharmasseuse',
             'PASSWORD': os.environ.get('PGPASSWORD'),

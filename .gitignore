@@ -1,6 +1,7 @@
 .vscode
 *.pyc
 db.sqlite3
-staticfiles
+static
 env
 secret.txt
+update_appointments.sh
