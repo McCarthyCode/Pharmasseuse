@@ -223,4 +223,6 @@ $(document).ready(function () {
             window.location.replace('/profile');
         });
     });
+
+    $('#appointments_wrapper').css('font-family', "'Open Sans', Arial, sans-serif");
 });

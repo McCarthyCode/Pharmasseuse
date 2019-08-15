@@ -215,12 +215,22 @@ a, input {
   margin: 0 auto;
 }
 
-.admin:not(.h1) {
+.admin:not(.h1, .h3),
+#appointments_wrapper {
   font-family: 'Open Sans', Arial, sans-serif;
 }
 
 .admin .h1 {
   margin-top: 2rem;
+}
+
+#datePicker {
+  display: block;
+  position: unset;
+}
+
+#datePicker .close {
+  display: none;
 }
 
 #appointments tbody tr:hover :not(.dataTables_empty) {

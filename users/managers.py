@@ -12,6 +12,8 @@ from pharmasseuse.settings import TIME_ZONE
 from users import models
 from booking.models import Appointment
 
+tz = pytz.timezone(TIME_ZONE)
+
 EMAIL_REGEX = re.compile(
     r'^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$')
 
@@ -46,6 +48,7 @@ class ProfileManager(Manager):
             'next_appt': next_appt,
             'appts': appts,
             'TIME_ZONE': TIME_ZONE,
+            'date': datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0),
         }
 
 

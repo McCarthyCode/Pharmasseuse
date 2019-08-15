@@ -270,6 +270,7 @@
     <div class="row admin">
       <div class="col-12">
           <h1 class="h1">Admin Page</h1>
+          <h3 class="h3">Manage Appointments</h3>
           <table id="appointments">
             <thead>
               <tr>
@@ -304,6 +305,16 @@
               {% endfor %}
             </tbody>
           </table>
+      </div>
+    </div>
+    <div class="row admin">
+      <div class="col-12">
+          <h3 class="h3">Black-out Dates</h3>
+          <div id="datePicker"></div>
+          <div id="datePickerDate">
+            <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+            <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+          </div>
       </div>
     </div>
     {% endif %}

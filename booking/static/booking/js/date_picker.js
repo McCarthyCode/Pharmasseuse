@@ -223,10 +223,12 @@ $(document).ready(function () {
 
     // display date clicked in date picker
     $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
+        var $date = $(this);
+
         var context = {
-            'year': $(this).data('year'),
-            'month': $(this).data('month'),
-            'day': $(this).data('day'),
+            'year': $date.data('year'),
+            'month': $date.data('month'),
+            'day': $date.data('day'),
         };
 
         if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {

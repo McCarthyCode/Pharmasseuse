@@ -1,0 +1,128 @@
+$(document).ready(function () {
+    var $dp = $('#datePicker');
+
+    // show loading icon while waiting for GET response
+
+    // date picker
+    function showLoadingIcon() {
+        var $imgContainer = $('<div>').addClass('img-container');
+        var $img = $('<img>')
+            .attr('src', '/static/booking/img/loading.gif')
+            .attr('alt', 'Loading…');
+
+        $dp.empty();
+        $dp.append($imgContainer);
+        $imgContainer.append($img);
+        $dp.show();
+    }
+
+    function getDatePicker(context = {}) {
+        if ($.isEmptyObject(context)) {
+            var year = $('#date input[name="year"]').val();
+            var month = $('#date input[name="month"]').val();
+
+            $('#datePickerDate input[name="year"]').val(year);
+            $('#datePickerDate input[name="month"]').val(month);
+
+            context = {
+                'year': year,
+                'month': month,
+            }
+        } else {
+            $('#datePickerDate input[name="year"]').val(context['year']);
+            $('#datePickerDate input[name="month"]').val(context['month']);
+        }
+
+        $.get('/booking/date_picker', context, function (response) {
+            $dp.empty();
+            $dp.append(response);
+        });
+    }
+
+    showLoadingIcon();
+    getDatePicker();
+
+    $dp.on('click touchend', '.prev', function () {
+        showLoadingIcon();
+        getDatePicker({
+            'year': $(this).data('year'),
+            'month': $(this).data('month'),
+        });
+    });
+
+    $dp.on('click touchend', '.next', function () {
+        showLoadingIcon();
+        getDatePicker({
+            'year': $(this).data('year'),
+            'month': $(this).data('month'),
+        });
+    });
+
+    // update prev/next buttons
+    function updatePrev(context) {
+        // showLoadingIcon();
+
+        $.get('/booking/prev', context, function (response) {
+            var $prev = $('#calendarControls .prev');
+
+            if (response['exists']) {
+                $prev.data('year', response['date']['year']);
+                $prev.data('month', response['date']['month']);
+                $prev.data('day', response['date']['day']);
+
+                $prev.attr('data-year', response['date']['year']);
+                $prev.attr('data-month', response['date']['month']);
+                $prev.attr('data-day', response['date']['day']);
+
+                $prev.removeClass('inactive');
+            } else {
+                $prev.addClass('inactive');
+            }
+        });
+    }
+
+    function updateNext(context) {
+        // showLoadingIcon();
+
+        $.get('/booking/next', context, function (response) {
+            var $next = $('#calendarControls .next');
+
+            if (response['exists']) {
+                $next.data('year', response['date']['year']);
+                $next.data('month', response['date']['month']);
+                $next.data('day', response['date']['day']);
+
+                $next.attr('data-year', response['date']['year']);
+                $next.attr('data-month', response['date']['month']);
+                $next.attr('data-day', response['date']['day']);
+
+                $next.removeClass('inactive');
+            } else {
+                $next.addClass('inactive');
+            }
+        });
+    }
+
+    // display date clicked in date picker
+    $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
+        var $date = $(this);
+
+        var context = {
+            'year': $date.data('year'),
+            'month': $date.data('month'),
+            'day': $date.data('day'),
+        };
+
+        if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
+            showLoadingIcon();
+            getDatePicker(context);
+        }
+
+        updatePrev(context);
+        updateNext(context);
+
+        $.get('/booking/black_out', context, function () {
+            getDatePicker(context);
+        });
+    });
+});

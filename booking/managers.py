@@ -619,3 +619,36 @@ class AppointmentManager(models.Manager):
         message = 'You have successfully rescheduled %s appointment.' % name
 
         return (True, message)
+
+
+    def black_out(self, request):
+        from booking.models import Appointment
+
+        try:
+            date = datetime(
+                int(request.GET.get('year')),
+                int(request.GET.get('month')),
+                int(request.GET.get('day')),
+                0, 0, 0, 0,
+            )
+        except Exception as exception:
+            return (False, ['There was an error getting the previous date.', exception])
+
+        day = date
+        day = tz.localize(day)
+        day = day.astimezone(pytz.utc)
+
+        appts = Appointment.objects.filter(
+            date_start__year=day.year,
+            date_start__month=day.month,
+            date_start__day=day.day,
+            profile=None,
+        )
+
+        if len(appts) == 0:
+            Appointment.objects.create_appointments(date)
+        else:
+            appts.delete()
+
+        return (True, None)
+
