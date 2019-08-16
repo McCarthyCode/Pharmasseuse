@@ -22,6 +22,7 @@ class AppointmentManager(models.Manager):
         appts = Appointment.objects.filter(
             date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
+            black_out=False,
         ).order_by('date_start')
 
         try:
@@ -35,12 +36,14 @@ class AppointmentManager(models.Manager):
             date_start__lt=date_begin.astimezone(pytz.utc),
             date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
+            black_out=False,
         ).order_by('-date_start')
 
         next_appts = Appointment.objects \
             .filter(
                 date_start__gte=date_begin.astimezone(pytz.utc) + timedelta(days=1),
                 profile__isnull=True,
+                black_out=False,
             ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
             .order_by('date_start')
 
@@ -91,6 +94,7 @@ class AppointmentManager(models.Manager):
                 profile=None,
                 date_start=date_start,
                 date_end=date_end,
+                black_out=False,
             )
         except Exception as exception:
             return (False, exception)
@@ -178,6 +182,7 @@ class AppointmentManager(models.Manager):
             date_start__year=date.year,
             date_start__month=date.month,
             date_start__day=date.day,
+            black_out=False,
         ))
 
 
@@ -200,6 +205,7 @@ class AppointmentManager(models.Manager):
             appts = Appointment.objects.filter(
                 date_start__date=date,
                 profile__isnull=True,
+                black_out=False,
             )
 
             calendar.append({
@@ -283,6 +289,7 @@ class AppointmentManager(models.Manager):
             date_start__gte=day.astimezone(pytz.utc),
             date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
+            black_out=False,
         ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1))
 
         slots = []
@@ -351,10 +358,11 @@ class AppointmentManager(models.Manager):
         day = tz.localize(day)
 
         appts = Appointment.objects.filter(
-                date_start__lt=day.astimezone(pytz.utc),
-                date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
-                profile__isnull=True,
-            ).order_by('-date_start')
+            date_start__lt=day.astimezone(pytz.utc),
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+            black_out=False,
+        ).order_by('-date_start')
 
         if len(appts) > 0:
             return (True, {
@@ -391,6 +399,7 @@ class AppointmentManager(models.Manager):
             .filter(
                 date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1),
                 profile__isnull=True,
+                black_out=False,
             ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
             .order_by('date_start')
 
@@ -420,6 +429,7 @@ class AppointmentManager(models.Manager):
             appts = Appointment.objects.filter(
                 profile=profile,
                 date_end__gt=datetime.now(pytz.utc),
+                black_out=False,
             )
         except Exception as exception:
             return (False, [
@@ -447,8 +457,6 @@ class AppointmentManager(models.Manager):
         user_id = int(request.session.get('id', 0))
         client_id = int(request.POST.get('profile-id', 0))
 
-        print(client_id)
-
         today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
 
         try:
@@ -457,6 +465,7 @@ class AppointmentManager(models.Manager):
             appt = Appointment.objects.get(
                 profile__pk=client_id,
                 date_start__gt=today.astimezone(pytz.utc) + timedelta(days=1),
+                black_out=False,
             )
 
             appt.profile = None
@@ -502,6 +511,7 @@ class AppointmentManager(models.Manager):
         appts = Appointment.objects.filter(
             date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
+            black_out=False,
         ).order_by('date_start')
 
         date_begin = appts[0].date_start
@@ -512,12 +522,14 @@ class AppointmentManager(models.Manager):
             date_start__lt=date_begin.astimezone(pytz.utc),
             date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
+            black_out=False,
         ).order_by('-date_start')
 
         next_appts = Appointment.objects \
             .filter(
                 date_start__gte=date_begin.astimezone(pytz.utc) + timedelta(days=1),
                 profile__isnull=True,
+                black_out=False,
             ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
             .order_by('date_start')
 
@@ -585,6 +597,7 @@ class AppointmentManager(models.Manager):
             old_appt = Appointment.objects.get(
                 profile=profile,
                 date_start__gt=today.astimezone(pytz.utc) + timedelta(days=1),
+                black_out=False,
             )
         except Appointment.DoesNotExist:
             return (False, [
@@ -646,12 +659,28 @@ class AppointmentManager(models.Manager):
             date_start__month=day.month,
             date_start__day=day.day,
             profile=None,
+            black_out=False,
         )
 
         if len(appts) == 0:
-            Appointment.objects.create_appointments(date)
+            appts = Appointment.objects.filter(
+                date_start__year=day.year,
+                date_start__month=day.month,
+                date_start__day=day.day,
+                profile=None,
+                black_out=True,
+            )
+
+            if len(appts) == 0:
+                Appointment.objects.create_appointments(date)
+            else:
+                for appt in appts:
+                    appt.black_out = False
+                    appt.save()
         else:
-            appts.delete()
+            for appt in appts:
+                appt.black_out = True
+                appt.save()
 
         return (True, None)
 

@@ -20,6 +20,7 @@ class Appointment(models.Model):
     )
     date_start = models.DateTimeField()
     date_end = models.DateTimeField()
+    black_out = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     objects = AppointmentManager()

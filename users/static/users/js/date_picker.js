@@ -105,6 +105,8 @@ $(document).ready(function () {
 
     // display date clicked in date picker
     $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
+        showLoadingIcon();
+
         var $date = $(this);
 
         var context = {
@@ -114,15 +116,14 @@ $(document).ready(function () {
         };
 
         if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
-            showLoadingIcon();
             getDatePicker(context);
+        } else {
+            $.get('/booking/black_out', context, function () {
+                getDatePicker(context);
+            });
         }
 
         updatePrev(context);
         updateNext(context);
-
-        $.get('/booking/black_out', context, function () {
-            getDatePicker(context);
-        });
     });
 });
