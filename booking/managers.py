@@ -290,7 +290,8 @@ class AppointmentManager(models.Manager):
             date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
             black_out=False,
-        ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1))
+        ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+        .order_by('date_start')
 
         slots = []
         for appt in appointments:
