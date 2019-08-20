@@ -18,15 +18,9 @@ $(document).ready(function () {
 
     function getDatePicker(context = {}) {
         if ($.isEmptyObject(context)) {
-            var year = $('#date input[name="year"]').val();
-            var month = $('#date input[name="month"]').val();
-
-            $('#datePickerDate input[name="year"]').val(year);
-            $('#datePickerDate input[name="month"]').val(month);
-
             context = {
-                'year': year,
-                'month': month,
+                'year': $('#datePickerDate input[name="year"]').val(),
+                'month': $('#datePickerDate input[name="month"]').val(),
             }
         } else {
             $('#datePickerDate input[name="year"]').val(context['year']);
@@ -115,8 +109,7 @@ $(document).ready(function () {
             'day': $date.data('day'),
         };
 
-        var month = $('#datePickerDate input[name="month"]').val();
-        if (month !== '' && context['month'] !== Number(month)) {
+        if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
             getDatePicker(context);
         } else {
             $.get('/booking/black_out', context, function () {
