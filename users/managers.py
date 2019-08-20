@@ -48,7 +48,7 @@ class ProfileManager(Manager):
             'next_appt': next_appt,
             'appts': appts,
             'TIME_ZONE': TIME_ZONE,
-            'date': datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0),
+            'date': datetime.now(tz),
         }
 
 

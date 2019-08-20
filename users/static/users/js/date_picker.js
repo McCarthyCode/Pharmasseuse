@@ -115,7 +115,8 @@ $(document).ready(function () {
             'day': $date.data('day'),
         };
 
-        if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
+        var month = $('#datePickerDate input[name="month"]').val();
+        if (month !== '' && context['month'] !== Number(month)) {
             getDatePicker(context);
         } else {
             $.get('/booking/black_out', context, function () {

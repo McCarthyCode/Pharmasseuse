@@ -642,7 +642,7 @@ class AppointmentManager(models.Manager):
         from booking.models import Appointment
 
         try:
-            date = datetime(
+            day = datetime(
                 int(request.GET.get('year')),
                 int(request.GET.get('month')),
                 int(request.GET.get('day')),
@@ -651,7 +651,6 @@ class AppointmentManager(models.Manager):
         except Exception as exception:
             return (False, ['There was an error getting the previous date.', exception])
 
-        day = date
         day = tz.localize(day)
         day = day.astimezone(pytz.utc)
 
