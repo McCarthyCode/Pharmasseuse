@@ -62,8 +62,14 @@ a, input {
   line-height: 1.5;
 }
 
-.sign-in input[type="submit"] {
+.sign-in input[type="submit"],
+.sign-in a {
   margin-top: 1rem;
+}
+
+.sign-in a {
+  display: block;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
 .contact-header > * {

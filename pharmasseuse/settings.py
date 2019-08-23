@@ -21,11 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 HOME = os.environ.get('HOME')
-SECRET_KEY_FILE = '%s/pharmasseuse/secret.txt' % HOME
+SECRET_KEY_FILE = '%s/pharmasseuse/auth/secret.txt' % HOME
 with open(SECRET_KEY_FILE, 'r', encoding='utf8') as f:
-    content = f.readlines()
-content = [x.strip() for x in content]
-SECRET_KEY = content[0]
+    content = f.readline()
+SECRET_KEY = content
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -145,13 +144,21 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-# STATIC_ROOT = ''
-# STATICFILES_DIRS = ( os.path.join('static'), )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 # Session expiry
+
 if not DEBUG:
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-    SESSION_COOKIE_AGE = 15 * 60
+    SESSION_COOKIE_AGE = 30 * 60
+
+
+# Mailgun API key
+
+MAILGUN_API_KEY_FILE = '%s/pharmasseuse/auth/mailgun.txt' % HOME
+with open(SECRET_KEY_FILE, 'r', encoding='utf8') as f:
+    content = f.readline()
+MAILGUN_API_KEY = content
