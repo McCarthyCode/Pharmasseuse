@@ -161,9 +161,7 @@ if not DEBUG:
     SESSION_COOKIE_AGE = 30 * 60
 
 
-# Mailgun API key
+# Email settings
 
-MAILGUN_API_KEY_FILE = '%s/pharmasseuse/auth/mailgun.txt' % HOME
-with open(SECRET_KEY_FILE, 'r', encoding='utf8') as f:
-    content = f.readline()
-MAILGUN_API_KEY = content
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
