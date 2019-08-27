@@ -93,12 +93,17 @@ if DEBUG:
         }
     }
 else:
+    PGPASSWORD_FILE = '%s/pharmasseuse/auth/pgpass.txt' % HOME
+    with open(PGPASSWORD_FILE, 'r', encoding='utf8') as f:
+        content = f.readline()
+    PGPASSWORD = content
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'pharmasseuse',
             'USER': 'pharmasseuse',
-            'PASSWORD': os.environ.get('PGPASSWORD'),
+            'PASSWORD': PGPASSWORD,
             'HOST': 'localhost',
             'PORT': '',
         }
