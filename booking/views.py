@@ -157,9 +157,6 @@ def black_out(request):
     valid, response = Appointment.objects.black_out(request)
 
     if not valid:
-        for error in response:
-            messages.error(request, error)
-
         return HttpResponseServerError()
 
     return HttpResponse(status=200)

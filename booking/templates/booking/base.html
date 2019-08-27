@@ -38,7 +38,25 @@
 </head>
 <body>
   {% include 'home/navbar.html' %}
-  {% block content %}
-  {% endblock %}
+  <div id="datePicker"></div>
+  <div id="datePickerDate">
+    <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+    <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+  </div>
+  <div id="date">
+    <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+    <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+    <input type="hidden" name="day" value="{{ date|date:'j' }}" autocomplete="off">
+  </div>
+  <div id="csrf">
+    {% csrf_token %}
+  </div>
+  <div class="page">
+    <div class="nav-placeholder"></div>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
 </body>
 </html>

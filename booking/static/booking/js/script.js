@@ -57,7 +57,7 @@ $(document).ready(function () {
         'month': $('#date input[name="month"]').val(),
         'day': $('#date input[name="day"]').val(),
     };
-    $.get('/booking/day', context, function (response) {
+    $.get('/booking/day/', context, function (response) {
         $calendarContent.empty();
         $calendarContent.append(response);
         alignAppointmentTimes();
@@ -73,7 +73,7 @@ $(document).ready(function () {
 
         if (id === '') {
             // redirect to sign in page
-            window.location.replace('/profile/login_redirect');
+            window.location.replace('/profile/login_redirect/');
         } else {
             // trigger new appointment modal
             var date = $('#calendarControls .date span').text();

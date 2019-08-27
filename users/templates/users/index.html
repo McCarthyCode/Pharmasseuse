@@ -2,360 +2,147 @@
 {% load static %}
 
 {% block content %}
-<div class="page">
-  <div class="nav-placeholder"></div>
-  <div class="container">
-    {% if messages %}
-    {% for message in messages %}
-    {% if message.tags == 'error' %}
-    <div class="alert alert-danger" role="alert">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-      <p>{{ message }}</p>
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<div class="alert alert-danger" role="alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+  <p>{{ message }}</p>
+</div>
+{% elif message.tags == 'success' %}
+<div class="alert alert-success" role="alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+  <p>{{ message }}</p>
+</div>
+{% elif message.tags == 'info' %}
+<div class="alert alert-info" role="alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+  <p>{{ message }}</p>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if profile == None %}
+<div class="sign-in">
+  <h1 class="h1">Sign In</h1>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <h3 class="h3">Login</h3>
+      <form action="{% url 'users:login' %}" method="POST">
+        {% csrf_token %}
+        <input
+          type="text"
+          name="email"
+          placeholder="Email"
+          class="form-control"
+        >
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          class="form-control"
+        >
+        <input
+          type="submit"
+          class="btn btn-primary"
+          value="Login"
+        >
+      </form>
+      <a href="{% url 'reset_password' %}">Forgot Password?</a>
     </div>
-    {% elif message.tags == 'success' %}
-    <div class="alert alert-success" role="alert">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-      <p>{{ message }}</p>
+    <div class="col-12 col-md-6">
+      <h3 class="h3">Register</h3>
+      <form action="{% url 'users:register' %}" method="POST">
+        {% csrf_token %}
+        <input
+          type="text"
+          name="first-name"
+          placeholder="First Name"
+          class="form-control"
+        >
+        <input
+          type="text"
+          name="last-name"
+          placeholder="Last Name"
+          class="form-control"
+        >
+        <input
+          type="text"
+          name="email"
+          placeholder="Email"
+          class="form-control"
+        >
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          class="form-control"
+        >
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          class="form-control"
+        >
+        <input
+          type="password"
+          name="confirm-password"
+          placeholder="Confirm Password"
+          class="form-control"
+        >
+        <input
+          type="submit"
+          class="btn btn-primary"
+          value="Register"
+        >
+      </form>
     </div>
-    {% elif message.tags == 'info' %}
-    <div class="alert alert-info" role="alert">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-      <p>{{ message }}</p>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
-    {% if profile == None %}
-    <div class="sign-in">
-      <h1 class="h1">Sign In</h1>
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <h3 class="h3">Login</h3>
-          <form action="{% url 'users:login' %}" method="POST">
-            {% csrf_token %}
-            <input
-              type="text"
-              name="email"
-              placeholder="Email"
-              class="form-control"
-            >
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              class="form-control"
-            >
-            <input
-              type="submit"
-              class="btn btn-primary"
-              value="Login"
-            >
-          </form>
-          <a href="{% url 'reset_password' %}">Forgot Password?</a>
-        </div>
-        <div class="col-12 col-md-6">
-          <h3 class="h3">Register</h3>
-          <form action="{% url 'users:register' %}" method="POST">
-            {% csrf_token %}
-            <input
-              type="text"
-              name="first-name"
-              placeholder="First Name"
-              class="form-control"
-            >
-            <input
-              type="text"
-              name="last-name"
-              placeholder="Last Name"
-              class="form-control"
-            >
-            <input
-              type="text"
-              name="email"
-              placeholder="Email"
-              class="form-control"
-            >
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone"
-              class="form-control"
-            >
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              class="form-control"
-            >
-            <input
-              type="password"
-              name="confirm-password"
-              placeholder="Confirm Password"
-              class="form-control"
-            >
-            <input
-              type="submit"
-              class="btn btn-primary"
-              value="Register"
-            >
-          </form>
-        </div>
-      </div>
-    </div>
-    {% else %}
-    <div class="profile">
-      <h1 class="h1">Profile</h1>
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <div class="contact-header">
-            <h3 class="h3">Contact Info</h3>
-            <div class="edit">
-              <a href="#">Edit</a>
-            </div>
-          </div>
-          <div class="info-container">
-            <div class="info">
-              <div>Name</div>
-              <div>{{ profile.user.first_name }} {{ profile.user.last_name }}</div>
-              <div>Email</div>
-              <div>{{ profile.user.email }}</div>
-              <div>Phone Number</div>
-              <div>{{ profile.phone }}</div>
-              <div>Password</div>
-              <div>
-                &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
-                <a class="change" href="#">Change</a>
-              </div>
-            </div>
-          </div>
-          <div class="edit-profile">
-            <form action="{% url 'users:edit_profile' %}" method="POST">
-              {% csrf_token %}
-              <input type="hidden" name="profile-id" value="{{ profile.pk }}">
-              <div class="form-inline">
-                <input
-                  type="text"
-                  name="first-name"
-                  placeholder="First Name"
-                  class="form-control col-6"
-                  value="{{ profile.user.first_name }}"
-                >
-                <input
-                  type="text"
-                  name="last-name"
-                  placeholder="Last Name"
-                  class="form-control col-6"
-                  value="{{ profile.user.last_name }}"
-                >
-              </div>
-              <input
-                type="text"
-                name="email"
-                placeholder="Email"
-                class="form-control"
-                value="{{ profile.user.email }}"
-              >
-              <input
-                type="text"
-                name="phone"
-                placeholder="Phone"
-                class="form-control"
-                value="{{ profile.phone }}"
-              >
-              <div class="btn-container">
-                <input class="btn btn-primary" type="submit" value="Edit">
-                <input class="btn btn-secondary" type="submit" value="Cancel">
-              </div>
-            </form>
-          </div>
-          <div class="edit-password">
-              <form action="{% url 'users:edit_password' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="user-id" value="{{ profile.user.pk }}">
-                <input
-                  type="password"
-                  name="current-password"
-                  placeholder="Current Password"
-                  class="form-control"
-                >
-                <input
-                  type="password"
-                  name="new-password"
-                  placeholder="New Password"
-                  class="form-control"
-                >
-                <input
-                  type="password"
-                  name="password-confirm"
-                  placeholder="Confirm Password"
-                  class="form-control"
-                >
-                <div class="btn-container">
-                  <input class="btn btn-primary" type="submit" value="Submit">
-                  <input class="btn btn-secondary" type="submit" value="Cancel">
-                </div>
-              </form>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 next-appointment">
-          <h3 class="h3">Next Appointment</h3>
-          {% if next_appt == None %}
-          <p class="empty text-center">
-            You currently do not have an appointment scheduled.
-            You may schedule one by choosing an appointment slot
-            <a href="{% url 'booking:index' %}">here</a>.
-          </p>
-          {% else %}
-          <div class="appointment">
-            <h5 class="h5 text-center">{{ next_appt.date_start|date:"D M" }}</h5>
-            <h1 class="h1 text-center">{{ next_appt.date_start|date:"j" }}</h1>
-            <p class="text-center">{{ next_appt.date_start|date:"g:i a" }}</p>
-          </div>
-          <div class="form-container">
-            <form action="{% url 'booking:reschedule_form' %}" method="POST">
-              {% csrf_token %}
-              <input type="hidden" name="profile-id" value="{{ profile.pk }}">
-              <input type="hidden" name="appointment-id" value="{{ next_appt.pk }}">
-              <input class="btn btn-secondary" type="submit" value="Reschedule Appointment">
-            </form>
-            <form action="{% url 'booking:cancel' %}" method="POST">
-              {% csrf_token %}
-              <input type="hidden" name="profile-id" value="{{ profile.pk }}">
-              <input class="btn btn-secondary" type="submit" value="Cancel Appointment">
-            </form>
-          </div>
-          {% if next_appt.massage == "SW" %}
-          <p class="massage-type text-center">Massage type: <a href="#">Swedish</a></p>
-          {% elif next_appt.massage == "DT" %}
-          <p class="massage-type text-center">Massage type: <a href="#">Deep Tissue</a></p>
-          {% else %}
-          <p class="massage-type text-center">Massage type: <a href="#">unspecified</a></p>
-          {% endif %}
-          <div id="changeMassageType">
-            {% csrf_token %}
-            <input type="hidden" name="profile-id" value="{{ profile.pk }}">
-            <div class="radio">
-              {% if next_appt.massage == "SW" %}
-              <input type="radio" name="massage-user" value="SW" checked>
-              <label id="swedish" for="massage-user">Swedish</label>
-              <input type="radio" name="massage-user" value="DT">
-              <label id="deepTissue" for="massage-user">Deep Tissue</label>
-              <input type="radio" name="massage-user" value="">
-              <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
-              {% elif next_appt.massage == "DT" %}
-              <input type="radio" name="massage-user" value="SW">
-              <label id="swedish" for="massage-user">Swedish</label>
-              <input type="radio" name="massage-user" value="DT" checked>
-              <label id="deepTissue" for="massage-user">Deep Tissue</label>
-              <input type="radio" name="massage-user" value="">
-              <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
-              {% else %}
-              <input type="radio" name="massage-user" value="SW">
-              <label id="swedish" for="massage-user">Swedish</label>
-              <input type="radio" name="massage-user" value="DT">
-              <label id="deepTissue" for="massage-user">Deep Tissue</label>
-              <input type="radio" name="massage-user" value="" checked>
-              <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
-              {% endif %}
-            </div>
-            <div class="btn-container">
-              <a href="#" class="btn btn-secondary">Cancel</a>
-              <a href="#" class="btn btn-primary">Update</a>
-            </div>
-          </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    {% if profile.user.is_superuser == True %}
-    <div class="row admin">
-      <div class="col-12">
-          <h1 class="h1">Admin Page</h1>
-          <h3 class="h3">Manage Appointments</h3>
-          <table id="appointments">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Appointment Time</th>
-                <th>Massage Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for appt in appts %}
-              <tr>
-                <td class="first-name">{{ appt.profile.user.first_name }}</td>
-                <td class="last-name">{{ appt.profile.user.last_name }}</td>
-                {% load tz %}
-                {% timezone TIME_ZONE %}
-                <td>{{ appt.date_start|date:"Y-m-d H:i" }}</td>
-                {% endtimezone %}
-                {% if appt.massage == "DT" %}
-                <td>Deep Tissue</td>
-                {% elif appt.massage == "SW" %}
-                <td>Swedish</td>
-                {% else %}
-                <td class="font-italic">unspecified</td>
-                {% endif %}
-                <input type="hidden" name="profile-id" value="{{ appt.profile.pk }}">
-                <input type="hidden" name="email" value="{{ appt.profile.user.email }}">
-                <input type="hidden" name="phone" value="{{ appt.profile.phone }}">
-                <input type="hidden" name="date" value="{{ appt.date_start|date:'D M j, g:i a' }}">
-                <input type="hidden" name="massage" value="{{ appt.massage }}">
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-      </div>
-    </div>
-    <div class="row admin">
-      <div class="col-12">
-          <h3 class="h3">Add/Black-out Dates</h3>
-          <div id="datePicker"></div>
-          <div id="datePickerDate">
-            <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
-            <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
-          </div>
-      </div>
-    </div>
-    {% endif %}
-    {% endif %}
   </div>
 </div>
-{% if profile.user.is_superuser == True %}
-<div id="modal">
-  <div class="container">
-    <div id="modalContent">
-      <span class="close">&times;</span>
-      <h3 class="h3">Details</h3>
-      <h5 class="h5">Client Info</h5>
-      <div class="edit">
-        <a href="#">Edit</a>
+{% else %}
+<div class="profile">
+  <h1 class="h1">Profile</h1>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="contact-header">
+        <h3 class="h3">Contact Info</h3>
+        <div class="edit">
+          <a href="#">Edit</a>
+        </div>
       </div>
-      <div class="info">
-        <div>Name</div>
-        <div id="name"></div>
-        <div>Email</div>
-        <div id="email"></div>
-        <div>Phone Number</div>
-        <div id="phone"></div>
+      <div class="info-container">
+        <div class="info">
+          <div>Name</div>
+          <div>{{ profile.user.first_name }} {{ profile.user.last_name }}</div>
+          <div>Email</div>
+          <div>{{ profile.user.email }}</div>
+          <div>Phone Number</div>
+          <div>{{ profile.phone }}</div>
+          <div>Password</div>
+          <div>
+            &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
+            <a class="change" href="#">Change</a>
+          </div>
+        </div>
       </div>
       <div class="edit-profile">
         <form action="{% url 'users:edit_profile' %}" method="POST">
           {% csrf_token %}
-          <input type="hidden" name="profile-id">
+          <input type="hidden" name="profile-id" value="{{ profile.pk }}">
           <div class="form-inline">
             <input
               type="text"
               name="first-name"
               placeholder="First Name"
               class="form-control col-6"
+              value="{{ profile.user.first_name }}"
             >
             <input
               type="text"
               name="last-name"
               placeholder="Last Name"
               class="form-control col-6"
+              value="{{ profile.user.last_name }}"
             >
           </div>
           <input
@@ -363,12 +150,14 @@
             name="email"
             placeholder="Email"
             class="form-control"
+            value="{{ profile.user.email }}"
           >
           <input
             type="text"
             name="phone"
             placeholder="Phone"
             class="form-control"
+            value="{{ profile.phone }}"
           >
           <div class="btn-container">
             <input class="btn btn-primary" type="submit" value="Edit">
@@ -376,42 +165,248 @@
           </div>
         </form>
       </div>
-      <h5 class="h5">Appointment Details</h5>
-      <div class="details-form info">
-        <div class="vertical-center">
-          <div>Date/Time</div>
-        </div>
-        <div>
-          <p id="date"></p>
-          <form action="{% url 'booking:reschedule_form' %}" method="POST">
+      <div class="edit-password">
+          <form action="{% url 'users:edit_password' %}" method="POST">
             {% csrf_token %}
-            <input type="hidden" name="profile-id">
-            <input class="btn-link" type="submit" value="Click to reschedule.">
+            <input type="hidden" name="user-id" value="{{ profile.user.pk }}">
+            <input
+              type="password"
+              name="current-password"
+              placeholder="Current Password"
+              class="form-control"
+            >
+            <input
+              type="password"
+              name="new-password"
+              placeholder="New Password"
+              class="form-control"
+            >
+            <input
+              type="password"
+              name="password-confirm"
+              placeholder="Confirm Password"
+              class="form-control"
+            >
+            <div class="btn-container">
+              <input class="btn btn-primary" type="submit" value="Submit">
+              <input class="btn btn-secondary" type="submit" value="Cancel">
+            </div>
           </form>
-        </div>
-        <div class="vertical-center">
-          <div>Massage Type</div>
-        </div>
-        <div class="radio">
-          <input type="radio" name="massage-admin" value="SW">
-          <label id="swedishModal" for="massage-admin">Swedish</label>
-          <input type="radio" name="massage-admin" value="DT">
-          <label id="deepTissueModal" for="massage-admin">Deep Tissue</label>
-          <input type="radio" name="massage-admin" value="">
-          <label id="unspecifiedModal" class="font-italic" for="massage-admin">unspecified</label>
-        </div>
-      </div>
-      {% csrf_token %}
-      <h5 class="h5">Actions</h5>
-      <div class="btn-container">
-        <a id="updateMassageType" class="btn btn-primary" href="#">Update Massage Type</a>
-        <form action="{% url 'booking:cancel' %}" method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="profile-id">
-          <input class="btn btn-danger" type="submit" value="Cancel Appointment">
-        </form>
       </div>
     </div>
+    <div class="col-12 col-md-6 next-appointment">
+      <h3 class="h3">Next Appointment</h3>
+      {% if next_appt == None %}
+      <p class="empty text-center">
+        You currently do not have an appointment scheduled.
+        You may schedule one by choosing an appointment slot
+        <a href="{% url 'booking:index' %}">here</a>.
+      </p>
+      {% else %}
+      <div class="appointment">
+        <h5 class="h5 text-center">{{ next_appt.date_start|date:"D M" }}</h5>
+        <h1 class="h1 text-center">{{ next_appt.date_start|date:"j" }}</h1>
+        <p class="text-center">{{ next_appt.date_start|date:"g:i a" }}</p>
+      </div>
+      <div class="form-container">
+        <form action="{% url 'booking:reschedule_form' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="profile-id" value="{{ profile.pk }}">
+          <input type="hidden" name="appointment-id" value="{{ next_appt.pk }}">
+          <input class="btn btn-secondary" type="submit" value="Reschedule Appointment">
+        </form>
+        <form action="{% url 'booking:cancel' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="profile-id" value="{{ profile.pk }}">
+          <input class="btn btn-secondary" type="submit" value="Cancel Appointment">
+        </form>
+      </div>
+      {% if next_appt.massage == "SW" %}
+      <p class="massage-type text-center">Massage type: <a href="#">Swedish</a></p>
+      {% elif next_appt.massage == "DT" %}
+      <p class="massage-type text-center">Massage type: <a href="#">Deep Tissue</a></p>
+      {% else %}
+      <p class="massage-type text-center">Massage type: <a href="#">unspecified</a></p>
+      {% endif %}
+      <div id="changeMassageType">
+        {% csrf_token %}
+        <input type="hidden" name="profile-id" value="{{ profile.pk }}">
+        <div class="radio">
+          {% if next_appt.massage == "SW" %}
+          <input type="radio" name="massage-user" value="SW" checked>
+          <label id="swedish" for="massage-user">Swedish</label>
+          <input type="radio" name="massage-user" value="DT">
+          <label id="deepTissue" for="massage-user">Deep Tissue</label>
+          <input type="radio" name="massage-user" value="">
+          <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
+          {% elif next_appt.massage == "DT" %}
+          <input type="radio" name="massage-user" value="SW">
+          <label id="swedish" for="massage-user">Swedish</label>
+          <input type="radio" name="massage-user" value="DT" checked>
+          <label id="deepTissue" for="massage-user">Deep Tissue</label>
+          <input type="radio" name="massage-user" value="">
+          <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
+          {% else %}
+          <input type="radio" name="massage-user" value="SW">
+          <label id="swedish" for="massage-user">Swedish</label>
+          <input type="radio" name="massage-user" value="DT">
+          <label id="deepTissue" for="massage-user">Deep Tissue</label>
+          <input type="radio" name="massage-user" value="" checked>
+          <label id="unspecified" class="font-italic" for="massage-user">unspecified</label>
+          {% endif %}
+        </div>
+        <div class="btn-container">
+          <a href="#" class="btn btn-secondary">Cancel</a>
+          <a href="#" class="btn btn-primary">Update</a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% if profile.user.is_superuser == True %}
+<div class="row admin">
+  <div class="col-12">
+      <h1 class="h1">Admin Page</h1>
+      <h3 class="h3">Manage Appointments</h3>
+      <table id="appointments">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Appointment Time</th>
+            <th>Massage Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in appts %}
+          <tr>
+            <td class="first-name">{{ appt.profile.user.first_name }}</td>
+            <td class="last-name">{{ appt.profile.user.last_name }}</td>
+            {% load tz %}
+            {% timezone TIME_ZONE %}
+            <td>{{ appt.date_start|date:"Y-m-d H:i" }}</td>
+            {% endtimezone %}
+            {% if appt.massage == "DT" %}
+            <td>Deep Tissue</td>
+            {% elif appt.massage == "SW" %}
+            <td>Swedish</td>
+            {% else %}
+            <td class="font-italic">unspecified</td>
+            {% endif %}
+            <input type="hidden" name="profile-id" value="{{ appt.profile.pk }}">
+            <input type="hidden" name="email" value="{{ appt.profile.user.email }}">
+            <input type="hidden" name="phone" value="{{ appt.profile.phone }}">
+            <input type="hidden" name="date" value="{{ appt.date_start|date:'D M j, g:i a' }}">
+            <input type="hidden" name="massage" value="{{ appt.massage }}">
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
+<div class="row admin">
+  <div class="col-12">
+      <h3 class="h3">Add/Black-out Dates</h3>
+      <div id="datePicker"></div>
+      <div id="datePickerDate">
+        <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+        <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+      </div>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+</div>
+</div>
+{% if profile.user.is_superuser == True %}
+<div id="modal">
+<div class="container">
+<div id="modalContent">
+  <span class="close">&times;</span>
+  <h3 class="h3">Details</h3>
+  <h5 class="h5">Client Info</h5>
+  <div class="edit">
+    <a href="#">Edit</a>
+  </div>
+  <div class="info">
+    <div>Name</div>
+    <div id="name"></div>
+    <div>Email</div>
+    <div id="email"></div>
+    <div>Phone Number</div>
+    <div id="phone"></div>
+  </div>
+  <div class="edit-profile">
+    <form action="{% url 'users:edit_profile' %}" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="profile-id">
+      <div class="form-inline">
+        <input
+          type="text"
+          name="first-name"
+          placeholder="First Name"
+          class="form-control col-6"
+        >
+        <input
+          type="text"
+          name="last-name"
+          placeholder="Last Name"
+          class="form-control col-6"
+        >
+      </div>
+      <input
+        type="text"
+        name="email"
+        placeholder="Email"
+        class="form-control"
+      >
+      <input
+        type="text"
+        name="phone"
+        placeholder="Phone"
+        class="form-control"
+      >
+      <div class="btn-container">
+        <input class="btn btn-primary" type="submit" value="Edit">
+        <input class="btn btn-secondary" type="submit" value="Cancel">
+      </div>
+    </form>
+  </div>
+  <h5 class="h5">Appointment Details</h5>
+  <div class="details-form info">
+    <div class="vertical-center">
+      <div>Date/Time</div>
+    </div>
+    <div>
+      <p id="date"></p>
+      <form action="{% url 'booking:reschedule_form' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="profile-id">
+        <input class="btn-link" type="submit" value="Click to reschedule.">
+      </form>
+    </div>
+    <div class="vertical-center">
+      <div>Massage Type</div>
+    </div>
+    <div class="radio">
+      <input type="radio" name="massage-admin" value="SW">
+      <label id="swedishModal" for="massage-admin">Swedish</label>
+      <input type="radio" name="massage-admin" value="DT">
+      <label id="deepTissueModal" for="massage-admin">Deep Tissue</label>
+      <input type="radio" name="massage-admin" value="">
+      <label id="unspecifiedModal" class="font-italic" for="massage-admin">unspecified</label>
+    </div>
+  </div>
+  {% csrf_token %}
+  <h5 class="h5">Actions</h5>
+  <div class="btn-container">
+    <a id="updateMassageType" class="btn btn-primary" href="#">Update Massage Type</a>
+    <form action="{% url 'booking:cancel' %}" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="profile-id">
+      <input class="btn btn-danger" type="submit" value="Cancel Appointment">
+    </form>
   </div>
 </div>
 {% endif %}

@@ -11,14 +11,14 @@ $(document).ready(function () {
 
         $.ajax({
             method: 'POST',
-            url: '/booking/reschedule_submit',
+            url: '/booking/reschedule-submit/',
             data: context,
             statusCode: {
                 200: function () {
-                    window.location.href = '/profile';
+                    window.location.href = '/profile/';
                 },
                 500: function () {
-                    window.location.href = '/profile';
+                    window.location.href = '/profile/';
                 }
             },
         });

@@ -59,7 +59,7 @@ $(document).ready(function () {
             $('#datePickerDate input[name="month"]').val(context['month']);
         }
 
-        $.get('/booking/date_picker', context, function (response) {
+        $.get('/booking/date-picker/', context, function (response) {
             $dp.empty();
             $dp.append(response);
         });
@@ -168,7 +168,7 @@ $(document).ready(function () {
             'day': day,
         };
 
-        $.get('/booking/day', context, function (response) {
+        $.get('/booking/day/', context, function (response) {
             $calendarContent.empty();
             $calendarContent.append(response);
             alignAppointmentTimes();
@@ -180,7 +180,7 @@ $(document).ready(function () {
     function updatePrev(context) {
         showCCLoadingIcon();
 
-        $.get('/booking/prev', context, function (response) {
+        $.get('/booking/prev/', context, function (response) {
             var $prev = $('#calendarControls .prev');
 
             if (response['exists']) {
@@ -202,7 +202,7 @@ $(document).ready(function () {
     function updateNext(context) {
         showCCLoadingIcon();
 
-        $.get('/booking/next', context, function (response) {
+        $.get('/booking/next/', context, function (response) {
             var $next = $('#calendarControls .next');
 
             if (response['exists']) {

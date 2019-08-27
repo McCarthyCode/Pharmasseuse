@@ -178,12 +178,8 @@ class AppointmentManager(models.Manager):
             options[date.weekday()]()
         except Exception as exception:
             return (False, exception)
-        return (True, Appointment.objects.filter(
-            date_start__year=date.year,
-            date_start__month=date.month,
-            date_start__day=date.day,
-            black_out=False,
-        ))
+
+        return (True, None)
 
 
     def date_picker(self, request):
@@ -672,7 +668,10 @@ class AppointmentManager(models.Manager):
             )
 
             if len(appts) == 0:
-                Appointment.objects.create_appointments(date)
+                valid, response = Appointment.objects.create_appointments(day)
+
+                if not valid:
+                    return (False, response)
             else:
                 for appt in appts:
                     appt.black_out = False

@@ -27,7 +27,7 @@ $(document).ready(function () {
             $('#datePickerDate input[name="month"]').val(context['month']);
         }
 
-        $.get('/booking/date_picker', context, function (response) {
+        $.get('/booking/date-picker/', context, function (response) {
             $dp.empty();
             $dp.append(response);
         });
@@ -54,9 +54,7 @@ $(document).ready(function () {
 
     // update prev/next buttons
     function updatePrev(context) {
-        // showLoadingIcon();
-
-        $.get('/booking/prev', context, function (response) {
+        $.get('/booking/prev/', context, function (response) {
             var $prev = $('#calendarControls .prev');
 
             if (response['exists']) {
@@ -76,9 +74,7 @@ $(document).ready(function () {
     }
 
     function updateNext(context) {
-        // showLoadingIcon();
-
-        $.get('/booking/next', context, function (response) {
+        $.get('/booking/next/', context, function (response) {
             var $next = $('#calendarControls .next');
 
             if (response['exists']) {
@@ -112,7 +108,7 @@ $(document).ready(function () {
         if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
             getDatePicker(context);
         } else {
-            $.get('/booking/black_out', context, function () {
+            $.get('/booking/black-out/', context, function () {
                 getDatePicker(context);
             });
         }

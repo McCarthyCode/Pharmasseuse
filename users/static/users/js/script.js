@@ -91,8 +91,8 @@ $(document).ready(function () {
             'profile-id': profileId,
         }
 
-        $.post('/profile/edit_massage_type', context, function () {
-            window.location.replace('/profile');
+        $.post('/profile/edit-massage-type/', context, function () {
+            window.location.replace('/profile/');
         });
     });
 
@@ -219,8 +219,8 @@ $(document).ready(function () {
             'profile-id': profileIdModal,
         }
 
-        $.post('/profile/edit_massage_type', context, function () {
-            window.location.replace('/profile');
+        $.post('/profile/edit-massage-type/', context, function () {
+            window.location.replace('/profile/');
         });
     });
 

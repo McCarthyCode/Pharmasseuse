@@ -1,70 +1,27 @@
 {% extends 'booking/base.html' %}
-{% load static %}
 
 {% block content %}
-<div id="datePicker"></div>
-<div id="datePickerDate">
-  <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
-  <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
-</div>
-<div id="date">
-  <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
-  <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
-  <input type="hidden" name="day" value="{{ date|date:'j' }}" autocomplete="off">
-</div>
-<div id="modal">
-  <div class="container">
-    <div id="modalContent">
-      <span class="close">&times;</span>
-      <h3 class="h3"></h3>
-      <h4 class="h4"></h4>
-      <form method="POST" action="{% url 'booking:submit' %}">
-        {% csrf_token %}
-        {% if profile == None %}
-        <input type="hidden" name="profile-id" id="profileId">
-        {% else %}
-        <input type="hidden" name="profile-id" value="{{ profile.id }}" id="profileId">
-        {% endif %}
-        <input type="hidden" name="appointment-id">
-        <div class="radio">
-          <input type="radio" name="massage" value="SW">
-          <label id="swedish" for="massage">Swedish</label>
-          <input type="radio" name="massage" value="DT">
-          <label id="deepTissue" for="massage">Deep Tissue</label>
-          <input type="radio" name="massage" value="" checked>
-          <label id="unspecified" class="font-italic" for="massage">unspecified</label>
-        </div>
-        <p class="text-center">You may change your selection at any time on the Profile page.</p>
-        <input type="submit" class="btn btn-primary" value="Submit">
-      </form>
+{% include 'booking/modal.html' %}
+<h3 class="h3 title text-center">Schedule an Appointment</h3>
+<div id="calendar">
+  <div id="calendarControls">
+    <div class="prev button inactive"
+      data-year="{{ prev|date:'Y' }}"
+      data-month="{{ prev|date:'n' }}"
+      data-day="{{ prev|date:'j' }}">
+      <i class="fas fa-arrow-left"></i>
+    </div>
+    <div class="date text-center">
+      <span>{{ date|date:"D n/j" }}</span>
+      <i id="datePickerIcon" class="far fa-calendar-alt"></i>
+    </div>
+    <div class="next button"
+      data-year="{{ next|date:'Y' }}"
+      data-month="{{ next|date:'n' }}"
+      data-day="{{ next|date:'j' }}">
+      <i class="fas fa-arrow-right"></i>
     </div>
   </div>
-</div>
-<div class="page">
-  <div class="nav-placeholder"></div>
-  <div class="container">
-    <h3 class="h3 title text-center">Schedule an Appointment</h3>
-    <div id="calendar">
-      <div id="calendarControls">
-        <div class="prev button inactive"
-          data-year="{{ prev|date:'Y' }}"
-          data-month="{{ prev|date:'n' }}"
-          data-day="{{ prev|date:'j' }}">
-          <i class="fas fa-arrow-left"></i>
-        </div>
-        <div class="date text-center">
-          <span>{{ date|date:"D n/j" }}</span>
-          <i id="datePickerIcon" class="far fa-calendar-alt"></i>
-        </div>
-        <div class="next button"
-          data-year="{{ next|date:'Y' }}"
-          data-month="{{ next|date:'n' }}"
-          data-day="{{ next|date:'j' }}">
-          <i class="fas fa-arrow-right"></i>
-        </div>
-      </div>
-      <div id="calendarContent"></div>
-    </div>
-  </div>
+  <div id="calendarContent"></div>
 </div>
 {% endblock %}
