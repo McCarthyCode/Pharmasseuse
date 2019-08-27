@@ -588,12 +588,10 @@ class AppointmentManager(models.Manager):
         if profile == None:
             return (False, ['There was an error retrieving the client\'s profile.'])
 
-        today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
-
         try:
             old_appt = Appointment.objects.get(
                 profile=profile,
-                date_start__gt=today.astimezone(pytz.utc) + timedelta(days=1),
+                date_start__gt=datetime.now(tz).astimezone(pytz.utc),
                 black_out=False,
             )
         except Appointment.DoesNotExist:
