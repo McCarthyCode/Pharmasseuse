@@ -27,9 +27,9 @@ urlpatterns = [
     path('', include(('home.urls', 'home'), namespace='home')),
     path('booking/', include(('booking.urls', 'booking'), namespace='booking')),
     path('profile/', include(('users.urls', 'users'), namespace='users')),
-    path('reset-password/', PasswordResetView.as_view(), name='reset_password'),
-    path('reset-password/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset-password/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset-password/complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('reset-password/', PasswordResetView.as_view(template_name='users/password_reset.html'), name='reset_password'),
+    path('reset-password/done/', PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'), name='password_reset_done'),
+    path('reset-password/confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset-password/complete/', PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
     path('admin/', admin.site.urls),
 ]

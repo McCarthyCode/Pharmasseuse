@@ -4,8 +4,17 @@
   font-family: 'Varela Round', Arial, sans-serif
 }
 
-.alert, input {
+.alert, input, .btn, p, ul {
   font-family: 'Open Sans', Arial, sans-serif;
+}
+
+p.spacing {
+  line-height: 1.5;
+  margin-bottom: 1em;
+}
+
+ul.spacing li {
+  margin-bottom: 1em;
 }
 
 a, input {
