@@ -24,7 +24,7 @@ HOME = os.environ.get('HOME')
 SECRET_KEY_FILE = '%s/pharmasseuse/auth/secret.txt' % HOME
 with open(SECRET_KEY_FILE, 'r', encoding='utf8') as f:
     content = f.readline()
-SECRET_KEY = content
+SECRET_KEY = content[:-1]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -96,7 +96,7 @@ else:
     PGPASSWORD_FILE = '%s/pharmasseuse/auth/pgpass.txt' % HOME
     with open(PGPASSWORD_FILE, 'r', encoding='utf8') as f:
         content = f.readline()
-    PGPASSWORD = content
+    PGPASSWORD = content[:-1]
 
     DATABASES = {
         'default': {
@@ -163,5 +163,15 @@ if not DEBUG:
 
 # Email settings
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+if DEBUG:
+    EMAIL_HOST = 'localhost'
+    EMAIL_PORT = 1025
+else:
+    EMAIL_HOST = 'smtp.mailgun.com'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = 'postmaster@mg.pharmasseuse.com'
+    EMAIL_HOST_PASSWORD_FILE = '%s/pharmasseuse/auth/mailgun.txt' % HOME
+    with open(EMAIL_HOST_PASSWORD_FILE, 'r', encoding='utf8') as f:
+        content = f.readline()
+    EMAIL_HOST_PASSWORD = content[:-1]
+    EMAIL_USE_TLS = True
