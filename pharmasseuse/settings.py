@@ -175,3 +175,4 @@ else:
         content = f.readline()
     EMAIL_HOST_PASSWORD = content[:-1]
     EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = 'noreply@pharmasseuse.com'
