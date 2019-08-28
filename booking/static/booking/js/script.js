@@ -73,7 +73,7 @@ $(document).ready(function () {
 
         if (id === '') {
             // redirect to sign in page
-            window.location.replace('/profile/login_redirect/');
+            window.location.replace('/profile/login-redirect/');
         } else {
             // trigger new appointment modal
             var date = $('#calendarControls .date span').text();
