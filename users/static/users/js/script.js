@@ -97,8 +97,8 @@ $(document).ready(function () {
     });
 
     // revert edit form to info grid after modal close
-    var $modalInfo = $('#modalContent .info:not(.details-form)');
-    var $modalEdit = $('#modalContent .edit-profile');
+    var $modalInfo = $('#detailsModalContent .info:not(.details-form)');
+    var $modalEdit = $('#detailsModalContent .edit-profile');
     function revertModalInfo() {
         $modalInfo.show();
         $modalEdit.hide();
@@ -106,12 +106,12 @@ $(document).ready(function () {
 
     // handle click in darkened area outside of modal
     debounce = false;
-    var $modal = $('#modal');
+    var $modal = $('#detailsModal');
     $(window).on('click touchend contextmenu', function (event) {
         if (event.type === 'contextmenu') {
             debounce = true;
             window.setTimeout(() => debounce = false, 250);
-        } else if ($(event.target).is($('#modal, #modal .container')) &&
+        } else if ($(event.target).is($('#detailsModal')) &&
             !debounce) {
             $modal.stop().fadeOut(500);
             window.setTimeout(revertModalInfo, 500);
@@ -119,7 +119,7 @@ $(document).ready(function () {
     });
 
     // handle close button
-    $('#modalContent').on('click touchend', '.close', function (event) {
+    $('#detailsModalContent').on('click touchend', '.close', function (event) {
         $modal.stop().fadeOut(500);
         window.setTimeout(revertModalInfo, 500);
     });
@@ -132,11 +132,11 @@ $(document).ready(function () {
     var $unspecifiedRadio =
         $('#changeMassageType input[type="radio"][name="massage-user"][value=""]');
     var $swedishRadioModal =
-        $('#modalContent input[type="radio"][name="massage-admin"][value="SW"]');
+        $('#detailsModalContent input[type="radio"][name="massage-admin"][value="SW"]');
     var $deepTissueRadioModal =
-        $('#modalContent input[type="radio"][name="massage-admin"][value="DT"]');
+        $('#detailsModalContent input[type="radio"][name="massage-admin"][value="DT"]');
     var $unspecifiedRadioModal =
-        $('#modalContent input[type="radio"][name="massage-admin"][value=""]');
+        $('#detailsModalContent input[type="radio"][name="massage-admin"][value=""]');
 
     // handle table row modal trigger
     var profileIdModal = 0;
@@ -158,11 +158,11 @@ $(document).ready(function () {
         $('#phone').text(phone);
         $('#date').text(date);
 
-        $('#modalContent input[name="profile-id"]').val(profileIdModal);
-        $('#modalContent input[name="first-name"]').val(firstName);
-        $('#modalContent input[name="last-name"]').val(lastName);
-        $('#modalContent input[name="email"]').val(email);
-        $('#modalContent input[name="phone"]').val(phone);
+        $('#detailsModalContent input[name="profile-id"]').val(profileIdModal);
+        $('#detailsModalContent input[name="first-name"]').val(firstName);
+        $('#detailsModalContent input[name="last-name"]').val(lastName);
+        $('#detailsModalContent input[name="email"]').val(email);
+        $('#detailsModalContent input[name="phone"]').val(phone);
 
         if (massage === "DT") {
             $deepTissueRadioModal.prop('checked', true);
@@ -195,7 +195,7 @@ $(document).ready(function () {
     });
 
     // change state based on edit anchor click
-    $('#modalContent .edit a, #modalContent form .btn-secondary').on('click touchend', function (event) {
+    $('#detailsModalContent .edit a, #detailsModalContent form .btn-secondary').on('click touchend', function (event) {
         event.preventDefault();
 
         $modalInfo.toggle();
@@ -206,8 +206,8 @@ $(document).ready(function () {
     $('#updateMassageType').on('click touchend', function (event) {
         event.preventDefault();
 
-        var csrf = $('#modalContent input[name="csrfmiddlewaretoken"]').val();
-        var massage = $('#modalContent input[name="massage-admin"]:checked').val();
+        var csrf = $('#detailsModalContent input[name="csrfmiddlewaretoken"]').val();
+        var massage = $('#detailsModalContent input[name="massage-admin"]:checked').val();
 
         if (massage === '') {
             massage = null;
