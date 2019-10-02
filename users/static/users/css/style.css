@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round');
 
 .h1, .h3 {
-  font-family: 'Varela Round', Arial, sans-serif
+  font-family: 'Varela Round', Arial, sans-serif;
 }
 
 .alert, input, .btn, p, ul {

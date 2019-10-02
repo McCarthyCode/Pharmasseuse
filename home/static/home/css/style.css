@@ -96,7 +96,7 @@ p {
   z-index: 0;
 }
 
-.content {
+.content-1 {
   display: grid;
   background-color: #ffcc8d;
   background:
@@ -112,26 +112,29 @@ p {
     -moz-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
     -moz-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
   background:
-    -ms-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
-    -ms-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
-    -ms-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
-  background:
     -o-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
     -o-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
     -o-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
 }
 
-.content .row {
+.content-1 .row {
   margin: 2rem 0;
 }
 
-.content .img {
+.content-1 .img {
   position: relative;
-  height: 364px;
   padding: 2rem 0;
 }
 
-.content img {
+.content-1 .img-1 {
+  height: 364px;
+}
+
+.content-1 .img-2 {
+  height: 262.75px;
+}
+
+.content-1 img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -143,6 +146,20 @@ p {
   max-width: 300px;
   max-height: 300px;
   margin: auto;
+}
+
+.content-2 {
+  display: grid;
+  padding: 2rem 0;
+  background-color: #414141;
+  color: white;
+}
+
+.content-2 .contact,
+.content-2 .hours {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .paragraph {
@@ -172,15 +189,14 @@ p {
   background: url("/static/home/img/rocks.jpg") no-repeat center center fixed;
 }
 
-.content .h3 {
+.content-2 .h3 {
   font-family: 'Varela Round', 'Open Sans', Arial, sans-serif;
+  text-align: center;
 }
 
-.content .contact,
-.content .hours {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.content-2 p {
+  padding-top: 0.5em;
+  text-align: center;
 }
 
 .m-tb-2rem {
@@ -253,6 +269,26 @@ p {
     background: url("/static/home/img/title_h3.png") no-repeat;
   }
 
+  .content-2 {
+    color: black;
+    background:
+      linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+      linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+      linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    background:
+      -webkit-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+      -webkit-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+      -webkit-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    background:
+      -moz-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+      -moz-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+      -moz-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+    background:
+      -o-linear-gradient(127deg, rgba(90,181,255,1), rgba(90,181,255,0) 70.71%),
+      -o-linear-gradient(217deg, rgba(255,181,90,1), rgba(255,181,90,0) 70.71%),
+      -o-linear-gradient(336deg, rgba(181,255,90,1), rgba(181,255,90,0) 70.71%);
+  }
+
   .content img {
     position: absolute;
     top: 50%;
@@ -289,10 +325,6 @@ p {
   .gradient-border {
     height: 3px;
     background: linear-gradient(to right, #5b3a94, #17a2b8, #5b3a94);
-  }
-
-  .content p {
-    padding-top: 0.5em;
   }
 
   .content .img {
