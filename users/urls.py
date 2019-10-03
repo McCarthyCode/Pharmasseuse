@@ -11,5 +11,6 @@ urlpatterns = [
     path('edit-profile/', views.edit_profile, name='edit_profile'),
     path('edit-password/', views.edit_password, name='edit_password'),
     path('edit-massage-type/', views.edit_massage_type, name='edit_massage_type'),
+    path('search-by-name/', views.search_by_name, name='search_by_name'),
     #path('clear-all-sessions', views.clear_all_sessions, name='clear_all_sessions'),
 ]

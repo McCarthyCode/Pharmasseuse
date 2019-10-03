@@ -217,3 +217,23 @@ class ProfileManager(Manager):
             return (True, message)
 
         return (False, errors)
+
+    def search_by_name(self, request):
+        first_name = request.GET.get('first-name', '')
+        last_name = request.GET.get('last-name', '')
+
+        profiles = []
+        if first_name == '' and last_name == '':
+            return (False, None)
+        elif last_name == '':
+            profiles = models.Profile.objects \
+                .filter(user__first_name__contains=first_name)
+        elif first_name == '':
+            profiles = models.Profile.objects \
+                .filter(user__last_name__contains=last_name)
+        else:
+            profiles = models.Profile.objects \
+                .filter(user__first_name__contains=first_name) \
+                .filter(user__last_name__contains=last_name)
+
+        return (True, {'profiles': profiles})

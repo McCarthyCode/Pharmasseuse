@@ -275,7 +275,8 @@ a, input {
   margin: 1rem auto 2rem auto;
 }
 
-#detailsModal {
+#detailsModal,
+#addAppointmentModal {
   display: none;
   position: fixed;
   z-index: 3;
@@ -287,7 +288,8 @@ a, input {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-#detailsModal .close {
+#detailsModal .close,
+#addAppointmentModal .close {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -295,7 +297,8 @@ a, input {
   height: 2rem;
 }
 
-#detailsModalContent {
+#detailsModalContent,
+#addAppointmentModalContent {
   position: absolute;
   top: 0;
   right: 0;
@@ -316,12 +319,49 @@ a, input {
   right: 1rem;
 }
 
+#addAppointmentModalContent .row {
+  margin: 0;
+}
+
+#addAppointmentModalContent label.form-control {
+  border: none;
+  background-color: unset;
+}
+
+#dropdown {
+  position: relative;
+  z-index: 1;
+}
+
+#dropdown ul {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  border-top: 1px solid #CED4DA;
+}
+
+#dropdown ul li {
+  padding: 0.5rem;
+  border-right: 1px solid #CED4DA;
+  border-bottom: 1px solid #CED4DA;
+  border-left: 1px solid #CED4DA;
+  background-color: white;
+}
+
+#dropdown ul li:hover {
+  color: white;
+  background-color: #007bff;
+  cursor: pointer;
+}
+
 @media (min-width: 576px) {
   #appointments_wrapper {
     overflow-x: visible;
   }
 
-  #detailsModalContent {
+  #detailsModalContent,
+  #addAppointmentModalContent {
     position: fixed;
     top: 50%;
     right: unset;
@@ -352,7 +392,8 @@ a, input {
     width: 100%;
   }
 
-  #detailsModalContent {
+  #detailsModalContent,
+  #addAppointmentModalContent {
     width: 688px;
   }
 }

@@ -6,7 +6,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from users.models import Profile
 from booking.models import Appointment
 
@@ -96,6 +96,17 @@ def edit_massage_type(request):
             messages.error(request, error)
 
     return HttpResponse(response)
+
+
+def search_by_name(request):
+    valid, response = Profile.objects.search_by_name(request)
+
+    if not valid:
+        return HttpResponseBadRequest()
+    elif not response['profiles'].exists():
+        return HttpResponse(status=204)
+    
+    return render(request, 'users/dropdown.html', response)
 
 
 ######################
