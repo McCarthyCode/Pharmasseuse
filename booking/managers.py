@@ -418,7 +418,7 @@ class AppointmentManager(models.Manager):
         from .models import Appointment
 
         user_id = int(request.session.get('id', 0))
-        profile_id = request.POST.get('profile-id')
+        profile_id = int(request.POST.get('profile-id', 0))
         appointment_id = request.POST.get('appointment-id')
         massage = request.POST.get('massage')
 
@@ -691,7 +691,7 @@ class AppointmentManager(models.Manager):
         from users.models import Profile
         from booking.models import Appointment
 
-        profile_id = request.POST.get('active-id')
+        profile_id = int(request.POST.get('active-id', 0))
 
         if profile_id:
             profile = Profile.objects.get(user__pk=profile_id)
