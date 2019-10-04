@@ -328,15 +328,15 @@ a, input {
   background-color: unset;
 }
 
-#addAppointmentModalContent .row,
-#addAppointmentModalContent input[type="email"],
-#clearFields {
-  margin-top: 1rem;
-}
-
 #lastNameAddAppointment,
+#phoneAddAppointment,
+#addAppointmentModalContent input[type="email"],
 #addAppointmentModalContent input[type="submit"] {
   margin-top: 0.25rem;
+}
+
+#clearFields {
+  margin-top: 1rem;
 }
 
 #dropdownContainer {

@@ -172,6 +172,7 @@ $(document).ready(function () {
   var $dropdown = $('#dropdownContainer');
   var $activeId = $('#addAppointmentModal input[name="active-id"]');
   var $email = $('#addAppointmentModal input[name="email"]');
+  var $phone = $('#addAppointmentModal input[name="phone"]');
   var index = -1;
   function clearSearch() {
     $firstName.val('');
@@ -181,6 +182,7 @@ $(document).ready(function () {
 
     $activeId.val(0);
     $email.val('');
+    $phone.val('');
 
     index = -1;
   }
@@ -294,11 +296,13 @@ $(document).ready(function () {
     let lastName = $(this).children('.last-name').html();
     let activeId = $(this).children('input[name="id"]').val();
     let email = $(this).children('input[name="email"]').val();
+    let phone = $(this).children('input[name="phone"]').val();
 
     $firstName.val(firstName);
     $lastName.val(lastName);
-    $activeId.val(activeId);
+    $activeId.attr('value', activeId);
     $email.val(email);
+    $phone.val(phone);
 
     $dropdown.html('');
   });
@@ -321,12 +325,15 @@ $(document).ready(function () {
         let $active = $('#dropdownContainer ul li.active').first();
         let firstName = $active.children('.first-name').html();
         let lastName = $active.children('.last-name').html();
+        let activeId = $active.children('input[name="id"]').val();
+        let email = $active.children('input[name="email"]').val();
+        let phone = $active.children('input[name="phone"]').val();
 
         $firstName.val(firstName);
         $lastName.val(lastName);
-
-        let activeId = $active.children('input[name="id"]').val();
-        $activeId.val(activeId);
+        $activeId.attr('value', activeId);
+        $email.val(email);
+        $phone.val(phone);
 
         $dropdown.html('');
         index = -1;

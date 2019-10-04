@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import re
+import random
 import pytz
 from datetime import datetime, timedelta
 
@@ -244,7 +245,7 @@ class ProfileManager(Manager):
             profile__isnull=True,
         ).delete()
 
-        # delete booked appointmnets before today
+        # delete booked appointments before today
         Appointment.objects.filter(
             date_start__lt=today,
             profile__isnull=False,
@@ -256,3 +257,44 @@ class ProfileManager(Manager):
             .filter(appointment=None, **filters)[:max_results]
 
         return (True, {'profiles': profiles})
+
+
+    def add_profile(self, request):
+        # get POST data
+        first_name = request.POST.get('first-name')
+        last_name = request.POST.get('last-name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone', '000-000-0000')
+
+        # validate input
+        errors = []
+        if not first_name:
+            errors.append('Please enter a first name.')
+        if not last_name:
+            errors.append('Please enter a last name.')
+        if not email:
+            errors.append('Please enter an email.')
+        if not phone:
+            errors.append('Please enter a phone number.')
+        if errors:
+            return (False, errors)
+
+        # create user
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=''.join([random.SystemRandom().choice(
+                'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') \
+                for i in range(16)]),
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+        # create profile
+        profile = models.Profile.objects.create(
+            user=user,
+            phone=phone,
+        )
+
+        return (True, profile)
+

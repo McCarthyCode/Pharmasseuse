@@ -161,3 +161,15 @@ def black_out(request):
 
     return HttpResponse(status=200)
 
+
+def add_appointment(request):
+    valid, response = Appointment.objects.add_appointment(request)
+
+    if not valid:
+        for error in response:
+            messages.error(request, error)
+
+        return redirect('users:index')
+
+    return render(request, 'booking/index.html', response)
+

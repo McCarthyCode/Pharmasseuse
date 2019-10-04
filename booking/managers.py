@@ -417,6 +417,7 @@ class AppointmentManager(models.Manager):
         from users.models import Profile
         from .models import Appointment
 
+        user_id = int(request.session.get('id', 0))
         profile_id = request.POST.get('profile-id')
         appointment_id = request.POST.get('appointment-id')
         massage = request.POST.get('massage')
@@ -444,7 +445,11 @@ class AppointmentManager(models.Manager):
         else:
             return (False, ['You may only book one appointment at a time.'])
 
-        return (True, 'You have successfully booked your appointment.')
+        name = 'your' if user_id == profile_id \
+            else '%s %s\'s' % (profile.user.first_name, profile.user.last_name)
+        message = 'You have successfully scheduled %s appointment.' % name
+
+        return (True, message)
 
 
     def cancel_appointment(self, request):
@@ -680,4 +685,80 @@ class AppointmentManager(models.Manager):
                 appt.save()
 
         return (True, None)
+
+
+    def add_appointment(self, request):
+        from users.models import Profile
+        from booking.models import Appointment
+
+        profile_id = request.POST.get('active-id')
+
+        if profile_id:
+            profile = Profile.objects.get(user__pk=profile_id)
+        else:
+            valid, response = Profile.objects.add_profile(request)
+
+            if not valid:
+                return (False, response)
+
+            profile = response
+
+
+        today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
+
+        appts = Appointment.objects.filter(
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+            black_out=False,
+        ).order_by('date_start')
+
+        try:
+            date_begin = appts[0].date_start
+            date_begin = date_begin.astimezone(tz)
+            date_begin = date_begin.replace(hour=0, minute=0, second=0, microsecond=0)
+        except IndexError:
+            date_begin = today
+
+        prev_appts = Appointment.objects.filter(
+            date_start__lt=date_begin.astimezone(pytz.utc),
+            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+            profile__isnull=True,
+            black_out=False,
+        ).order_by('-date_start')
+
+        next_appts = Appointment.objects \
+            .filter(
+                date_start__gte=date_begin.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+                black_out=False,
+            ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+            .order_by('date_start')
+
+        errors = []
+
+        try:
+            prev = prev_appts[0].date_start
+        except IndexError:
+            prev = date_begin - timedelta(days=1)
+        except Exception as exception:
+            errors.append('There was an error retrieving the previous day.')
+            errors.append(exception)
+
+        try:
+            next = next_appts[0].date_start
+        except IndexError:
+            next = date_begin + timedelta(days=1)
+        except Exception as exception:
+            errors.append('There was an error retrieving the next day.')
+            errors.append(exception)
+
+        if errors:
+            return (False, errors)
+
+        return (True, {
+            'date': date_begin,
+            'prev': prev,
+            'next': next,
+            'profile': profile,
+        })
 

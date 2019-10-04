@@ -14,4 +14,5 @@ urlpatterns = [
     path('reschedule-form/', views.reschedule_form, name='reschedule_form'),
     path('reschedule-submit/', views.reschedule_submit, name='reschedule_submit'),
     path('black-out/', views.black_out, name='black_out'),
+    path('add-appointment/', views.add_appointment, name='add_appointment'),
 ]

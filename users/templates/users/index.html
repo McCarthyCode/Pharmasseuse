@@ -414,16 +414,14 @@
   <div id="addAppointmentModalContent">
     <span class="close">&times;</span>
     <h3 class="h3">Add Appointment</h3>
-    <form action="#" method="POST">
+    <form action="{% url 'booking:add_appointment' %}" method="POST">
       {% csrf_token %}
       <input class="form-control" type="text" name="first-name" placeholder="First Name" id="firstNameAddAppointment" autocomplete="off">
       <input class="form-control" type="text" name="last-name" placeholder="Last Name" id="lastNameAddAppointment" autocomplete="off">
       <div id="dropdownContainer"></div>
-      <div class="row">
-        <label class="form-control col-6" for="active-id">User ID</label>
-        <input class="form-control col-6" type="text" name="active-id" value="0" autocomplete="off" disabled>
-      </div>
+      <input class="form-control col-6" type="hidden" name="active-id" value="0" autocomplete="off">
       <input class="form-control" type="email" name="email" placeholder="Email" id="emailAddAppointment" autocomplete="off">
+      <input class="form-control" type="tel" name="phone" placeholder="Phone" id="phoneAddAppointment" autocomplete="off">
       <button id="clearFields" class="btn btn-danger">Clear Fields</button>
       <input class="form-control btn btn-primary" type="submit" value="Schedule Appointment">
     </form>
