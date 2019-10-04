@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import re
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db.models import Manager
 from django.contrib.auth.models import User, UserManager
@@ -219,22 +219,40 @@ class ProfileManager(Manager):
         return (False, errors)
 
     def search_by_name(self, request):
+        # get URL parameters
         first_name = request.GET.get('first-name', '')
         last_name = request.GET.get('last-name', '')
 
+        # define variables
         profiles = []
         max_results = 5
-        if first_name == '' and last_name == '':
-            return (True, {'profiles': profiles})
-        elif last_name == '':
-            profiles = models.Profile.objects \
-                .filter(user__first_name__contains=first_name)[:max_results]
-        elif first_name == '':
-            profiles = models.Profile.objects \
-                .filter(user__last_name__contains=last_name)[:max_results]
-        else:
-            profiles = models.Profile.objects \
-                .filter(user__first_name__contains=first_name) \
-                .filter(user__last_name__contains=last_name)[:max_results]
+        filters = {}
+
+        # define filters
+        if first_name:
+            filters['user__first_name__icontains'] = first_name
+        if last_name:
+            filters['user__last_name__icontains'] = last_name
+
+        # retrieve today's date as datetime object
+        today = datetime.now(pytz.timezone(TIME_ZONE)).replace(
+            hour=0, minute=0, second=0, microsecond=0)
+
+        # delete empty slots today or earlier
+        Appointment.objects.filter(
+            date_start__lt=today + timedelta(days=1),
+            profile__isnull=True,
+        ).delete()
+
+        # delete booked appointmnets before today
+        Appointment.objects.filter(
+            date_start__lt=today,
+            profile__isnull=False,
+        ).delete()
+
+        # retrive Profile objects
+        profiles = [] if not first_name and not last_name else \
+            models.Profile.objects \
+            .filter(appointment=None, **filters)[:max_results]
 
         return (True, {'profiles': profiles})

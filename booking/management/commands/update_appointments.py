@@ -20,7 +20,7 @@ class Command(BaseCommand):
             profile__isnull=True,
         ).delete()
 
-        # delete booked appointmnets before today
+        # delete booked appointments before today
         Appointment.objects.filter(
             date_start__lt=today,
             profile__isnull=False,
