@@ -103,10 +103,15 @@ def search_by_name(request):
 
     if not valid:
         return HttpResponseBadRequest()
-    elif not response['profiles'].exists():
+    elif not response['profiles']:
         return HttpResponse(status=204)
     
     return render(request, 'users/dropdown.html', response)
+
+
+def add_profile(request):
+    pass
+    # valid, response = Profile.objects.add_profile()
 
 
 ######################
@@ -117,8 +122,6 @@ from django.http import HttpResponse
 from django.contrib.sessions.models import Session
 
 def clear_all_sessions(request):
-    try:
-        Session.objects.all().delete()
-    except Exception as e:
-        return HttpResponse(e)
+    Session.objects.all().delete()
+
     return HttpResponse('All sessions cleared.')

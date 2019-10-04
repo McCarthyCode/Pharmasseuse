@@ -223,17 +223,18 @@ class ProfileManager(Manager):
         last_name = request.GET.get('last-name', '')
 
         profiles = []
+        max_results = 5
         if first_name == '' and last_name == '':
-            return (False, None)
+            return (True, {'profiles': profiles})
         elif last_name == '':
             profiles = models.Profile.objects \
-                .filter(user__first_name__contains=first_name)
+                .filter(user__first_name__contains=first_name)[:max_results]
         elif first_name == '':
             profiles = models.Profile.objects \
-                .filter(user__last_name__contains=last_name)
+                .filter(user__last_name__contains=last_name)[:max_results]
         else:
             profiles = models.Profile.objects \
                 .filter(user__first_name__contains=first_name) \
-                .filter(user__last_name__contains=last_name)
+                .filter(user__last_name__contains=last_name)[:max_results]
 
         return (True, {'profiles': profiles})

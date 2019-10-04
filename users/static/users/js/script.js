@@ -169,8 +169,10 @@ $(document).ready(function () {
   // clear search bars in add appointment modal
   var $firstName = $('#firstNameAddAppointment');
   var $lastName = $('#lastNameAddAppointment');
-  var $dropdown = $('#dropdown');
+  var $dropdown = $('#dropdownContainer');
   var $activeId = $('#addAppointmentModal input[name="active-id"]');
+  var $email = $('#addAppointmentModal input[name="email"]');
+  var index = -1;
   function clearSearch() {
     $firstName.val('');
     $lastName.val('');
@@ -178,6 +180,9 @@ $(document).ready(function () {
     $dropdown.html('');
 
     $activeId.val(0);
+    $email.val('');
+
+    index = -1;
   }
 
   // handle click in darkened area outside of modal
@@ -257,9 +262,16 @@ $(document).ready(function () {
 
   // dropdown handler
   $('#firstNameAddAppointment, #lastNameAddAppointment').on('input', function () {
+    let firstName = $firstName.val();
+    let lastName = $lastName.val();
+
+    if (firstName === '' && lastName === '') {
+      clearSearch();
+    }
+
     let context = {
-      'first-name': $firstName.val(),
-      'last-name': $lastName.val(),
+      'first-name': firstName,
+      'last-name': lastName,
     }
 
     $.ajax({
@@ -272,23 +284,21 @@ $(document).ready(function () {
         204: function () {
           $dropdown.html('');
         },
-        400: function () {
-          clearSearch();
-        }
       }
     });
   });
 
-  // auto-fill
-  $('#dropdown').on('click touchend', 'ul li', function () {
+  // auto-fill on li click
+  $dropdown.on('click touchend', 'ul li', function () {
     let firstName = $(this).children('.first-name').html();
     let lastName = $(this).children('.last-name').html();
+    let activeId = $(this).children('input[name="id"]').val();
+    let email = $(this).children('input[name="email"]').val();
 
     $firstName.val(firstName);
     $lastName.val(lastName);
-
-    let activeId = $(this).children('input[name="id"]').val();
-    $activeId.val(activeId)
+    $activeId.val(activeId);
+    $email.val(email);
 
     $dropdown.html('');
   });
@@ -298,5 +308,72 @@ $(document).ready(function () {
     if (!$firstName.is(':focus') && !$lastName.is(':focus')) {
       $dropdown.html('');
     }
+  });
+
+  // handle keypress events
+  $('#firstNameAddAppointment, #lastNameAddAppointment')
+    .keypress(function (event) {
+    let length = $('#dropdownContainer ul li').length;
+
+    switch (event.keyCode) {
+      case 13: // enter
+        event.preventDefault();
+        let $active = $('#dropdownContainer ul li.active').first();
+        let firstName = $active.children('.first-name').html();
+        let lastName = $active.children('.last-name').html();
+
+        $firstName.val(firstName);
+        $lastName.val(lastName);
+
+        let activeId = $active.children('input[name="id"]').val();
+        $activeId.val(activeId);
+
+        $dropdown.html('');
+        index = -1;
+        break;
+      case 27: // esc
+        $dropdown.html('');
+        index = -1;
+        break;
+      case 38: // up arrow
+        $('#dropdownContainer ul li').removeClass('active');
+
+        if (index === -1) {
+          index = 0;
+        } else if (length > 0) {
+          index = (length + index - 1) % length;
+        }
+
+        $(`#dropdownContainer ul li:nth-child(${index + 1})`).addClass('active');
+        break;
+      case 40: // down arrow
+        $('#dropdownContainer ul li').removeClass('active');
+
+        if (index === -1) {
+          index = 0;
+        } else if (length > 0) {
+          index = (index + 1) % length;
+        }
+
+        $(`#dropdownContainer ul li:nth-child(${index + 1})`).addClass('active');
+        break;
+    }
+  });
+
+  // handle mouseenter and mouseleave events
+  $('#dropdownContainer').on('mouseenter', 'ul', function () {
+    $('#dropdownContainer ul li.active')
+      .removeClass('active')
+      .addClass('inactive');
+  }).on('mouseleave', 'ul', function () {
+    $('#dropdownContainer ul li.inactive')
+      .removeClass('inactive')
+      .addClass('active');
+  });
+
+  // clear input on button click
+  $('#clearFields').on('click touchend', function (event) {
+    event.preventDefault();
+    clearSearch();
   });
 });

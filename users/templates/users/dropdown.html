@@ -1,7 +1,10 @@
-{% for profile in profiles %}
-<li>
-  <span class="last-name">{{ profile.user.last_name }}</span>,
-  <span class="first-name">{{ profile.user.first_name }}</span>
-  <input type="hidden" name="id" value="{{ profile.pk }}">
-</li>
-{% endfor %}
+<ul>
+  {% for profile in profiles %}
+  <li>
+    <span class="last-name">{{ profile.user.last_name }}</span>,
+    <span class="first-name">{{ profile.user.first_name }}</span>
+    <input type="hidden" name="id" value="{{ profile.pk }}">
+    <input type="hidden" name="email" value="{{ profile.user.email }}">
+  </li>
+  {% endfor %}
+</ul>

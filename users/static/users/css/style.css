@@ -328,12 +328,23 @@ a, input {
   background-color: unset;
 }
 
-#dropdown {
+#addAppointmentModalContent .row,
+#addAppointmentModalContent input[type="email"],
+#clearFields {
+  margin-top: 1rem;
+}
+
+#lastNameAddAppointment,
+#addAppointmentModalContent input[type="submit"] {
+  margin-top: 0.25rem;
+}
+
+#dropdownContainer {
   position: relative;
   z-index: 1;
 }
 
-#dropdown ul {
+#dropdownContainer ul {
   position: absolute;
   top: 0;
   right: 0;
@@ -341,7 +352,7 @@ a, input {
   border-top: 1px solid #CED4DA;
 }
 
-#dropdown ul li {
+#dropdownContainer ul li {
   padding: 0.5rem;
   border-right: 1px solid #CED4DA;
   border-bottom: 1px solid #CED4DA;
@@ -349,10 +360,16 @@ a, input {
   background-color: white;
 }
 
-#dropdown ul li:hover {
+#dropdownContainer ul li.active,
+#dropdownContainer ul li:hover {
   color: white;
   background-color: #007bff;
   cursor: pointer;
+}
+
+#clearFields {
+  cursor: pointer;
+  width: 100%;
 }
 
 @media (min-width: 576px) {
