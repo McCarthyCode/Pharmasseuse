@@ -26,7 +26,7 @@
 <div class="sign-in">
   <h1 class="h1">Sign In</h1>
   <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6 login">
       <h3 class="h3">Login</h3>
       <form action="{% url 'users:login' %}" method="POST">
         {% csrf_token %}
@@ -50,22 +50,24 @@
       </form>
       <a href="{% url 'reset_password' %}">Forgot Password?</a>
     </div>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6 register">
       <h3 class="h3">Register</h3>
       <form action="{% url 'users:register' %}" method="POST">
         {% csrf_token %}
-        <input
+        <div class="form-inline">
+          <input
           type="text"
           name="first-name"
           placeholder="First Name"
-          class="form-control"
-        >
-        <input
+          class="form-control col-6"
+          >
+          <input
           type="text"
           name="last-name"
           placeholder="Last Name"
-          class="form-control"
-        >
+          class="form-control col-6"
+          >
+        </div>
         <input
           type="text"
           name="email"
@@ -267,59 +269,86 @@
 {% if profile.user.is_superuser == True %}
 <div class="row admin">
   <div class="col-12">
-      <h1 class="h1">Admin Page</h1>
-      <h3 class="h3">Manage Appointments</h3>
-      <table id="appointments">
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Appointment Time</th>
-            <th>Massage Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for appt in appts %}
-          <tr>
-            <td class="first-name">{{ appt.profile.user.first_name }}</td>
-            <td class="last-name">{{ appt.profile.user.last_name }}</td>
-            {% load tz %}
-            {% timezone TIME_ZONE %}
-            <td>{{ appt.date_start|date:"Y-m-d H:i" }}</td>
-            {% endtimezone %}
-            {% if appt.massage == "DT" %}
-            <td>Deep Tissue</td>
-            {% elif appt.massage == "SW" %}
-            <td>Swedish</td>
-            {% else %}
-            <td class="font-italic">unspecified</td>
-            {% endif %}
-            <input type="hidden" name="profile-id" value="{{ appt.profile.pk }}">
-            <input type="hidden" name="email" value="{{ appt.profile.user.email }}">
-            <input type="hidden" name="phone" value="{{ appt.profile.phone }}">
-            <input type="hidden" name="date" value="{{ appt.date_start|date:'D M j, g:i a' }}">
-            <input type="hidden" name="massage" value="{{ appt.massage }}">
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <button id="addAppointment" class="btn btn-secondary text-center">Add Appointment</button>
+    <h1 class="h1">Admin Page</h1>
+    <h3 class="h3">Manage Appointments</h3>
+    <table id="appointments">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Appointment Time</th>
+          <th>Massage Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for appt in appts %}
+        <tr>
+          <td class="first-name">{{ appt.profile.user.first_name }}</td>
+          <td class="last-name">{{ appt.profile.user.last_name }}</td>
+          {% load tz %}
+          {% timezone TIME_ZONE %}
+          <td>{{ appt.date_start|date:"Y-m-d H:i" }}</td>
+          {% endtimezone %}
+          {% if appt.massage == "DT" %}
+          <td>Deep Tissue</td>
+          {% elif appt.massage == "SW" %}
+          <td>Swedish</td>
+          {% else %}
+          <td class="font-italic">unspecified</td>
+          {% endif %}
+          <input type="hidden" name="profile-id" value="{{ appt.profile.pk }}">
+          <input type="hidden" name="email" value="{{ appt.profile.user.email }}">
+          <input type="hidden" name="phone" value="{{ appt.profile.phone }}">
+          <input type="hidden" name="date" value="{{ appt.date_start|date:'D M j, g:i a' }}">
+          <input type="hidden" name="massage" value="{{ appt.massage }}">
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button id="addAppointment" class="btn btn-secondary text-center">Add Appointment</button>
   </div>
 </div>
 <div class="row admin">
   <div class="col-12">
-      <h3 class="h3">Add/Black-out Dates</h3>
-      <div id="datePicker"></div>
-      <div id="datePickerDate">
-        <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
-        <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
-      </div>
+    <h3 class="h3">View/Edit Profiles</h3>
+    <table id="profiles">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in profiles %}
+        <tr>
+          <td class="profile-id">{{ profile.pk }}</td>
+          <td class="first-name">{{ profile.user.first_name }}</td>
+          <td class="last-name">{{ profile.user.last_name }}</td>
+          <td class="email">{{ profile.user.email }}</td>
+          <td class="phone">{{ profile.phone }}</td>
+          <input type="hidden" name="date" value="{{ appt.date_start|date:'D M j, g:i a' }}">
+          <input type="hidden" name="massage" value="{{ appt.massage }}">
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row admin">
+  <div class="col-12">
+    <h3 class="h3 m-t-1rem">Add/Black-out Dates</h3>
+    <div id="datePicker"></div>
+    <div id="datePickerDate">
+      <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+      <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+    </div>
   </div>
 </div>
 {% endif %}
 {% endif %}
-</div>
-</div>
 {% if profile.user.is_superuser == True %}
 <div id="detailsModal">
   <div id="detailsModalContent">
@@ -416,14 +445,57 @@
     <h3 class="h3">Add Appointment</h3>
     <form action="{% url 'booking:add_appointment' %}" method="POST">
       {% csrf_token %}
-      <input class="form-control" type="text" name="first-name" placeholder="First Name" id="firstNameAddAppointment" autocomplete="off">
-      <input class="form-control" type="text" name="last-name" placeholder="Last Name" id="lastNameAddAppointment" autocomplete="off">
+      <div class="form-inline">
+        <input class="form-control col-6" type="text" name="first-name" placeholder="First Name" id="firstNameAddAppointment" autocomplete="off">
+        <input class="form-control col-6" type="text" name="last-name" placeholder="Last Name" id="lastNameAddAppointment" autocomplete="off">
+      </div>
       <div id="dropdownContainer"></div>
       <input class="form-control col-6" type="hidden" name="active-id" value="0" autocomplete="off">
       <input class="form-control" type="email" name="email" placeholder="Email" id="emailAddAppointment" autocomplete="off">
       <input class="form-control" type="tel" name="phone" placeholder="Phone" id="phoneAddAppointment" autocomplete="off">
       <button id="clearFields" class="btn btn-danger">Clear Fields</button>
       <input class="form-control btn btn-primary" type="submit" value="Schedule Appointment">
+    </form>
+  </div>
+</div>
+<div id="editProfileModal">
+  <div id="editProfileModalContent">
+    <span class="close">&times;</span>
+    <h3 class="h3">Edit Profile</h3>
+    <form action="{% url 'users:edit_profile' %}" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="profile-id">
+      <div class="form-inline">
+        <input
+          type="text"
+          name="first-name"
+          placeholder="First Name"
+          class="form-control col-6"
+        >
+        <input
+          type="text"
+          name="last-name"
+          placeholder="Last Name"
+          class="form-control col-6"
+        >
+      </div>
+      <input
+        type="text"
+        name="email"
+        placeholder="Email"
+        class="form-control"
+      >
+      <input
+        type="text"
+        name="phone"
+        placeholder="Phone"
+        class="form-control"
+      >
+      <div class="btn-container">
+        <input class="btn btn-primary" type="submit" value="Edit">
+        <button class="btn btn-danger">Delete User</button>
+        <button class="btn btn-secondary">Cancel</button>
+      </div>
     </form>
   </div>
 </div>

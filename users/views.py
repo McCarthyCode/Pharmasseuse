@@ -109,13 +109,16 @@ def search_by_name(request):
     return render(request, 'users/dropdown.html', response)
 
 
-# def add_profile(request):
-#     valid, response = Profile.objects.add_profile()
+def delete_profile(request):
+    valid, response = Profile.objects.delete_profile(request)
 
-#     if not valid:
-#         return HttpResponseBadRequest()
+    if valid:
+        messages.success(request, response)
+    else:
+        for error in response:
+            messages.error(request, error)
 
-#     return redirect('booking:add_appointment')
+    return redirect('users:index')
 
 
 ######################

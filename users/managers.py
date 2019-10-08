@@ -24,6 +24,7 @@ class ProfileManager(Manager):
             if 'id' in request.session else None
 
         appts = []
+        profiles = []
         next_appt = None
 
         if profile != None:
@@ -44,8 +45,11 @@ class ProfileManager(Manager):
                 .filter(date_end__gt=datetime.now(pytz.utc)) \
                 .exclude(profile__user=None)
 
+            profiles = models.Profile.objects.all()
+
         return {
             'profile': profile,
+            'profiles': profiles,
             'next_appt': next_appt,
             'appts': appts,
             'TIME_ZONE': TIME_ZONE,
@@ -297,4 +301,27 @@ class ProfileManager(Manager):
         )
 
         return (True, profile)
+
+
+    def delete_profile(self, request):
+        # track errors
+        errors = []
+
+        # get POST data
+        profile_id = int(request.POST['profile-id'])
+
+        # delete profile along with user associated with it
+        try:
+            profile = models.Profile.objects.get(pk=profile_id)
+            Appointment.objects.filter(profile__pk=profile_id).delete()
+            profile.user.delete()
+            profile.delete()
+        except Exception as exception:
+            errors.append('There was an error deleting the user\'s profile.')
+            errors.append(exception)
+
+        if errors:
+            return (False, errors)
+
+        return (True, 'The user has been deleted successfully.')
 

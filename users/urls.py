@@ -12,6 +12,6 @@ urlpatterns = [
     path('edit-password/', views.edit_password, name='edit_password'),
     path('edit-massage-type/', views.edit_massage_type, name='edit_massage_type'),
     path('search-by-name/', views.search_by_name, name='search_by_name'),
-    # path('add-profile/', views.add_profile, name='add_profile'),
+    path('delete-profile/', views.delete_profile, name='delete_profile'),
     #path('clear-all-sessions', views.clear_all_sessions, name='clear_all_sessions'),
 ]

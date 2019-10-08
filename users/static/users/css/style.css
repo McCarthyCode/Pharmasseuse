@@ -150,12 +150,15 @@ a, input {
 .edit-profile .btn-container,
 .edit-password .btn-container,
 #changeMassageType .btn-container,
-#detailsModalContent .btn-container {
+#detailsModalContent .btn-container,
+#editProfileModalContent .btn-container {
   text-align: center;
+  margin-top: 1rem;
 }
 
-#detailsModalContent .btn-container > * {
-  margin: 0.25rem;
+#detailsModalContent .btn-container > *,
+#editProfileModalContent .btn-container > * {
+  margin: 0 0.25rem;
 }
 
 #detailsModalContent .btn-container form {
@@ -165,11 +168,6 @@ a, input {
 .edit-profile .btn-container,
 .edit-password .btn-container {
   height: 3.5rem;
-}
-
-.edit-profile .btn,
-.edit-password .btn {
-  margin-top: 1rem;
 }
 
 .next-appointment {
@@ -201,7 +199,7 @@ a, input {
 }
 
 .next-appointment .btn {
-  margin: 0.25rem;
+  margin: 0 0.25rem;
 }
 
 .empty {
@@ -234,8 +232,7 @@ a, input {
   margin: 0 auto;
 }
 
-.admin:not(.h1, .h3),
-#appointments_wrapper {
+.admin:not(.h1, .h3) {
   font-family: 'Open Sans', Arial, sans-serif;
 }
 
@@ -252,17 +249,25 @@ a, input {
   display: none;
 }
 
-#appointments_wrapper {
+#appointments_wrapper,
+#profiles_wrapper {
   overflow-x: scroll;
 }
 
-#appointments tbody tr:hover :not(.dataTables_empty) {
+#appointments tbody tr:nth-child(even),
+#profiles tbody tr:nth-child(even) {
+  background-color: #eeeeee;
+}
+
+#appointments tbody tr:hover :not(.dataTables_empty),
+#profiles tbody tr:hover :not(.dataTables_empty) {
   color: white;
   background-color: #007bff;
   cursor: pointer;
 }
 
 #appointments tbody tr,
+#profiles tbody tr,
 .dataTables_empty {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -275,8 +280,13 @@ a, input {
   margin: 1rem auto 2rem auto;
 }
 
+.m-t-1rem {
+  margin-top: 1rem;
+}
+
 #detailsModal,
-#addAppointmentModal {
+#addAppointmentModal,
+#editProfileModal {
   display: none;
   position: fixed;
   z-index: 3;
@@ -289,7 +299,8 @@ a, input {
 }
 
 #detailsModal .close,
-#addAppointmentModal .close {
+#addAppointmentModal .close,
+#editProfileModal .close {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -298,7 +309,8 @@ a, input {
 }
 
 #detailsModalContent,
-#addAppointmentModalContent {
+#addAppointmentModalContent,
+#editProfileModalContent {
   position: absolute;
   top: 0;
   right: 0;
@@ -323,15 +335,20 @@ a, input {
   margin: 0;
 }
 
-#addAppointmentModalContent label.form-control {
-  border: none;
-  background-color: unset;
-}
-
-#lastNameAddAppointment,
+.login input[name="password"],
+.register input[name="email"],
+.register input[name="phone"],
+.register input[name="password"],
+.register input[name="confirm-password"],
+.edit-profile input[name="email"],
+.edit-profile input[name="phone"],
+.edit-password input[name="new-password"],
+.edit-password input[name="password-confirm"],
 #phoneAddAppointment,
-#addAppointmentModalContent input[type="email"],
-#addAppointmentModalContent input[type="submit"] {
+#addAppointmentModalContent input[name="email"],
+#addAppointmentModalContent input[type="submit"],
+#editProfileModalContent input[name="email"],
+#editProfileModalContent input[name="phone"] {
   margin-top: 0.25rem;
 }
 
@@ -373,12 +390,9 @@ a, input {
 }
 
 @media (min-width: 576px) {
-  #appointments_wrapper {
-    overflow-x: visible;
-  }
-
   #detailsModalContent,
-  #addAppointmentModalContent {
+  #addAppointmentModalContent,
+  #editProfileModalContent {
     position: fixed;
     top: 50%;
     right: unset;
@@ -409,8 +423,14 @@ a, input {
     width: 100%;
   }
 
+  #appointments_wrapper,
+  #profiles_wrapper {
+    overflow-x: visible;
+  }
+
   #detailsModalContent,
-  #addAppointmentModalContent {
+  #addAppointmentModalContent,
+  #editProfileModalContent {
     width: 688px;
   }
 }

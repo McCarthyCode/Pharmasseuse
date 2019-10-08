@@ -1,5 +1,10 @@
 $(document).ready(function () {
-  $('#appointments').DataTable({
+  // DataTables
+  $('#appointments').dataTable({
+    'order': [[ 2, 'asc' ]],
+  });
+
+  $('#profiles').dataTable({
     'order': [[ 2, 'asc' ]],
   });
 
@@ -11,21 +16,21 @@ $(document).ready(function () {
   $('.profile .edit a').on('click touchend', function (event) {
     event.preventDefault();
 
-    if (state === "info") {
+    if (state === 'info') {
       $infoContainer.hide();
       $editProfile.show();
 
-      state = "edit";
-    } else if (state === "edit") {
+      state = 'edit';
+    } else if (state === 'edit') {
       $editProfile.hide();
       $infoContainer.show();
 
-      state = "info";
-    } else if (state === "password") {
+      state = 'info';
+    } else if (state === 'password') {
       $editPassword.hide();
       $editProfile.show();
 
-      state = "edit";
+      state = 'edit';
     }
   });
 
@@ -36,17 +41,17 @@ $(document).ready(function () {
     $infoContainer.hide();
     $editPassword.show();
 
-    state = "password";
+    state = 'password';
   });
 
-  // return to info on cancel button click
+  // return to info on "Cancel" button click
   $('.edit-profile .btn-secondary').on('click touchend', function (event) {
     event.preventDefault();
 
     $editProfile.hide();
     $infoContainer.show();
 
-    state = "info";
+    state = 'info';
   });
   $('.edit-password .btn-secondary').on('click touchend', function (event) {
     event.preventDefault();
@@ -54,7 +59,7 @@ $(document).ready(function () {
     $editPassword.hide();
     $infoContainer.show();
 
-    state = "info";
+    state = 'info';
   });
 
   // edit massage type on anchor click
@@ -96,7 +101,7 @@ $(document).ready(function () {
     });
   });
 
-  // handle table row modal trigger
+  // handle appointments table row modal trigger
   var profileIdModal = 0;
   $('#appointments tbody tr').on('click touchend', function (event) {
     if ($(this).children('td').hasClass('dataTables_empty')) {
@@ -104,12 +109,12 @@ $(document).ready(function () {
     }
 
     profileIdModal = $(this).children('input[name="profile-id"]').val();
-    var firstName = $(this).children('.first-name').text();
-    var lastName = $(this).children('.last-name').text();
-    var email = $(this).children('input[name="email"]').val();
-    var phone = $(this).children('input[name="phone"]').val();
-    var date = $(this).children('input[name="date"]').val();
-    var massage = $(this).children('input[name="massage"]').val();
+    let firstName = $(this).children('.first-name').text();
+    let lastName = $(this).children('.last-name').text();
+    let email = $(this).children('input[name="email"]').val();
+    let phone = $(this).children('input[name="phone"]').val();
+    let date = $(this).children('input[name="date"]').val();
+    let massage = $(this).children('input[name="massage"]').val();
 
     $('#name').text(`${firstName} ${lastName}`);
     $('#email').text(email);
@@ -122,9 +127,9 @@ $(document).ready(function () {
     $('#detailsModalContent input[name="email"]').val(email);
     $('#detailsModalContent input[name="phone"]').val(phone);
 
-    if (massage === "DT") {
+    if (massage === 'DT') {
       $deepTissueRadioModal.prop('checked', true);
-    } else if (massage === "SW") {
+    } else if (massage === 'SW') {
       $swedishRadioModal.prop('checked', true);
     } else {
       $unspecifiedRadioModal.prop('checked', true);
@@ -152,7 +157,29 @@ $(document).ready(function () {
     $unspecifiedRadioModal.prop('checked', true);
   });
 
-  // handle add appointment button modal trigger
+  // handle edit profile table row modal trigger
+  var $editProfileModal = $('#editProfileModal');
+  $('#profiles tbody tr').on('click touchend', function (event) {
+    if ($(this).children('td').hasClass('dataTables_empty')) {
+      return;
+    }
+
+    profileIdModal = $(this).children('.profile-id').text();
+    let firstName = $(this).children('.first-name').text();
+    let lastName = $(this).children('.last-name').text();
+    let email = $(this).children('.email').text();
+    let phone = $(this).children('.phone').text();
+
+    $('#editProfileModalContent input[name="profile-id"]').val(profileIdModal);
+    $('#editProfileModalContent input[name="first-name"]').val(firstName);
+    $('#editProfileModalContent input[name="last-name"]').val(lastName);
+    $('#editProfileModalContent input[name="email"]').val(email);
+    $('#editProfileModalContent input[name="phone"]').val(phone);
+
+    $editProfileModal.fadeIn(500);
+  });
+
+  // handle "Add Appointment" button modal trigger
   var $addAppointmentModal = $('#addAppointmentModal');
   $('#addAppointment').on('click touchend', function () {
     $addAppointmentModal.fadeIn(500);
@@ -190,6 +217,7 @@ $(document).ready(function () {
   // handle click in darkened area outside of modal
   debounce = false;
   var $detailsModal = $('#detailsModal');
+  var $editProfileModal = $('#editProfileModal');
   $(window).on('click touchend contextmenu', function (event) {
     if (event.type === 'contextmenu') {
       debounce = true;
@@ -200,11 +228,13 @@ $(document).ready(function () {
     } else if ($(event.target).is($addAppointmentModal) && !debounce) {
       $addAppointmentModal.stop().fadeOut(500);
       window.setTimeout(clearSearch, 500);
+    } else if ($(event.target).is($editProfileModal) && !debounce) {
+      $editProfileModal.stop().fadeOut(500);
     }
   });
 
   // handle close button
-  $('#detailsModal, #addAppointmentModal')
+  $('#detailsModal, #addAppointmentModal, #editProfileModal')
     .on('click touchend', '.close', function (event) {
     let $modal = $($(this).parent().parent()[0]);
     $modal.stop().fadeOut(500);
@@ -214,6 +244,13 @@ $(document).ready(function () {
     } else if ($modal.is($addAppointmentModal)) {
       window.setTimeout(clearSearch, 500);
     }
+  });
+
+  // handle "Cancel" button in edit profile modal
+  $('#editProfileModal button.btn-secondary')
+    .on('click touchend', function (event) {
+      event.preventDefault();
+    $editProfileModal.stop().fadeOut(500);
   });
 
   // define radio objects
@@ -260,14 +297,15 @@ $(document).ready(function () {
     });
   });
 
-  $('#appointments_wrapper').css('font-family', "'Open Sans', Arial, sans-serif");
+  $('#appointments_wrapper, #profiles_wrapper')
+    .css('font-family', "'Open Sans', Arial, sans-serif");
 
   // dropdown handler
   $('#firstNameAddAppointment, #lastNameAddAppointment').on('input', function () {
     let firstName = $firstName.val();
     let lastName = $lastName.val();
 
-    if (firstName === '' && lastName === '') {
+    if (!firstName && !lastName) {
       clearSearch();
     }
 
@@ -382,5 +420,19 @@ $(document).ready(function () {
   $('#clearFields').on('click touchend', function (event) {
     event.preventDefault();
     clearSearch();
+  });
+
+  // handle "Delete User" button click
+  $('#editProfileModal button.btn-danger').on('click touchend', function (event) {
+    event.preventDefault();
+
+    let data = {
+      'csrfmiddlewaretoken': $('#editProfileModal input[name="csrfmiddlewaretoken"]').val(),
+      'profile-id': $('#editProfileModal input[name="profile-id"]').val(),
+    }
+
+    $.post('/profile/delete-profile/', data, function () {
+      window.location.href = "/profile/";
+    });
   });
 });
