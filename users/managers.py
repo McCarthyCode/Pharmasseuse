@@ -359,7 +359,13 @@ class ProfileManager(Manager):
         # delete profile along with user associated with it
         try:
             profile = models.Profile.objects.get(pk=profile_id)
-            Appointment.objects.filter(profile__pk=profile_id).delete()
+            appts = Appointment.objects.filter(profile__pk=profile_id)
+
+            for appt in appts:
+                appt.profile = None
+                appt.massage = None
+                appt.save()
+
             profile.user.delete()
             profile.delete()
         except Exception as exception:
