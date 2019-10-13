@@ -1,13 +1,13 @@
 $(document).ready(function () {
-    var $dp = $('#datePicker');
-    var $calendarContent = $('#calendarContent');
+    let $dp = $('#datePicker');
+    let $calendarContent = $('#calendarContent');
 
     function positionDatePicker() {
         let position = $('#calendarControls .date i').position();
-        var x = position.left - 136 + 18 < $(window).width() - 287 ?
+        let x = position.left - 136 + 18 < $(window).width() - 287 ?
             position.left - 136 + 18 :
             $(window).width() - 287;
-        var y = position.top + 48 < $(window).height() - 217 ?
+        let y = position.top + 48 < $(window).height() - 217 ?
             position.top + 48 :
             $(window).height() - 217;
 
@@ -19,8 +19,8 @@ $(document).ready(function () {
 
     // date picker
     function showDPLoadingIcon() {
-        var $imgContainer = $('<div>').addClass('img-container');
-        var $img = $('<img>')
+        let $imgContainer = $('<div>').addClass('img-container');
+        let $img = $('<img>')
             .attr('src', '/static/booking/img/loading.gif')
             .attr('alt', 'Loading…');
 
@@ -32,8 +32,8 @@ $(document).ready(function () {
 
     // calendar content
     function showCCLoadingIcon() {
-        var $imgContainer = $('<div>').addClass('img-container');
-        var $img = $('<img>')
+        let $imgContainer = $('<div>').addClass('img-container');
+        let $img = $('<img>')
             .attr('src', '/static/booking/img/loading.gif')
             .attr('alt', 'Loading…');
 
@@ -42,10 +42,10 @@ $(document).ready(function () {
         $imgContainer.append($img);
     }
 
-    function getDatePicker(context = {}) {
+    function updateDatePicker(context = {}) {
         if ($.isEmptyObject(context)) {
-            var year = $('#date input[name="year"]').val();
-            var month = $('#date input[name="month"]').val();
+            let year = $('#date input[name="year"]').val();
+            let month = $('#date input[name="month"]').val();
 
             $('#datePickerDate input[name="year"]').val(year);
             $('#datePickerDate input[name="month"]').val(month);
@@ -65,19 +65,6 @@ $(document).ready(function () {
         });
     }
 
-    $('#datePickerIcon').on('click touchend', function (event) {
-        event.preventDefault();
-
-        if ($dp.is(':visible')) {
-            $dp.hide();
-        } else {
-            $(window).trigger('resize'); // workaround for positioning bug
-            positionDatePicker();
-            showDPLoadingIcon();
-            getDatePicker();
-        }
-    });
-
     $(window).on('orientationchange', function () {
         $(this).trigger('resize');
     });
@@ -85,14 +72,9 @@ $(document).ready(function () {
         positionDatePicker();
     });
 
-    $dp.on('click touchend', '.close', function (event) {
-        event.preventDefault();
-        $dp.hide();
-    });
-
     $dp.on('click touchend', '.prev', function () {
         showDPLoadingIcon();
-        getDatePicker({
+        updateDatePicker({
             'year': $(this).data('year'),
             'month': $(this).data('month'),
         });
@@ -100,7 +82,7 @@ $(document).ready(function () {
 
     $dp.on('click touchend', '.next', function () {
         showDPLoadingIcon();
-        getDatePicker({
+        updateDatePicker({
             'year': $(this).data('year'),
             'month': $(this).data('month'),
         });
@@ -131,8 +113,8 @@ $(document).ready(function () {
         $('#date input[name="month"]').val(month);
         $('#date input[name="day"]').val(day);
 
-        var date = new Date(year, month - 1, day);
-        var dow = ''; // day of week
+        let date = new Date(year, month - 1, day);
+        let dow = ''; // day of week
 
         switch (date.getDay()) {
             case 0:
@@ -181,7 +163,7 @@ $(document).ready(function () {
         showCCLoadingIcon();
 
         $.get('/booking/prev/', context, function (response) {
-            var $prev = $('#calendarControls .prev');
+            let $prev = $('#calendarControls .prev');
 
             if (response['exists']) {
                 $prev.data('year', response['date']['year']);
@@ -203,7 +185,7 @@ $(document).ready(function () {
         showCCLoadingIcon();
 
         $.get('/booking/next/', context, function (response) {
-            var $next = $('#calendarControls .next');
+            let $next = $('#calendarControls .next');
 
             if (response['exists']) {
                 $next.data('year', response['date']['year']);
@@ -223,9 +205,9 @@ $(document).ready(function () {
 
     // display date clicked in date picker
     $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
-        var $date = $(this);
+        let $date = $(this);
 
-        var context = {
+        let context = {
             'year': $date.data('year'),
             'month': $date.data('month'),
             'day': $date.data('day'),
@@ -233,43 +215,10 @@ $(document).ready(function () {
 
         if (context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
             showDPLoadingIcon();
-            getDatePicker(context);
+            updateDatePicker(context);
         }
 
         displayDate(context['year'], context['month'], context['day']);
-
-        updatePrev(context);
-        updateNext(context);
-    });
-
-    // navigate to previous/next day
-    $('#calendarControls').on('click touchend', '.prev, .next', function () {
-        var $button = $(this);
-
-        if ($button.hasClass('inactive')) {
-            return;
-        }
-
-        $('#calendarControls .prev, #calendarControls .next')
-            .removeClass('inactive');
-
-        var context = {
-            'year': $button.data('year'),
-            'month': $button.data('month'),
-            'day': $button.data('day'),
-        };
-
-        if ($dp.is(':visible') &&
-            context['month'] !== Number($('#datePickerDate input[name="month"]').val())) {
-            showDPLoadingIcon();
-            getDatePicker(context);
-        }
-
-        displayDate(
-            $button.data('year'),
-            $button.data('month'),
-            $button.data('day'),
-        );
 
         updatePrev(context);
         updateNext(context);

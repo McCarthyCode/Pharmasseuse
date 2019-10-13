@@ -29,31 +29,77 @@ class ProfileManager(Manager):
 
         if profile != None:
             try:
-                next_appt = Appointment.objects.get(
-                    profile=profile,
-                    date_end__gt=datetime.now(pytz.utc),
-                )
-            except Appointment.DoesNotExist:
-                next_appt = None
-            except MultipleObjectsReturned:
                 next_appt = Appointment.objects.filter(
                     profile=profile,
                     date_end__gt=datetime.now(pytz.utc),
                 ).first()
-
-            appts = Appointment.objects \
-                .filter(date_end__gt=datetime.now(pytz.utc)) \
-                .exclude(profile__user=None)
+            except Appointment.DoesNotExist:
+                next_appt = None
 
             profiles = models.Profile.objects.all()
 
+            today = datetime.now(tz).replace(hour=0, minute=0, second=0, microsecond=0)
+
+            manage_appts = Appointment.objects \
+                .filter(date_end__gt=datetime.now(pytz.utc)) \
+                    .exclude(profile__user=None)
+
+            appts = Appointment.objects.filter(
+                date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+                black_out=False,
+            ).order_by('date_start')
+
+            try:
+                date_begin = appts[0].date_start
+                date_begin = date_begin.astimezone(tz)
+                date_begin = date_begin.replace(hour=0, minute=0, second=0, microsecond=0)
+            except IndexError:
+                date_begin = today
+
+            first_available = Appointment.objects.filter(
+                date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True).first()
+
+            prev_appt = Appointment.objects.filter(
+                date_start__lt=date_begin.astimezone(pytz.utc),
+                date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+            ).order_by('-date_start').first()
+
+            next_appt = Appointment.objects \
+                .filter(
+                    date_start__gte=date_begin.astimezone(pytz.utc) + timedelta(days=1),
+                    profile__isnull=True,
+                ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+                .order_by('date_start').first()
+
+            errors = []
+
+            try:
+                prev = prev_appt.date_start if prev_appt else None
+            except IndexError:
+                prev = date_begin - timedelta(days=1)
+
+            try:
+                next = next_appt.date_start if next_appt else None
+            except IndexError:
+                next = date_begin + timedelta(days=1)
+
+            return {
+                'profile': profile,
+                'next_appt': next_appt,
+                'appts': manage_appts,
+                'TIME_ZONE': TIME_ZONE,
+                'profiles': profiles,
+                'date': first_available.date_start,
+                'prev': prev,
+                'next': next,
+            }
+
         return {
             'profile': profile,
-            'profiles': profiles,
             'next_appt': next_appt,
-            'appts': appts,
-            'TIME_ZONE': TIME_ZONE,
-            'date': datetime.now(tz),
         }
 
 

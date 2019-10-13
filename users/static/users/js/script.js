@@ -432,7 +432,7 @@ $(document).ready(function () {
     }
 
     $.post('/profile/delete-profile/', data, function () {
-      window.location.href = "/profile/";
+      window.location.replace('/profile/');
     });
   });
 });

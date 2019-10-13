@@ -339,11 +339,31 @@
 </div>
 <div class="row admin">
   <div class="col-12">
-    <h3 class="h3 m-t-1rem">Add/Black-out Dates</h3>
+    <h3 class="h3 m-t-1rem">Black Out Appointment Slots</h3>
     <div id="datePicker"></div>
     <div id="datePickerDate">
       <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
       <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+    </div>
+    <div id="calendar" class="m-t-1rem">
+      <div id="calendarControls">
+        <div class="prev button inactive"
+          data-year="{{ prev|date:'Y' }}"
+          data-month="{{ prev|date:'n' }}"
+          data-day="{{ prev|date:'j' }}">
+          <i class="fas fa-arrow-left"></i>
+        </div>
+        <div class="date text-center">
+          <span>{{ date|date:"D n/j" }}</span>
+        </div>
+        <div class="next button"
+          data-year="{{ next|date:'Y' }}"
+          data-month="{{ next|date:'n' }}"
+          data-day="{{ next|date:'j' }}">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </div>
+      <div id="calendarContent"></div>
     </div>
   </div>
 </div>

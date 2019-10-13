@@ -2,7 +2,12 @@ import pytz
 
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from django.http import HttpResponse, JsonResponse, HttpResponseServerError
+from django.http import (
+    HttpResponse,
+    JsonResponse,
+    HttpResponseBadRequest,
+    HttpResponseServerError,
+)
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Appointment
@@ -12,13 +17,7 @@ tz = pytz.timezone(TIME_ZONE)
 
 
 def index(request):
-    valid, response = Appointment.objects.index(request)
-
-    if not valid:
-        for error in response:
-            messages.error(request, error)
-
-        return redirect('users:index')
+    response = Appointment.objects.index(request)
 
     return render(request, 'booking/index.html', response)
 
@@ -27,10 +26,7 @@ def date_picker(request):
     valid, response = Appointment.objects.date_picker(request)
 
     if not valid:
-        for error in response:
-            messages.error(request, error)
-
-        return redirect('users:index')
+        return HttpResponseBadRequest()
 
     first_of_month, calendar = response
 
@@ -63,10 +59,7 @@ def prev(request):
     valid, response = Appointment.objects.prev(request)
 
     if not valid:
-        for error in response:
-            messages.error(request, error)
-
-        return redirect('users:index')
+        return HttpResponseBadRequest()
 
     return JsonResponse(response)
 
@@ -75,10 +68,7 @@ def next(request):
     valid, response = Appointment.objects.next(request)
 
     if not valid:
-        for error in response:
-            messages.error(request, error)
-
-        return redirect('users:index')
+        return HttpResponseBadRequest()
 
     return JsonResponse(response)
 
@@ -154,7 +144,7 @@ def reschedule_submit(request):
 
 
 def black_out(request):
-    valid, response = Appointment.objects.black_out(request)
+    valid = Appointment.objects.black_out(request)
 
     if not valid:
         return HttpResponseServerError()

@@ -32,48 +32,42 @@ class AppointmentManager(models.Manager):
         except IndexError:
             date_begin = today
 
-        prev_appts = Appointment.objects.filter(
+        prev_appt = Appointment.objects.filter(
             date_start__lt=date_begin.astimezone(pytz.utc),
             date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
             profile__isnull=True,
             black_out=False,
-        ).order_by('-date_start')
+        ).order_by('-date_start').first()
 
-        next_appts = Appointment.objects \
+        next_appt = Appointment.objects \
             .filter(
                 date_start__gte=date_begin.astimezone(pytz.utc) + timedelta(days=1),
                 profile__isnull=True,
                 black_out=False,
             ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
-            .order_by('date_start')
+            .order_by('date_start').first()
 
         errors = []
 
         try:
-            prev = prev_appts[0].date_start
-        except IndexError:
+            prev = prev_appt.date_start
+        except AttributeError:
             prev = date_begin - timedelta(days=1)
-        except Exception as exception:
-            errors.append('There was an error retrieving the previous day.')
-            errors.append(exception)
 
         try:
-            next = next_appts[0].date_start
-        except IndexError:
+            next = next_appt.date_start
+        except AttributeError:
             next = date_begin + timedelta(days=1)
-        except Exception as exception:
-            errors.append('There was an error retrieving the next day.')
-            errors.append(exception)
 
         if errors:
             return (False, errors)
 
-        return (True, {
+        return {
             'date': date_begin,
             'prev': prev,
             'next': next,
             'profile': profile,
-        })
+        }
 
 
     def create_appointment(self, date_start, date_end):
@@ -342,16 +336,12 @@ class AppointmentManager(models.Manager):
         today = datetime.now(tz).replace(
             hour=0, minute=0, second=0, microsecond=0)
 
-        try:
-            day = datetime(
-                int(request.GET.get('year')),
-                int(request.GET.get('month')),
-                int(request.GET.get('day')),
-                0, 0, 0, 0,
-            )
-        except Exception as exception:
-            return (False, ['There was an error getting the previous date.', exception])
-
+        day = datetime(
+            int(request.GET.get('year')),
+            int(request.GET.get('month')),
+            int(request.GET.get('day')),
+            0, 0, 0, 0,
+        )
         day = tz.localize(day)
 
         appts = Appointment.objects.filter(
@@ -380,16 +370,12 @@ class AppointmentManager(models.Manager):
         today = datetime.now(tz).replace(
             hour=0, minute=0, second=0, microsecond=0)
 
-        try:
-            day = datetime(
-                int(request.GET.get('year')),
-                int(request.GET.get('month')),
-                int(request.GET.get('day')),
-                0, 0, 0, 0,
-            )
-        except Exception as exception:
-            return (False, ['There was an error getting the next date.', exception])
-
+        day = datetime(
+            int(request.GET.get('year')),
+            int(request.GET.get('month')),
+            int(request.GET.get('day')),
+            0, 0, 0, 0,
+        )
         day = tz.localize(day)
 
         appts = Appointment.objects \
@@ -638,17 +624,18 @@ class AppointmentManager(models.Manager):
 
 
     def black_out(self, request):
+        return True
+
+
+    def black_out_date(self, request):
         from booking.models import Appointment
 
-        try:
-            day = datetime(
-                int(request.GET.get('year')),
-                int(request.GET.get('month')),
-                int(request.GET.get('day')),
-                0, 0, 0, 0,
-            )
-        except Exception as exception:
-            return (False, ['There was an error getting the previous date.', exception])
+        day = datetime(
+            int(request.GET.get('year')),
+            int(request.GET.get('month')),
+            int(request.GET.get('day')),
+            0, 0, 0, 0,
+        )
 
         day = tz.localize(day)
         day = day.astimezone(pytz.utc)
@@ -674,7 +661,7 @@ class AppointmentManager(models.Manager):
                 valid, response = Appointment.objects.create_appointments(day)
 
                 if not valid:
-                    return (False, response)
+                    return False
             else:
                 for appt in appts:
                     appt.black_out = False
@@ -684,7 +671,7 @@ class AppointmentManager(models.Manager):
                 appt.black_out = True
                 appt.save()
 
-        return (True, None)
+        return True
 
 
     def add_appointment(self, request):
