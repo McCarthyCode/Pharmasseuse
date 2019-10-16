@@ -4,6 +4,7 @@ import sys
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from datetime import date, datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from pharmasseuse.settings import TIME_ZONE
 
 tz = pytz.timezone(TIME_ZONE)
@@ -59,15 +60,12 @@ class AppointmentManager(models.Manager):
         except AttributeError:
             next = date_begin + timedelta(days=1)
 
-        if errors:
-            return (False, errors)
-
-        return {
+        return (True, {
             'date': date_begin,
             'prev': prev,
             'next': next,
             'profile': profile,
-        }
+        })
 
 
     def create_appointment(self, date_start, date_end):
@@ -180,11 +178,8 @@ class AppointmentManager(models.Manager):
         from booking.models import Appointment
 
         today = datetime.now(tz)
-        try:
-            year = int(request.GET.get('year', today.year))
-            month = int(request.GET.get('month', today.month))
-        except Exception as exception:
-            return (False, ['There was an error with the date picker.', exception])
+        year = int(request.GET.get('year', today.year))
+        month = int(request.GET.get('month', today.month))
 
         date = first_of_month = datetime(year, month, 1, tzinfo=tz)
         calendar = []
@@ -208,25 +203,41 @@ class AppointmentManager(models.Manager):
 
             date = date + timedelta(days=1)
 
-        return (True, (first_of_month, calendar))
+        return {
+            'date': first_of_month,
+            'calendar': calendar,
+            'prev': first_of_month + relativedelta(months=-1),
+            'next': first_of_month + relativedelta(months=+1),
+        }
 
 
-    def day(self, request):
+    def day(self, request, admin=False):
         from booking.models import Appointment
 
         today = datetime.now(tz).replace(
             hour=0, minute=0, second=0, microsecond=0)
         tomorrow = today + timedelta(days=1)
 
-        try:
-            day = datetime(
-                int(request.GET.get('year', tomorrow.year)),
-                int(request.GET.get('month', tomorrow.month)),
-                int(request.GET.get('day', tomorrow.day)),
-                0, 0, 0, 0,
-            )
-        except Exception as exception:
-            return (False, ['There was an error getting the date.', exception])
+        if admin:
+            try:
+                day = datetime(
+                    int(request.POST.get('year')),
+                    int(request.POST.get('month')),
+                    int(request.POST.get('day')),
+                    0, 0, 0, 0,
+                )
+            except TypeError:
+                return (False, None)
+        else:
+            try:
+                day = datetime(
+                    int(request.GET.get('year')),
+                    int(request.GET.get('month')),
+                    int(request.GET.get('day')),
+                    0, 0, 0, 0,
+                )
+            except TypeError:
+                return (False, None)
 
         after_change = day + timedelta(hours=3)
         day = tz.localize(day)
@@ -275,16 +286,24 @@ class AppointmentManager(models.Manager):
                     'ampm': 'a.m.' if i < 12 else 'p.m.',
                 })
 
-        appointments = Appointment.objects.filter(
-            date_start__gte=day.astimezone(pytz.utc),
-            date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
-            profile__isnull=True,
-            black_out=False,
-        ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
-        .order_by('date_start')
+        if admin:
+            appts = Appointment.objects.filter(
+                date_start__gte=day.astimezone(pytz.utc),
+                date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+            ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+            .order_by('date_start')
+        else:
+            appts = Appointment.objects.filter(
+                date_start__gte=day.astimezone(pytz.utc),
+                date_start__lt=day.astimezone(pytz.utc) + timedelta(days=1),
+                profile__isnull=True,
+                black_out=False,
+            ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+            .order_by('date_start')
 
         slots = []
-        for appt in appointments:
+        for appt in appts:
             date_start = appt.date_start
             date_end = appt.date_end
 
@@ -325,31 +344,58 @@ class AppointmentManager(models.Manager):
                     date_end.minute,
                     ampm_end,
                 ),
+                'black_out': appt.black_out,
             })
 
-        return (True, (times, slots))
+        return (True, {
+            'times': times,
+            'slots': slots,
+        })
 
 
-    def prev(self, request):
+    def prev(self, request, admin=False):
         from booking.models import Appointment
 
         today = datetime.now(tz).replace(
             hour=0, minute=0, second=0, microsecond=0)
 
-        day = datetime(
-            int(request.GET.get('year')),
-            int(request.GET.get('month')),
-            int(request.GET.get('day')),
-            0, 0, 0, 0,
-        )
-        day = tz.localize(day)
+        if admin:
+            try:
+                day = datetime(
+                    int(request.POST.get('year')),
+                    int(request.POST.get('month')),
+                    int(request.POST.get('day')),
+                    0, 0, 0, 0,
+                )
+                day = tz.localize(day)
+            except TypeError:
+                return (False, None)
 
-        appts = Appointment.objects.filter(
-            date_start__lt=day.astimezone(pytz.utc),
-            date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1),
-            profile__isnull=True,
-            black_out=False,
-        ).order_by('-date_start')
+            appts = Appointment.objects \
+                .filter(
+                    date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1),
+                    profile__isnull=True,
+                ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+                .order_by('date_start')
+        else:
+            try:
+                day = datetime(
+                    int(request.GET.get('year')),
+                    int(request.GET.get('month')),
+                    int(request.GET.get('day')),
+                    0, 0, 0, 0,
+                )
+                day = tz.localize(day)
+            except TypeError:
+                return (False, None)
+
+            appts = Appointment.objects \
+                .filter(
+                    date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1),
+                    profile__isnull=True,
+                    black_out=False,
+                ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+                .order_by('date_start')
 
         if len(appts) > 0:
             return (True, {
@@ -364,27 +410,49 @@ class AppointmentManager(models.Manager):
             return (True, {'exists': False})
 
 
-    def next(self, request):
+    def next(self, request, admin=False):
         from booking.models import Appointment
 
         today = datetime.now(tz).replace(
             hour=0, minute=0, second=0, microsecond=0)
 
-        day = datetime(
-            int(request.GET.get('year')),
-            int(request.GET.get('month')),
-            int(request.GET.get('day')),
-            0, 0, 0, 0,
-        )
-        day = tz.localize(day)
+        if admin:
+            try:
+                day = datetime(
+                    int(request.POST.get('year')),
+                    int(request.POST.get('month')),
+                    int(request.POST.get('day')),
+                    0, 0, 0, 0,
+                )
+                day = tz.localize(day)
+            except TypeError:
+                return (False, None)
 
-        appts = Appointment.objects \
-            .filter(
-                date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1),
-                profile__isnull=True,
-                black_out=False,
-            ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
-            .order_by('date_start')
+            appts = Appointment.objects \
+                .filter(
+                    date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1),
+                    profile__isnull=True,
+                ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+                .order_by('date_start')
+        else:
+            try:
+                day = datetime(
+                    int(request.GET.get('year')),
+                    int(request.GET.get('month')),
+                    int(request.GET.get('day')),
+                    0, 0, 0, 0,
+                )
+                day = tz.localize(day)
+            except TypeError:
+                return (False, None)
+
+            appts = Appointment.objects \
+                .filter(
+                    date_start__gte=day.astimezone(pytz.utc) + timedelta(days=1),
+                    profile__isnull=True,
+                    black_out=False,
+                ).filter(date_start__gte=today.astimezone(pytz.utc) + timedelta(days=1)) \
+                .order_by('date_start')
 
         if len(appts) > 0:
             return (True, {
@@ -623,19 +691,33 @@ class AppointmentManager(models.Manager):
         return (True, message)
 
 
-    def black_out(self, request):
+    def black_out_appointment(self, request):
+        from booking.models import Appointment
+
+        try:
+            id = int(request.POST.get('id'))
+        except TypeError:
+            return False
+
+        appt = Appointment.objects.get(pk=id)
+        appt.black_out = not appt.black_out
+        appt.save()
+
         return True
 
 
     def black_out_date(self, request):
         from booking.models import Appointment
 
-        day = datetime(
-            int(request.GET.get('year')),
-            int(request.GET.get('month')),
-            int(request.GET.get('day')),
-            0, 0, 0, 0,
-        )
+        try:
+            day = datetime(
+                int(request.POST.get('year')),
+                int(request.POST.get('month')),
+                int(request.POST.get('day')),
+                0, 0, 0, 0,
+            )
+        except TypeError:
+            return False
 
         day = tz.localize(day)
         day = day.astimezone(pytz.utc)
@@ -661,7 +743,7 @@ class AppointmentManager(models.Manager):
                 valid, response = Appointment.objects.create_appointments(day)
 
                 if not valid:
-                    return False
+                    raise response
             else:
                 for appt in appts:
                     appt.black_out = False

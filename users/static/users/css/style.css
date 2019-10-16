@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round');
 
+#forgotPassword {
+  margin-bottom: 1rem;
+}
+
 .h1, .h3 {
   font-family: 'Varela Round', Arial, sans-serif;
 }
@@ -448,7 +452,7 @@ a, input {
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   overflow-y: scroll;
-  height: calc(32rem - 1px);
+  height: calc(16rem - 1px);
 }
 
 #calendarContent::-webkit-scrollbar {
@@ -490,6 +494,10 @@ a, input {
   cursor: pointer;
 }
 
+#calendarContent ul li.inactive {
+  background-color: gray;
+}
+
 @media (min-width: 576px) {
   #detailsModalContent,
   #addAppointmentModalContent,
@@ -507,6 +515,10 @@ a, input {
 }
 
 @media (min-width: 768px) {
+  #forgotPassword {
+    margin-bottom: 0;
+  }
+
   .profile .info-container,
   .edit-profile,
   .edit-password {
@@ -533,5 +545,9 @@ a, input {
   #addAppointmentModalContent,
   #editProfileModalContent {
     width: 688px;
+  }
+
+  #calendarContent {
+    height: calc(32rem - 1px);
   }
 }

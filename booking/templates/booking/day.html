@@ -5,6 +5,11 @@
 </ol>
 <ul>
   {% for slot in slots %}
+  {% if slot.black_out %}
+  <li class="inactive" data-hour="{{ slot.hour }}" data-id="{{ slot.id }}">{{ slot.start }}&ndash;{{ slot.end }}</li>
+  {% endif %}
+  {% if not slot.black_out %}
   <li data-hour="{{ slot.hour }}" data-id="{{ slot.id }}">{{ slot.start }}&ndash;{{ slot.end }}</li>
+  {% endif %}
   {% endfor %}
 </ul>

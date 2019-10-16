@@ -1,7 +1,5 @@
 import pytz
 
-from datetime import date, datetime, timedelta
-from dateutil.relativedelta import relativedelta
 from django.http import (
     HttpResponse,
     JsonResponse,
@@ -17,45 +15,42 @@ tz = pytz.timezone(TIME_ZONE)
 
 
 def index(request):
-    response = Appointment.objects.index(request)
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
+    valid, response = Appointment.objects.index(request)
+
+    if not valid:
+        return HttpResponseBadRequest()
 
     return render(request, 'booking/index.html', response)
 
 
 def date_picker(request):
-    valid, response = Appointment.objects.date_picker(request)
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
+    response = Appointment.objects.date_picker(request)
+
+    return render(request, 'booking/date_picker.html', response)
+
+
+def day(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
+    valid, response = Appointment.objects.day(request)
 
     if not valid:
         return HttpResponseBadRequest()
 
-    first_of_month, calendar = response
-
-    return render(request, 'booking/date_picker.html', {
-        'date': first_of_month,
-        'calendar': calendar,
-        'prev': first_of_month + relativedelta(months=-1),
-        'next': first_of_month + relativedelta(months=+1),
-    })
-
-
-def day(request):
-    valid, response = Appointment.objects.day(request)
-
-    if not valid:
-        for error in response:
-            messages.error(request, error)
-
-        return redirect('users:index')
-
-    times, slots = response
-
-    return render(request, 'booking/day.html', {
-        'times': times,
-        'slots': slots,
-    })
+    return render(request, 'booking/day.html', response)
 
 
 def prev(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.prev(request)
 
     if not valid:
@@ -65,6 +60,9 @@ def prev(request):
 
 
 def next(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.next(request)
 
     if not valid:
@@ -73,7 +71,48 @@ def next(request):
     return JsonResponse(response)
 
 
+def day_admin(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
+    valid, response = Appointment.objects.day(request, True)
+
+    if not valid:
+        return HttpResponseBadRequest()
+
+    times, slots = response
+
+    return render(request, 'booking/day.html', response)
+
+
+def prev_admin(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
+    valid, response = Appointment.objects.prev(request, True)
+
+    if not valid:
+        return HttpResponseBadRequest()
+
+    return JsonResponse(response)
+
+
+def next_admin(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
+    valid, response = Appointment.objects.next(request, True)
+
+    if not valid:
+        return HttpResponseBadRequest()
+
+    return JsonResponse(response)
+
+
 def submit(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.submit(request)
 
     if not valid:
@@ -88,6 +127,9 @@ def submit(request):
 
 
 def cancel(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.cancel_appointment(request)
 
     if not valid:
@@ -102,6 +144,9 @@ def cancel(request):
 
 
 def reschedule(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.reschedule(request)
 
     if not valid:
@@ -114,6 +159,9 @@ def reschedule(request):
 
 
 def reschedule_form(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.reschedule_form(request)
 
     if not valid:
@@ -128,6 +176,9 @@ def reschedule_form(request):
 
 
 def reschedule_submit(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.reschedule_submit(request)
 
     if not valid:
@@ -143,16 +194,34 @@ def reschedule_submit(request):
     return HttpResponse(status=200)
 
 
-def black_out(request):
-    valid = Appointment.objects.black_out(request)
+def black_out_appointment(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
+    valid = Appointment.objects.black_out_appointment(request)
 
     if not valid:
-        return HttpResponseServerError()
+        return HttpResponseBadRequest()
+
+    return HttpResponse(status=200)
+
+
+def black_out_date(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
+    valid = Appointment.objects.black_out_date(request)
+
+    if not valid:
+        return HttpResponseBadRequest()
 
     return HttpResponse(status=200)
 
 
 def add_appointment(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Appointment.objects.add_appointment(request)
 
     if not valid:

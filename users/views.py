@@ -105,7 +105,7 @@ def search_by_name(request):
         return HttpResponseBadRequest()
     elif not response['profiles']:
         return HttpResponse(status=204)
-    
+
     return render(request, 'users/dropdown.html', response)
 
 

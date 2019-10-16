@@ -38,24 +38,11 @@
   <link rel="stylesheet" type="text/css" href="{% static 'home/css/navbar.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'booking/css/date_picker.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'booking/css/style.css' %}">
-  <script type="text/javascript" src="{% static 'booking/js/date_picker.js' %}"></script>
   <script type="text/javascript" src="{% static 'booking/js/script.js' %}"></script>
+  <script type="text/javascript" src="{% static 'booking/js/date_picker.js' %}"></script>
 </head>
 <body>
   {% include 'home/navbar.html' %}
-  <div id="datePicker"></div>
-  <div id="datePickerDate">
-    <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
-    <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
-  </div>
-  <div id="date">
-    <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
-    <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
-    <input type="hidden" name="day" value="{{ date|date:'j' }}" autocomplete="off">
-  </div>
-  <div id="csrf">
-    {% csrf_token %}
-  </div>
   <div class="page">
     <div class="nav-placeholder"></div>
     <div class="container">

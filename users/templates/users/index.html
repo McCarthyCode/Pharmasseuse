@@ -48,7 +48,7 @@
           value="Login"
         >
       </form>
-      <a href="{% url 'reset_password' %}">Forgot Password?</a>
+      <a id="forgotPassword" href="{% url 'reset_password' %}">Forgot Password?</a>
     </div>
     <div class="col-12 col-md-6 register">
       <h3 class="h3">Register</h3>
@@ -344,6 +344,14 @@
     <div id="datePickerDate">
       <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
       <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+    </div>
+    <div id="date">
+      <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+      <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+      <input type="hidden" name="day" value="{{ date|date:'j' }}" autocomplete="off">
+    </div>
+    <div id="csrf">
+      {% csrf_token %}
     </div>
     <div id="calendar" class="m-t-1rem">
       <div id="calendarControls">
