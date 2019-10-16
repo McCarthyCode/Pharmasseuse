@@ -188,6 +188,11 @@ $(document).ready(function () {
 
   // display date clicked in date picker
   $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
+    let datePickerDate = {
+      'year': Number($('#datePickerDate input[name="year"]').val()),
+      'month': Number($('#datePickerDate input[name="month"]').val()),
+    };
+
     let dateActive = {
       'year': Number($('#date input[name="year"]').val()),
       'month': Number($('#date input[name="month"]').val()),
@@ -202,7 +207,7 @@ $(document).ready(function () {
       'day': $date.data('day'),
     };
 
-    if (dateActive['month'] !== dateSelected['month']) {
+    if (datePickerDate['month'] !== dateSelected['month']) {
       showDPLoadingIcon();
       updateDatePicker(dateSelected);
     } else if (
@@ -216,7 +221,11 @@ $(document).ready(function () {
       $.post('/booking/black-out-date/', dateSelected, function () {
         updateDatePicker(dateSelected);
 
-        displayDate(dateSelected['year'], dateSelected['month'], dateSelected['day']);
+        displayDate(
+          dateSelected['year'],
+          dateSelected['month'],
+          dateSelected['day']
+        );
         updatePrev(dateSelected);
         updateNext(dateSelected);
       });
@@ -224,7 +233,11 @@ $(document).ready(function () {
       return;
     }
 
-    displayDate(dateSelected['year'], dateSelected['month'], dateSelected['day']);
+    displayDate(
+      dateSelected['year'],
+      dateSelected['month'],
+      dateSelected['day']
+    );
     updatePrev(dateSelected);
     updateNext(dateSelected);
   });
