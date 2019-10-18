@@ -12,12 +12,18 @@ from booking.models import Appointment
 
 
 def index(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     response = Profile.objects.index(request)
 
     return render(request, 'users/index.html', response)
 
 
 def login(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Profile.objects.login_register(request, 'login')
 
     if not valid:
@@ -32,6 +38,9 @@ def login(request):
 
 
 def register(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Profile.objects.login_register(request, 'register')
 
     if not valid:
@@ -41,17 +50,24 @@ def register(request):
 
     messages.success(request, 'You have successfully created an account.')
     request.session['id'] = response
+
     return redirect('users:index')
 
 
 def logout(request):
-    del request.session['id']
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
 
+    del request.session['id']
     messages.success(request, 'You have successfully signed out.')
+
     return redirect('users:index')
 
 
 def login_redirect(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     messages.info(
         request,
         'You must sign in or register to select an appointment slot.',
@@ -60,6 +76,9 @@ def login_redirect(request):
 
 
 def edit_profile(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Profile.objects.edit_profile(request)
 
     if valid:
@@ -72,6 +91,9 @@ def edit_profile(request):
 
 
 def edit_password(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Profile.objects.edit_password(request)
 
     if valid:
@@ -87,6 +109,9 @@ def edit_password(request):
 
 
 def edit_massage_type(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Profile.objects.edit_massage_type(request)
 
     if valid:
@@ -99,6 +124,9 @@ def edit_massage_type(request):
 
 
 def search_by_name(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     valid, response = Profile.objects.search_by_name(request)
 
     if not valid:
@@ -110,6 +138,9 @@ def search_by_name(request):
 
 
 def delete_profile(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+
     valid, response = Profile.objects.delete_profile(request)
 
     if valid:
@@ -129,6 +160,9 @@ from django.http import HttpResponse
 from django.contrib.sessions.models import Session
 
 def clear_all_sessions(request):
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
     Session.objects.all().delete()
 
     return HttpResponse('All sessions cleared.')
