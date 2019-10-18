@@ -25,16 +25,16 @@ class ProfileManager(Manager):
 
         appts = []
         profiles = []
-        next_appt = None
+        next_scheduled = None
 
         if profile != None:
             try:
-                next_appt = Appointment.objects.filter(
+                next_scheduled = Appointment.objects.filter(
                     profile=profile,
                     date_end__gt=datetime.now(pytz.utc),
                 ).first()
             except Appointment.DoesNotExist:
-                next_appt = None
+                next_scheduled = None
 
             profiles = models.Profile.objects.all()
 
@@ -88,7 +88,7 @@ class ProfileManager(Manager):
 
             return {
                 'profile': profile,
-                'next_appt': next_appt,
+                'next_appt': next_scheduled,
                 'appts': manage_appts,
                 'TIME_ZONE': TIME_ZONE,
                 'profiles': profiles,
@@ -97,10 +97,7 @@ class ProfileManager(Manager):
                 'next': next,
             }
 
-        return {
-            'profile': profile,
-            'next_appt': next_appt,
-        }
+        return {}
 
 
     def login_register(self, request, action):
