@@ -67,7 +67,7 @@ $(document).ready(function () {
   var $modal = $('#modal');
 
   // handle click event
-  $calendarContent.on('click touchend', 'ul li', function (event) {
+  $calendarContent.on('click', 'ul li', function (event) {
     event.preventDefault();
     var id = $('#profileId').val();
 
@@ -90,7 +90,7 @@ $(document).ready(function () {
 
   // handle click in darkened area outside of modal
   debounce = false;
-  $(window).on('click touchend contextmenu', function (event) {
+  $(window).on('click contextmenu', function (event) {
     if (event.type === 'contextmenu') {
       debounce = true;
       window.setTimeout(() => debounce = false, 250);
@@ -101,19 +101,19 @@ $(document).ready(function () {
   });
 
   // handle close button
-  $('#modalContent').on('click touchend', '.close', function (event) {
+  $('#modalContent').on('click', '.close', function (event) {
     $modal.stop().fadeOut(500);
   });
 
   // select radio buttons on corresponding label click
   $('input[type="radio"][name="massage"][value=""]').prop('checked', true);
-  $('#swedish').on('click touchend', function (event) {
+  $('#swedish').click(function (event) {
     $('input[type="radio"][name="massage"][value="SW"]').prop('checked', true);
   });
-  $('#deepTissue').on('click touchend', function (event) {
+  $('#deepTissue').click(function (event) {
     $('input[type="radio"][name="massage"][value="DT"]').prop('checked', true);
   });
-  $('#unspecified').on('click touchend', function (event) {
+  $('#unspecified').click(function (event) {
     $('input[type="radio"][name="massage"][value=""]').prop('checked', true);
   });
 });

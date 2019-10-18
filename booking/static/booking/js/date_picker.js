@@ -65,7 +65,7 @@ $(document).ready(function () {
     });
   }
 
-  $('#datePickerIcon').on('click touchend', function (event) {
+  $('#datePickerIcon').click(function (event) {
     event.preventDefault();
 
     if ($dp.is(':visible')) {
@@ -85,12 +85,12 @@ $(document).ready(function () {
     positionDatePicker();
   });
 
-  $dp.on('click touchend', '.close', function (event) {
+  $dp.on('click', '.close', function (event) {
     event.preventDefault();
     $dp.hide();
   });
 
-  $dp.on('click touchend', '.prev', function () {
+  $dp.on('click', '.prev', function () {
     showDPLoadingIcon();
     updateDatePicker({
       'year': $(this).data('year'),
@@ -98,7 +98,7 @@ $(document).ready(function () {
     });
   });
 
-  $dp.on('click touchend', '.next', function () {
+  $dp.on('click', '.next', function () {
     showDPLoadingIcon();
     updateDatePicker({
       'year': $(this).data('year'),
@@ -224,7 +224,7 @@ $(document).ready(function () {
   }
 
   // display date clicked in date picker
-  $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
+  $dp.on('click', '.grid div:not(.prev, .next)', function () {
     let $date = $(this);
 
     let context = {
@@ -245,7 +245,7 @@ $(document).ready(function () {
   });
 
   // navigate to previous/next day
-  $('#calendarControls').on('click touchend', '.prev, .next', function () {
+  $('#calendarControls').on('click', '.prev, .next', function () {
     var $button = $(this);
 
     if ($button.hasClass('inactive')) {

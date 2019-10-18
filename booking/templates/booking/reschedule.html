@@ -1,6 +1,19 @@
 {% extends 'booking/base.html' %}
 
 {% block content %}
+<div id="datePicker"></div>
+<div id="datePickerDate">
+  <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+  <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+</div>
+<div id="date">
+  <input type="hidden" name="year" value="{{ date|date:'Y' }}" autocomplete="off">
+  <input type="hidden" name="month" value="{{ date|date:'n' }}" autocomplete="off">
+  <input type="hidden" name="day" value="{{ date|date:'j' }}" autocomplete="off">
+</div>
+<div id="csrf">
+  {% csrf_token %}
+</div>
 <h3 class="h3 title text-center">Reschedule {{ name }} Appointment</h3>
 <div id="calendar">
   <div id="calendarControls">

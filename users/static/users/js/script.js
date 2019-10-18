@@ -13,7 +13,7 @@ $(document).ready(function () {
   var $infoContainer = $('.profile .info-container');
   var $editProfile = $('.profile .edit-profile');
   var $editPassword = $('.profile .edit-password');
-  $('.profile .edit a').on('click touchend', function (event) {
+  $('.profile .edit a').click(function (event) {
     event.preventDefault();
 
     if (state === 'info') {
@@ -35,7 +35,7 @@ $(document).ready(function () {
   });
 
   // show change password form on "Change" click
-  $('.change').on('click touchend', function (event) {
+  $('.change').click(function (event) {
     event.preventDefault();
 
     $infoContainer.hide();
@@ -45,7 +45,7 @@ $(document).ready(function () {
   });
 
   // return to info on "Cancel" button click
-  $('.edit-profile .btn-secondary').on('click touchend', function (event) {
+  $('.edit-profile .btn-secondary').click(function (event) {
     event.preventDefault();
 
     $editProfile.hide();
@@ -53,7 +53,7 @@ $(document).ready(function () {
 
     state = 'info';
   });
-  $('.edit-password .btn-secondary').on('click touchend', function (event) {
+  $('.edit-password .btn-secondary').click(function (event) {
     event.preventDefault();
 
     $editPassword.hide();
@@ -63,7 +63,7 @@ $(document).ready(function () {
   });
 
   // edit massage type on anchor click
-  $('.massage-type a').on('click touchend', function (event) {
+  $('.massage-type a').click(function (event) {
     event.preventDefault();
 
     $('.massage-type').hide();
@@ -71,7 +71,7 @@ $(document).ready(function () {
   });
 
   // hide massage type form on "Cancel" button click
-  $('#changeMassageType .btn-secondary').on('click touchend', function (event) {
+  $('#changeMassageType .btn-secondary').click(function (event) {
     event.preventDefault();
 
     $('.massage-type').show();
@@ -79,7 +79,7 @@ $(document).ready(function () {
   });
 
   // submit massage type on "Update" button click
-  $('#changeMassageType .btn-primary').on('click touchend', function (event) {
+  $('#changeMassageType .btn-primary').click(function (event) {
     event.preventDefault();
 
     var csrf = $('#changeMassageType input[name="csrfmiddlewaretoken"]').val();
@@ -103,7 +103,7 @@ $(document).ready(function () {
 
   // handle appointments table row modal trigger
   var profileIdModal = 0;
-  $('#appointments tbody tr').on('click touchend', function (event) {
+  $('#appointments tbody tr').click(function (event) {
     if ($(this).children('td').hasClass('dataTables_empty')) {
       return;
     }
@@ -138,28 +138,28 @@ $(document).ready(function () {
     $detailsModal.stop().fadeIn(500);
   });
 
-  $('#swedish').on('click touchend', function (event) {
+  $('#swedish').click(function (event) {
     $swedishRadio.prop('checked', true);
   });
-  $('#deepTissue').on('click touchend', function (event) {
+  $('#deepTissue').click(function (event) {
     $deepTissueRadio.prop('checked', true);
   });
-  $('#unspecified').on('click touchend', function (event) {
+  $('#unspecified').click(function (event) {
     $unspecifiedRadio.prop('checked', true);
   });
-  $('#swedishModal').on('click touchend', function (event) {
+  $('#swedishModal').click(function (event) {
     $swedishRadioModal.prop('checked', true);
   });
-  $('#deepTissueModal').on('click touchend', function (event) {
+  $('#deepTissueModal').click(function (event) {
     $deepTissueRadioModal.prop('checked', true);
   });
-  $('#unspecifiedModal').on('click touchend', function (event) {
+  $('#unspecifiedModal').click(function (event) {
     $unspecifiedRadioModal.prop('checked', true);
   });
 
   // handle edit profile table row modal trigger
   var $editProfileModal = $('#editProfileModal');
-  $('#profiles tbody tr').on('click touchend', function (event) {
+  $('#profiles tbody tr').click(function (event) {
     if ($(this).children('td').hasClass('dataTables_empty')) {
       return;
     }
@@ -181,7 +181,7 @@ $(document).ready(function () {
 
   // handle "Add Appointment" button modal trigger
   var $addAppointmentModal = $('#addAppointmentModal');
-  $('#addAppointment').on('click touchend', function () {
+  $('#addAppointment').click(function () {
     $addAppointmentModal.fadeIn(500);
   });
 
@@ -235,7 +235,7 @@ $(document).ready(function () {
 
   // handle close button
   $('#detailsModal, #addAppointmentModal, #editProfileModal')
-    .on('click touchend', '.close', function (event) {
+    .on('click', '.close', function (event) {
     let $modal = $($(this).parent().parent()[0]);
     $modal.stop().fadeOut(500);
 
@@ -248,7 +248,7 @@ $(document).ready(function () {
 
   // handle "Cancel" button in edit profile modal
   $('#editProfileModal button.btn-secondary')
-    .on('click touchend', function (event) {
+    .click(function (event) {
       event.preventDefault();
     $editProfileModal.stop().fadeOut(500);
   });
@@ -268,7 +268,7 @@ $(document).ready(function () {
     $('#detailsModalContent input[type="radio"][name="massage-admin"][value=""]');
 
   // change state based on edit anchor click
-  $('#detailsModalContent .edit a, #detailsModalContent form .btn-secondary').on('click touchend', function (event) {
+  $('#detailsModalContent .edit a, #detailsModalContent form .btn-secondary').click(function (event) {
     event.preventDefault();
 
     $detailsModalInfo.toggle();
@@ -276,7 +276,7 @@ $(document).ready(function () {
   });
 
   // edit massage type
-  $('#updateMassageType').on('click touchend', function (event) {
+  $('#updateMassageType').click(function (event) {
     event.preventDefault();
 
     var csrf = $('#detailsModalContent input[name="csrfmiddlewaretoken"]').val();
@@ -329,7 +329,7 @@ $(document).ready(function () {
   });
 
   // auto-fill on li click
-  $dropdown.on('click touchend', 'ul li', function () {
+  $dropdown.on('click', 'ul li', function () {
     let firstName = $(this).children('.first-name').html();
     let lastName = $(this).children('.last-name').html();
     let activeId = $(this).children('input[name="id"]').val();
@@ -346,7 +346,7 @@ $(document).ready(function () {
   });
 
   // hide dropdown on input focus exit
-  $(window).on('click touchend', function () {
+  $(window).click(function () {
     if (!$firstName.is(':focus') && !$lastName.is(':focus')) {
       $dropdown.html('');
     }
@@ -417,13 +417,13 @@ $(document).ready(function () {
   });
 
   // clear input on button click
-  $('#clearFields').on('click touchend', function (event) {
+  $('#clearFields').click(function (event) {
     event.preventDefault();
     clearSearch();
   });
 
   // handle "Delete User" button click
-  $('#editProfileModal button.btn-danger').on('click touchend', function (event) {
+  $('#editProfileModal button.btn-danger').click(function (event) {
     event.preventDefault();
 
     let data = {

@@ -207,7 +207,7 @@ $(document).ready(function () {
   }
 
   // navigate to previous/next day
-  $('#calendarControls').on('click touchend', '.prev, .next', function () {
+  $('#calendarControls').on('click', '.prev, .next', function () {
       let $button = $(this);
 
       if ($button.hasClass('inactive')) {
@@ -240,7 +240,7 @@ $(document).ready(function () {
   });
 
   // handle li click event
-  $calendarContent.on('click touchend', 'ul li', function (event) {
+  $calendarContent.on('click', 'ul li', function (event) {
     event.preventDefault();
 
     let $appt = $(this);

@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var $calendarContent = $('#calendarContent');
 
-  $calendarContent.on('click touchend', 'ul li', function (event) {
+  $calendarContent.on('click', 'ul li', function (event) {
     event.preventDefault();
 
     var context = {

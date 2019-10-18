@@ -52,7 +52,7 @@ $(document).ready(function () {
   showDPLoadingIcon();
   updateDatePicker();
 
-  $dp.on('click touchend', '.prev', function () {
+  $dp.on('click', '.prev', function () {
     showDPLoadingIcon();
     updateDatePicker({
       'year': $(this).data('year'),
@@ -60,7 +60,7 @@ $(document).ready(function () {
     });
   });
 
-  $dp.on('click touchend', '.next', function () {
+  $dp.on('click', '.next', function () {
     showDPLoadingIcon();
     updateDatePicker({
       'year': $(this).data('year'),
@@ -187,18 +187,7 @@ $(document).ready(function () {
   }
 
   // display date clicked in date picker
-  let debounce = false;
-  $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
-    if (debounce) {
-      return;
-    }
-
-    debounce = true;
-
-    setTimeout(() => {
-      debounce = false;
-    }, 250);
-
+  $dp.on('click', '.grid div:not(.prev, .next)', function () {
     let datePickerDate = {
       'year': Number($('#datePickerDate input[name="year"]').val()),
       'month': Number($('#datePickerDate input[name="month"]').val()),
