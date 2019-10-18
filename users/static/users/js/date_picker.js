@@ -187,7 +187,18 @@ $(document).ready(function () {
   }
 
   // display date clicked in date picker
+  let debounce = false;
   $dp.on('click touchend', '.grid div:not(.prev, .next)', function () {
+    if (debounce) {
+      return;
+    }
+
+    debounce = true;
+
+    setTimeout(() => {
+      debounce = false;
+    }, 250);
+
     let datePickerDate = {
       'year': Number($('#datePickerDate input[name="year"]').val()),
       'month': Number($('#datePickerDate input[name="month"]').val()),
