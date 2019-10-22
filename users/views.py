@@ -143,13 +143,10 @@ def delete_profile(request):
 
     valid, response = Profile.objects.delete_profile(request)
 
-    if valid:
-        messages.success(request, response)
-    else:
-        for error in response:
-            messages.error(request, error)
+    if not valid:
+        return HttpResponse(response, status=500)
 
-    return redirect('users:index')
+    return HttpResponse(response, status=200)
 
 
 ######################

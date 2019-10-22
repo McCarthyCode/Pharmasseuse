@@ -365,12 +365,9 @@ class ProfileManager(Manager):
 
             profile.user.delete()
             profile.delete()
-        except Exception as exception:
-            errors.append('There was an error deleting the user\'s profile.')
-            errors.append(exception)
+        except:
+            return (False, 'There was an error deleting the user\'s profile.')
 
-        if errors:
-            return (False, errors)
-
-        return (True, 'The user has been deleted successfully.')
+        return (True, 'The user\'s profile has been deleted successfully. ' +
+            'The page will now refresh in 5 seconds.')
 
