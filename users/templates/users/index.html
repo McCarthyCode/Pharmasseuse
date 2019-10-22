@@ -388,11 +388,11 @@
     </div>
     <div class="info">
       <div>Name</div>
-      <div id="name"></div>
+      <div id="detailsName"></div>
       <div>Email</div>
-      <div id="email"></div>
+      <div id="detailsEmail"></div>
       <div>Phone Number</div>
-      <div id="phone"></div>
+      <div id="detailsPhone"></div>
     </div>
     <div class="edit-profile">
       <form action="{% url 'users:edit_profile' %}" method="POST">
@@ -436,7 +436,7 @@
         <div>Date/Time</div>
       </div>
       <div>
-        <p id="date"></p>
+        <p id="detailsDate"></p>
         <form action="{% url 'booking:reschedule_form' %}" method="POST">
           {% csrf_token %}
           <input type="hidden" name="profile-id">

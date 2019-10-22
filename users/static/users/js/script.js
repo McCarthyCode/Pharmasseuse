@@ -116,10 +116,10 @@ $(document).ready(function () {
     let date = $(this).children('input[name="date"]').val();
     let massage = $(this).children('input[name="massage"]').val();
 
-    $('#name').text(`${firstName} ${lastName}`);
-    $('#email').text(email);
-    $('#phone').text(phone);
-    $('#date').text(date);
+    $('#detailsName').text(`${firstName} ${lastName}`);
+    $('#detailsEmail').text(email);
+    $('#detailsPhone').text(phone);
+    $('#detailsDate').text(date);
 
     $('#detailsModalContent input[name="profile-id"]').val(profileIdModal);
     $('#detailsModalContent input[name="first-name"]').val(firstName);
